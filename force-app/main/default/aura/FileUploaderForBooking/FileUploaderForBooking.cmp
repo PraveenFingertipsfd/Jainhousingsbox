@@ -1,0 +1,308 @@
+<aura:component Controller="BookingFileUploadController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+
+    <aura:attribute name="files" type="ContentDocument[]"/> 
+    <aura:attribute name="PanCard" type="ContentDocument[]"/>
+    <aura:attribute name="AadharCard" type="ContentDocument[]"/>
+    
+    <aura:attribute name="SaleAgreement" type="ContentDocument[]"/>
+    <aura:attribute name="LoanDocuments" type="ContentDocument[]"/>
+    <aura:attribute name="Passport" type="ContentDocument[]"/>
+    <aura:attribute name="BookingForm" type="ContentDocument[]"/>
+    <aura:attribute name="ApplicantPhotos" type="ContentDocument[]"/>
+    <aura:attribute name="SaleDeed" type="ContentDocument[]"/>
+    <aura:attribute name="Others" type="ContentDocument[]"/>
+    
+    <aura:attribute name="recordFields" type="Object"/>
+    <aura:attribute name="showLoanSection" type="Boolean" default="false"/>
+    
+    <aura:attribute name="showPassportSection" type="Boolean" default="false"/>
+    
+	<!-- Lightning Data Service with change handler -->
+    <force:recordData 
+        recordId="{!v.recordId}"
+        fields="Funding_Type__c,Nationality__c"
+        targetFields="{!v.recordFields}"
+        mode="VIEW"
+        recordUpdated="{!c.handleRecordUpdated}"
+    />	
+    
+    <!--aura:attribute name="GSTcertificate" type="ContentDocument[]"/>
+    <aura:attribute name="incorporationcertification" type="ContentDocument[]"/>
+    <aura:attribute name="Registrationcertificate" type="ContentDocument[]"/>
+    <aura:attribute name="CompanyPAN" type="ContentDocument[]"/>
+    <aura:attribute name="DirectorsPAN" type="ContentDocument[]"/>
+    <aura:attribute name="LOI" type="ContentDocument[]"/>
+    <aura:attribute name="Agreement" type="ContentDocument[]"/-->
+    
+    
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="Status" type="String" />
+    <aura:attribute name="acceptFileTypes" type="List" default="['.png', '.jpg', '.jpeg', '.pdf','.*']" />  
+    <aura:attribute name="showFileHeader" type="Boolean" default="true" />  
+    <aura:attribute name="fileHeaderText" type="String" default="Files" /> 
+    <aura:attribute name="uploadMultiple" type="Boolean" default="true"/>     
+    <aura:attribute name="spinner" type="boolean" default="false"/>
+    <aura:attribute name="showFiles" type="boolean" default="true"/>
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    
+    <aura:handler event="force:refreshView" action="{! c.doInit}" />  
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    
+    <div class="slds-card__header slds-grid">
+        <header class="slds-media slds-media_center slds-has-flexi-truncate">
+            <div class="slds-media__figure">
+                <span class="slds-icon_container slds-icon-standard-task" title="task">
+                    <lightning:avatar src="/bad/image/url.jpg" size="small" initials="" fallbackIconName="standard:file" alternativeText="file" class=""/>
+                    <span class="slds-assistive-text">Files</span>
+                </span>
+            </div>
+            <div class="slds-media__body">
+                <h2 class="slds-card__header-title">
+                    <!--a href="#" class="slds-card__header-link slds-truncate" title="Files"-->
+                        
+                        <span>Files</span>
+                    <!--/a-->
+                </h2>
+            </div>
+        </header>
+    </div>
+    
+    
+    
+    <aura:if isTrue="{!v.showFiles}">
+        <div class="slds-modal__content slds-p-around_medium">
+            <!--   <aura:if isTrue="{!(v.Status != 'Account')}">-->
+            
+            <div class="CAPA_Proof_Attachment slds-box">
+                <!-- show or hide header -->
+                
+                <aura:if isTrue="{!v.showFileHeader}">
+                    <p class="slds-align_absolute-center" style="font-size:15px;font-weight:600"><B>Applicant Photos</B></p> 
+                    <!--p class="slds-align_absolute-center" style="font-size:15px;font-weight:600"><B>Booking Form</B></p--> 
+                </aura:if>
+                <!-- Upload Button-->
+                
+                <div class="slds-align_absolute-center">  
+                    <lightning:fileUpload
+                                          name="Applicant-Photo"
+                                          multiple="{!v.uploadMultiple}"     
+                                          recordId="{!v.recordId}"
+                                          onuploadfinished="{!c.uploadFinished}" />  
+                </div>  
+                
+                <c:FileUploadCommonCMP DocumentsList="{!v.ApplicantPhotos}"/>
+                <!--c:FileUploadCommonCMP DocumentsList="{!v.DirectorsPAN}"/-->    
+            </div>
+            
+            <div class="CAPA_Proof_Attachment slds-box">
+                <!-- show or hide header -->
+                
+                <aura:if isTrue="{!v.showFileHeader}">
+                    <p class="slds-align_absolute-center" style="font-size:15px;font-weight:600"><B>Aadhar Card</B></p> 
+                </aura:if>
+                <!-- Upload Button-->
+                
+                <div class="slds-align_absolute-center">  
+                    <lightning:fileUpload
+                                          name="Aadhar-Card"
+                                          multiple="{!v.uploadMultiple}"     
+                                          recordId="{!v.recordId}"
+                                          onuploadfinished="{!c.uploadFinished}" />  
+                </div>  
+                
+                <c:FileUploadCommonCMP DocumentsList="{!v.AadharCard}"/>    
+            </div>
+            
+            <div class="Completion_Report slds-box">
+                <!-- show or hide header -->
+                <aura:if isTrue="{!v.showFileHeader}">
+                    <p class="slds-align_absolute-center" style="font-size:15px;font-weight:600"><B>PAN Card</B></p> 
+                </aura:if>
+                <!-- Upload Button-->
+                
+                <div class="slds-align_absolute-center">  
+                    
+                    <lightning:fileUpload
+                                          name="Pan-Card"
+                                          multiple="{!v.uploadMultiple}"     
+                                          recordId="{!v.recordId}"
+                                          onuploadfinished="{!c.uploadFinished}" />  
+                </div> 
+                
+                <c:FileUploadCommonCMP DocumentsList="{!v.PanCard}"/>    
+            </div>
+            
+            <aura:if isTrue="{!v.showPassportSection}">
+                <div class="CAPA_Proof_Attachment slds-box">
+                    <!-- show or hide header -->
+                    
+                    <aura:if isTrue="{!v.showFileHeader}">
+                        <p class="slds-align_absolute-center" style="font-size:15px;font-weight:600"><B>Passport</B></p> 
+                        <!--p class="slds-align_absolute-center" style="font-size:15px;font-weight:600"><B>Upload Passport</B></p--> 
+                    </aura:if>
+                    <!-- Upload Button-->
+                    
+                    <div class="slds-align_absolute-center">  
+                        <lightning:fileUpload
+                                              name="Passport"
+                                              multiple="{!v.uploadMultiple}"     
+                                              recordId="{!v.recordId}"
+                                              onuploadfinished="{!c.uploadFinished}" />  
+                    </div> 
+                    
+                    <c:FileUploadCommonCMP DocumentsList="{!v.Passport}"/>
+                    <!--c:FileUploadCommonCMP DocumentsList="{!v.CompanyPAN}"/-->    
+                </div>
+            </aura:if>
+            
+            <div class="CAPA_Proof_Attachment slds-box">
+                <!-- show or hide header -->
+                
+                <aura:if isTrue="{!v.showFileHeader}">
+                    <p class="slds-align_absolute-center" style="font-size:15px;font-weight:600"><B>Booking Form</B></p> 
+                    <!--p class="slds-align_absolute-center" style="font-size:15px;font-weight:600"><B>Booking Form</B></p--> 
+                </aura:if>
+                <!-- Upload Button-->
+                
+                <div class="slds-align_absolute-center">  
+                    <lightning:fileUpload
+                                          name="Booking-Form"
+                                          multiple="{!v.uploadMultiple}"     
+                                          recordId="{!v.recordId}"
+                                          onuploadfinished="{!c.uploadFinished}" />  
+                </div>  
+                
+                <c:FileUploadCommonCMP DocumentsList="{!v.BookingForm}"/>
+                <!--c:FileUploadCommonCMP DocumentsList="{!v.DirectorsPAN}"/-->    
+            </div>
+            
+            
+            
+            <div class="Completion_Report slds-box">
+                <aura:if isTrue="{!v.showFileHeader}">
+                    <p class="slds-align_absolute-center" style="font-size:15px;font-weight:600"><B>Sale Deed</B></p> 
+                </aura:if>
+                
+                
+                <div class="slds-align_absolute-center">  
+                    
+                    <lightning:fileUpload
+                                          name="Sale-Deed"   
+                                          multiple="{!v.uploadMultiple}"
+                                          recordId="{!v.recordId}"
+                                          onuploadfinished="{!c.uploadFinished}" />  
+                </div> 
+                
+                <c:FileUploadCommonCMP DocumentsList="{!v.SaleDeed}"/>    
+            </div>
+            
+            <div class="CAPA_Proof_Attachment slds-box">
+                <!-- show or hide header -->
+                
+                <aura:if isTrue="{!v.showFileHeader}">
+                    <p class="slds-align_absolute-center" style="font-size:15px;font-weight:600"><B>Sale Agreement(Signed)</B></p> 
+                </aura:if>
+                <!-- Upload Button-->
+                
+                <div class="slds-align_absolute-center">  
+                    <lightning:fileUpload
+                                          name="Sale-Agreement"
+                                          multiple="{!v.uploadMultiple}"     
+                                          recordId="{!v.recordId}"
+                                          onuploadfinished="{!c.uploadFinished}" />  
+                </div> 
+                
+                <c:FileUploadCommonCMP DocumentsList="{!v.SaleAgreement}"/> 
+                <!--c:FileUploadCommonCMP DocumentsList="{!v.incorporationcertification}"/-->
+            </div>
+            
+            <aura:if isTrue="{!v.showLoanSection}">
+                <div class="CAPA_Proof_Attachment slds-box">
+                    <!-- show or hide header -->
+                    
+                    <aura:if isTrue="{!v.showFileHeader}">
+                        <p class="slds-align_absolute-center" style="font-size:15px;font-weight:600"><B>Loan Documents</B></p> 
+                    </aura:if>
+                    <!-- Upload Button-->
+                    
+                    <div class="slds-align_absolute-center">  
+                        <lightning:fileUpload
+                                              name="Loan-Documents"
+                                              multiple="{!v.uploadMultiple}"     
+                                              recordId="{!v.recordId}"
+                                              onuploadfinished="{!c.uploadFinished}" />  
+                    </div>  
+                    
+                    <c:FileUploadCommonCMP DocumentsList="{!v.LoanDocuments}"/>
+                    <!--c:FileUploadCommonCMP DocumentsList="{!v.Registrationcertificate}"/-->    
+                </div>
+            </aura:if>
+            
+            <div class="Completion_Report slds-box">
+                <!-- show or hide header -->
+                <aura:if isTrue="{!v.showFileHeader}">
+                    <p class="slds-align_absolute-center" style="font-size:15px;font-weight:600"><B>Other Files Upload</B></p> 
+                </aura:if>
+                <!-- Upload Button-->
+                
+                <div class="slds-align_absolute-center">  
+                    
+                    <lightning:fileUpload
+                                          name="Others"
+                                          multiple="{!v.uploadMultiple}"     
+                                          recordId="{!v.recordId}"
+                                          onuploadfinished="{!c.uploadFinished}" />  
+                </div> 
+                
+                <c:FileUploadCommonCMP DocumentsList="{!v.Others}"/>    
+            </div>
+            
+            <!--div class="CAPA_Proof_Attachment slds-box">
+                
+                
+                <aura:if isTrue="{!v.showFileHeader}">
+                    <p class="slds-align_absolute-center" style="font-size:15px;font-weight:600"><B>Applicant-Photos</B></p> 
+                </aura:if>
+                
+                
+                <div class="slds-align_absolute-center">  
+                    <lightning:fileUpload
+                                          name="Applicant-Photos"
+                                          multiple="{!v.uploadMultiple}"     
+                                          recordId="{!v.recordId}"
+                                          onuploadfinished="{!c.uploadFinished}" />  
+                </div>
+                
+                <c:FileUploadCommonCMP DocumentsList="{!v.GSTcertificate}"/>    
+            </div-->
+            
+            <!--div class="CAPA_Proof_Attachment slds-box">
+                
+                
+                <aura:if isTrue="{!v.showFileHeader}">
+                    <p class="slds-align_absolute-center" style="font-size:15px;font-weight:600"><B>Applicant Photos</B></p> 
+                </aura:if>
+                
+                
+                <div class="slds-align_absolute-center">  
+                    <lightning:fileUpload
+                                          name="Applicant-Photos"
+                                          multiple="{!v.uploadMultiple}"     
+                                          recordId="{!v.recordId}"
+                                          onuploadfinished="{!c.uploadFinished}" />  
+                </div>
+                
+                <c:FileUploadCommonCMP DocumentsList="{!v.GSTcertificate}"/>    
+            </div-->
+            
+            
+            <!--    </aura:if>-->
+            <!--  <aura:if isTrue="{!(v.Status == 'Account')}">-->
+            
+            
+            <!--  </aura:if> -->
+        </div>
+    </aura:if>
+</aura:component>

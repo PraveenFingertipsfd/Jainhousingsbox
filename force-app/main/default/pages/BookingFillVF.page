@@ -1,0 +1,35 @@
+<apex:page standardController="Quote__c">
+    <body>
+        <div>
+            
+        </div>
+    </body>
+    <apex:includeLightning />
+    
+    <div id="lightningvf" style="width:100%; height:100%"/>
+    
+        
+    <script>
+    
+    function getParameterByName(name) {
+        var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+        return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+    }
+
+    var UnitId = getParameterByName('Id');
+    var BkRqId = getParameterByName('BkReqId');
+
+    $Lightning.use("c:BookingRequestApp", function() {
+        $Lightning.createComponent("c:BookingFill",
+            {
+                recordId: UnitId,
+                BkReqId: BkRqId
+            },
+            "lightningvf",
+            function(cmp) {
+                console.log("Booking Fill Form component loaded");
+            }
+        );
+    });
+    </script>
+</apex:page>

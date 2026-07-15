@@ -1,0 +1,99 @@
+<apex:page renderAs="pdf"  standardController="Advance_Payment__c" extensions="ERP_AdvancePaymentController" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false">
+    <style>
+        @page {
+        size: A4;
+        margin-right: 30px;
+        margin-left: 10px;
+        font-family: Arial, sans-serif;
+    </style>
+    
+    
+    <table style="width:100%; border-collapse: collapse;">
+        <tr>
+            
+            <!-- Logo on the left -->
+            <td rowspan="3" style="width: 10%; vertical-align: top; text-align: left; padding: 0; margin: 0;">
+                <img src="{!URLFOR($Resource.JainsLogo)}" style="width:140px; height:130px; display: block; margin: 0; padding: 0;" />
+            </td>  
+            
+            
+            <!-- Company details on the right -->
+            <td colspan="3" style="width: 90%; vertical-align: top;">
+                <h3 style="margin: 0; text-align:center; padding-bottom:20px;">Jain Housing &amp; Constructions Ltd</h3>
+                <span style="padding-top:15px; text-align:center; font-size:12px">No:98/99,Habibullah Road,T.Nagar,Chennai -600017 Ph:04446791111.CIN:U45201TN1994PLC029036</span> 
+            </td>
+        </tr>
+        
+        
+        <tr>
+            <td style="padding-top:50px"><Strong>PAN: AAACJ1132H </Strong></td>
+            <td style="padding-top:50px"><Strong>GSTIN No.: 33AAACJ1132H2Z6 </Strong></td>
+            <td style="padding-top:50px"><Strong>State: Tamil Nadu</Strong></td>
+        </tr>
+    </table>  
+    
+    <div style="text-align:center">
+        <div style="display: inline-block; border: 1px solid #000; padding: 5px 30px; text-align:center; font-weight: bold;">
+            Receipt
+        </div>
+    </div>
+    <div>
+        <span style="text-align:left; padding-right:350px">Receipt NO.: {!advancePayment.Name} </span> <span style="text-align:right">DATE: {!dateFormatted}</span>
+    </div>
+    <p>
+        RECEIVED WITH THANKS FROM <span style="text-transform:uppercase">{!advancePayment.Booking_Request__r.Customer_Name__c} </span>  
+    </p>
+    <p>
+        THE SUM OF RUPEES <span style="text-transform:uppercase">{!amountInWords}</span> ONLY VIDE ONLINE NO.{!advancePayment.Cheque_no_Transaction_Number__c} DATED &nbsp; <apex:outputText value="{0,date,dd/MM/yyy}"><apex:param value="{!advancePayment.Receipt_Date__c}"/></apex:outputText> DRAWN ON {!advancePayment.Bank__c}
+    </p>
+    <p>
+        towards Flat No. {!advancePayment.Booking_Request__r.Unit__r.Plot_Number__c} in Block - {!advancePayment.Booking_Request__r.Unit__r.Name} in measuring {!advancePayment.Booking_Request__r.Unit__r.Super_built_up_area__c} sq.ft. in project {!advancePayment.Booking_Request__r.Project__c} being the advancePayments
+        towards:
+    </p>
+    <table width="100%" style="border: 1px solid black; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th style="border: 1px solid black;"><strong>Description</strong></th>
+                <th style="border: 1px solid black; text-align:right"><strong>Amount (Rs.)</strong></th>
+                <th style="border: 1px solid black; text-align:right"><strong>Tax (Rs.)</strong></th>
+                <th style="border: 1px solid black; text-align:right"><strong>Total (Rs.)</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="border: 1px solid black;">Consideration / Flat Cost </td>
+                <td style="border: 1px solid black; text-align:right">{!advancePayment.Amount__c}  </td>
+                <td style="border: 1px solid black; text-align:right">0.00</td>
+                <td style="border: 1px solid black; text-align:right">{!advancePayment.Amount__c}</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black;"></td>
+                <td style="border: 1px solid black;"></td>
+                <td style="border: 1px solid black; text-align:right">Total (Rs.) </td>
+                <td style="border: 1px solid black; text-align:right"><apex:outputText value="{0, number,###,###}"><apex:param value="{!advancePayment.Amount__c}"/></apex:outputText> </td>
+            </tr>
+        </tbody>
+    </table>
+    <p>
+        Mode of payment:Online
+    </p>
+    <p>
+        <strong>Cheque/DD Details*</strong>
+    </p>
+    <p>
+        Cheque/DD No.: {!advancePayment.Cheque_no_Transaction_Number__c} Cheque Date: <apex:outputText value="{0,date,dd-MMM-yyy}"><apex:param value="{!advancePayment.Receipt_Date__c}"/></apex:outputText> Drawn on: {!advancePayment.Bank__c}
+    </p>
+    <p>
+        <span style="text-align:right;">* Cheque Subject to Realisation</span> <span style="padding-left:200px"><strong>For Jain Housing &amp; Constructions Ltd</strong></span>
+    </p>
+    <p style="text-align:right; padding-right:30px; padding-top:40px">
+        AUTHORISED SIGNATORY
+    </p>
+    
+    
+    
+    
+    
+    
+    
+</apex:page>

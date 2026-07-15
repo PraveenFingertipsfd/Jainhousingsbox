@@ -1,0 +1,492 @@
+.THIS .slds-table th {
+    background-color: #f3f2f2;
+    font-weight: bold;
+}
+
+.THIS .slds-table tr:hover {
+    background-color: #fafaf9;
+}
+
+.THIS .slds-badge {
+    padding: 0.25rem 0.5rem;
+}
+
+.THIS .slds-card {
+    min-height: 500px;
+}
+
+/* for table */
+.THIS .custom-table {
+    border-radius: 8px; /* Curved edges */
+    overflow: hidden; /* Ensures rounded edges apply */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Optional: soft shadow */
+}
+
+.THIS .custom-table thead {
+    background-color: #f3f6f9; /* Light background for header */
+}
+
+.THIS .custom-table thead tr:first-child th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.THIS .custom-table thead tr:first-child th:last-child {
+    border-top-right-radius: 8px;
+}
+/* till here */
+
+
+/* for action column */
+/* Base Action Button Style */
+.THIS .action-btn {
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    margin: 0 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Approve Button */
+.THIS .approve-btn {
+    background-color: #4caf50; /* Green */
+    color: white;
+}
+
+/* Reject Button */
+.THIS .reject-btn {
+    background-color: #f44336; /* Red */
+    color: white;
+}
+
+/* Hover Animations */
+.THIS .approve-btn:hover {
+    background-color: #45a049;
+    transform: scale(1.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.THIS .reject-btn:hover {
+    background-color: #e53935;
+    transform: scale(1.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Tooltip Effect */
+.THIS .action-btn[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    background: #333;
+    color: #fff;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    top: -32px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    opacity: 1;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* Smooth Tooltip Fade */
+.THIS .action-btn[title]::after {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+/* Default column style */
+.THIS .action-col {
+    max-width: 200px;       /* Adjust according to your table */
+    opacity: 1;
+    visibility: visible;
+    transition: all 0.3s ease-in-out; /* Smooth transition */
+}
+
+/* When column should hide */
+.THIS .hide-col {
+    max-width: 0 !important;   /* Collapse width smoothly */
+    opacity: 0;               /* Fade out smoothly */
+    visibility: hidden;       /* Hide content */
+    padding: 0 !important;    /* Remove inner padding */
+    margin: 0 !important;     /* Remove extra spacing */
+    overflow: hidden;         /* Prevent content overflow */
+}
+
+/* till here */
+
+/* comment modal */
+.THIS .slds-modal__container {
+    border-radius: 0.75rem; /* Rounded corners */
+    overflow: hidden; /* Avoid content overflow on edges */
+}
+
+.THIS .slds-modal__header {
+    border-bottom: 1px solid #e5e5e5;
+    background-color: #f3f3f3;
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+}
+
+.THIS .slds-modal__footer {
+    border-top: 1px solid #e5e5e5;
+    background-color: #f9f9f9;
+    border-bottom-left-radius: 0.75rem;
+    border-bottom-right-radius: 0.75rem;
+}
+/* till here */
+
+/* NEW STYLES FOR DETAILED VIEW ------------------------*/
+.THIS .detailed-view-container {
+    padding: 12px;
+    background: #fafaf9;
+    border-radius: 8px;
+}
+
+.THIS .detail-card {
+    background: white;
+    border: 1px solid #dddbda;
+    border-radius: 6px;
+    height: 100%;
+    /*min-height: 280px;*/
+}
+
+.THIS .totals-card {
+    background: #f3f2f2;
+    border: 1px solid #dddbda;
+    border-radius: 6px;
+}
+
+.THIS .cost-sheet-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    table-layout: fixed;
+}
+
+.THIS .cost-sheet-table th {
+    font-weight: 600;
+    color: #444;
+    width: 45%;
+    padding: 5px 6px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.THIS .cost-sheet-table td {
+    padding: 5px 6px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    color: #2b2826;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.THIS .cost-sheet-table tr:last-child th,
+.THIS .cost-sheet-table tr:last-child td {
+    border-bottom: none;
+}
+
+.THIS .total-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background: white;
+    border-radius: 4px;
+    border: 1px solid #dddbda;
+    height: 100%;
+}
+
+.THIS .total-label {
+    font-size: 10px;
+    color: #706e6b;
+    margin-bottom: 4px;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.THIS .total-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: #2b2826;
+    text-align: center;
+}
+
+.THIS .grand-total {
+    color: #0176d3;
+    font-size: 14px;
+}
+
+.THIS .back-button-container {
+    margin-bottom: 12px;
+}
+
+
+/* Compact layout improvements */
+.THIS .slds-p-around_xx-small {
+    padding: 0.25rem;
+}
+
+.THIS .slds-m-bottom_x-small {
+    margin-bottom: 0.5rem;
+}
+
+.THIS .slds-m-top_x-small {
+    margin-top: 0.5rem;
+}
+
+/* till here */
+
+/* NEW STYLES FOR BOOKING REQUEST ------------------------- */
+.THIS .booking-request-container {
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: #fafaf9;
+    
+}
+
+.THIS .booking-card {
+    background: white;
+    /*border: 1px solid #c5d9f2; */
+    border-radius: 6px;
+    height: 100%;
+}
+
+.THIS .booking-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    table-layout: fixed;
+}
+
+.THIS .booking-table th {
+    font-weight: 600;
+    color: #2b4f81;
+    width: 45%;
+    padding: 5px 6px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.THIS .booking-table td {
+    padding: 5px 6px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    color: #2b2826;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.THIS .booking-table tr:last-child th,
+.THIS .booking-table tr:last-child td {
+    border-bottom: none;
+}
+
+@media (max-width: 1024px) {
+    .THIS .slds-size_1-of-3 {
+        width: 50%;
+    }
+}
+
+@media (max-width: 768px) {
+    .THIS .slds-size_1-of-3 {
+        width: 100%;
+    }
+    
+    .THIS .booking-table {
+        font-size: 10px;
+    }
+}
+/* till her */
+
+/* Payment Schedule Styles */
+.THIS .payment-schedule-card {
+    background: #fafaf9;
+    border: 1px solid #dddbda;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+}
+
+.THIS .payment-schedule-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    padding: 8px 0;
+    border-bottom: 2px solid #dddbda; 
+    margin-bottom: 16px;
+   
+}
+
+.THIS .payment-schedule-heading {
+    color: #0176d3;
+    font-weight: 700;
+    margin: 0;
+}
+
+.THIS .payment-schedule-table-container {
+    overflow-x: auto;
+}
+
+.THIS .payment-schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    background: white;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.THIS .payment-schedule-table th {
+    background-color: #f3f2f2;
+    padding: 10px 12px;
+    font-weight: 600;
+    color: #444;
+    text-align: left;
+    border-bottom: 2px solid #dddbda;
+    white-space: nowrap;
+}
+
+.THIS .payment-schedule-table td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    color: #2b2826;
+}
+
+.THIS .payment-schedule-table tr:last-child td {
+    border-bottom: none;
+}
+
+.THIS .payment-schedule-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+.THIS .schedule-name {
+    width: 30%;
+    font-weight: 500;
+}
+
+.THIS .schedule-percentage {
+    width: 30%;
+    text-align: right;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+}
+
+.THIS .schedule-amount {
+    width: 30%;
+    text-align: right;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    font-weight: 500;
+}
+
+.THIS .schedule-status{
+    width: 30%;
+    text-align: right;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    font-weight: 500;
+}
+
+.THIS .schedule-pamount{
+    width: 30%;
+    text-align: right;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    font-weight: 500;
+}
+
+/* Responsive adjustments for payment schedule */
+@media (max-width: 768px) {
+    .THIS .payment-schedule-table {
+        font-size: 11px;
+    }
+    
+    .THIS .payment-schedule-table th,
+    .THIS .payment-schedule-table td {
+        padding: 6px 8px;
+    }
+    
+    .THIS .schedule-name {
+        width: 40%;
+    }
+    
+    .THIS .schedule-percentage {
+        width: 30%;
+    }
+    
+    .THIS .schedule-amount {
+        width: 30%;
+    }
+}
+
+/*--------------------------*/
+/* Booking Info Container */
+.THIS .booking-view-container {
+    padding: 12px;
+    background: #fafaf9;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+/* Booking Cards */
+.THIS .booking-card {
+    background: white;
+    border: 1px solid #dddbda;
+    border-radius: 6px;
+    height: 100%;
+}
+
+/* Booking Table Styling */
+.THIS .booking-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    table-layout: fixed;
+}
+
+.THIS .booking-table th {
+    font-weight: 600;
+    color: #444;
+    width: 45%;
+    padding: 5px 6px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.THIS .booking-table td {
+    padding: 5px 6px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    color: #2b2826;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.THIS .booking-table tr:last-child th,
+.THIS .booking-table tr:last-child td {
+    border-bottom: none;
+}

@@ -1,0 +1,369 @@
+<aura:component controller="BookingController" 
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionwithoutHeader" access="global"  >
+    <aura:attribute name="activeSections" type="List" default="['A','C']" />
+    <aura:attribute name="activeSectionsMessage" type="String" default="" />
+    
+    <aura:attribute name="isSecondary" type="boolean" default="false" />
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="Booking" type="Booking__c" default="{}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"></aura:handler>
+    
+    <aura:html tag="style">
+        .slds-modal__container{ 
+        } 
+        
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }
+        .slds-modal__content{
+        
+        height:unset !important;
+        max-height:unset !important;
+        }
+        
+        .closeIcon{
+        display:none;
+        }
+        .slds-col{
+        margin-left:5px;
+        }
+    </aura:html >
+    
+    <header class="slds-modal__header">
+        <lightning:buttonIcon iconName="utility:close"
+                              onclick="{! c.closeModel }"
+                              alternativeText="close"
+                              variant="bare-inverse"
+                              class="slds-modal__close"/>
+        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Transfer Details</h2>
+    </header>
+    <div class="slds-p-around_medium cust-ht">
+        <div class="slds-form slds-p-horizontal_small" role="list">
+            <lightning:accordion
+                                 allowMultipleSectionsOpen="true"
+                                 onsectiontoggle="{! c.handleSectionToggle }"
+                                 activeSectionName="{! v.activeSections }"
+                                 >
+                <lightning:accordionSection name="A" label="Primary Applicant Details">
+                    <aura:set attribute="body">
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <lightning:select aura:id="field" name="salutation_Applicant1__c" label="Salutation" required="true" messageWhenValueMissing="Select fill this field" disabled="false" value="{!v.Booking.salutation_Applicant1__c}">
+                                        <option value="">Choose one...</option>
+                                        <option value="Mr">Mr.</option>
+                                        <option value="Mrs">Mrs.</option>
+                                        <option value="Ms">Ms.</option>
+                                        <option value="Dr">Dr.</option>
+                                    </lightning:select>
+                                </div>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <div class="slds-form-element__control">
+                                        <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="First_Applicant_Name__c" type="text" formatter="text" disabled="false" required="true" label="Name" value="{!v.Booking.First_Applicant_Name__c}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- row ends here -->
+                        
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Date_of_Birth1__c" type="date" formatter="date" step="0.01" disabled="false" required="true" label="Date of Birth" value="{!v.Booking.Date_of_Birth1__c}" />
+                                </div>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <div class="slds-form-element__control">
+                                        <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Mobile_Primary__c" type="text" formatter="text" disabled="false" required="true" label="Mobile" value="{!v.Booking.Mobile_Primary__c}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- row ends here -->
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Email1__c" type="email" formatter="text" disabled="false" required="true" label="Email" value="{!v.Booking.Email1__c}" />
+                                </div>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <div class="slds-form-element__control">
+                                        <lightning:select aura:id="field" name="Nationality__c" label="Nationality" required="true" messageWhenValueMissing="Select fill this field" disabled="false" value="{!v.Booking.Nationality__c}">
+                                            <option value="">Select</option>
+                                            <option value="Resident">Resident</option>
+                                            <option value="PIO">PIO</option>
+                                            <option value="NRI">NRI</option>
+                                            <option value="OCI">OCI</option>
+                                        </lightning:select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- row ends here -->
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <lightning:select aura:id="field" name="Relation_Details_Applicant1__c" label="Relationship" required="true" messageWhenValueMissing="Select fill this field" disabled="false" value="{!v.Booking.Relation_Details_Applicant1__c}">
+                                        <option value="S/o">S/o</option>
+                                        <option value="D/o">D/o</option>
+                                        <option value="W/o">W/o</option>
+                                        <option value="H/o">H/o</option>
+                                    </lightning:select>
+                                </div>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <div class="slds-form-element__control">
+                                        <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Son_Daughter_Wife_of__c" type="text" disabled="false" required="true" label="{!v.Booking.Relation_Details_Applicant1__c + ' of'}" value="{!v.Booking.Son_Daughter_Wife_of__c}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- row ends here -->
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Passport_Aadhar__c" maxlength="8" type="text" formatter="text" disabled="false" required="false" label="Passport Number" value="{!v.Booking.Passport_Aadhar__c}" />
+                                </div>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <div class="slds-form-element__control">
+                                        <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Aadhaar_Number__c" type="text" formatter="text" disabled="false" required="true" label="Aadhaar Number" value="{!v.Booking.Aadhaar_Number__c}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- row ends here -->
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="PAN_Number1__c" type="text" formatter="text" disabled="false" required="true" label="PAN Number" value="{!v.Booking.PAN_Number1__c}" />
+                                </div>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <div class="slds-form-element__control">
+                                        <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Occupation__c" type="text" formatter="text" disabled="false" required="false" label="Occupation" value="{!v.Booking.Occupation__c}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- row ends here -->
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Name_of_Company__c" type="text" formatter="text" disabled="false" required="false" label="Name of Company" value="{!v.Booking.Name_of_Company__c}" />
+                                </div>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <div class="slds-form-element__control">
+                                        <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Designation__c" type="text" formatter="text" disabled="false" required="false" label="Designation" value="{!v.Booking.Designation__c}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- row ends here -->
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <lightning:input aura:id="field" name="Anniverssary_Date__c" type="date" formatter="date" step="0.01" disabled="false" required="false" label="Anniversary Date" value="{!v.Booking.Anniverssary_Date__c}" />
+                                </div>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <div class="slds-form-element__control">
+                                        <lightning:textarea aura:id="field" messageWhenValueMissing="Select fill this field" name="Communication_address__c" formatter="text" disabled="false" required="true" label="Communication Address" value="{!v.Booking.Communication_address__c}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- row ends here -->
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <lightning:textarea aura:id="field" messageWhenValueMissing="Select fill this field" name="Address__c" formatter="text" disabled="false" required="true" label="Permanent Address" value="{!v.Booking.Address__c}" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- row ends here -->
+                    </aura:set>
+                </lightning:accordionSection>
+                <lightning:accordionSection name="B" label="Secondary Applicant Details">
+                     <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <lightning:input type="checkbox" label="Secondary Applicant same as previous ?" name="input1" onchange="{!c.handleCheckboxChange}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- row ends here -->
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <lightning:select aura:id="field" name="salutation_Applicant2__c" label="salutation" messageWhenValueMissing="Select fill this field" disabled="false"  value="{!v.Booking.salutation_Applicant2__c}" >
+                                    <option value="">choose one...</option>
+                                    <option value="Mr">Mr.</option>
+                                    <option value="Mrs">Mrs.</option>
+                                    <option value="Ms">Ms.</option>
+                                    <option value="Dr">Dr.</option>
+                                </lightning:select>
+                            </div>
+                        </div>
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <div class="slds-form-element__control">
+                                    <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Second_Applicant_Name__c" type="Text" formatter="Text"  disabled="false" label="Applicant Name"  value="{!v.Booking.Second_Applicant_Name__c}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- row ends here -->
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <lightning:input  name="Date_of_birth_Applicant2__c" type="Date" formatter="Date" step="0.01" messageWhenValueMissing="Select fill this field" disabled="false" label="Date of birth" value="{!v.Booking.Date_of_birth_Applicant2__c}" />
+                            </div>
+                        </div>
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <div class="slds-form-element__control">
+                                    <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Mobile_Primary1__c" type="text" disabled="false"  formatter="text" label="Mobile"  value="{!v.Booking.Mobile_Primary1__c}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- row ends here -->
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Email2__c" type="email" formatter="Text"  disabled="false" label="Email"  value="{!v.Booking.Email2__c}" />
+                            </div>
+                        </div>
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <div class="slds-form-element__control">
+                                    <lightning:select aura:id="field" name="Nationality_Applicant2__c" label="Nationality" required="false" messageWhenValueMissing="Select fill this field" disabled="false"  value="{!v.Booking.Nationality_Applicant2__c}" >
+                                        <option value="">select</option>
+                                        <option value="Resident">Resident</option>
+                                        <option value="PIO">PIO</option>
+                                        <option value="NRI">NRI</option>
+                                        <option value="OCI">OCI</option>
+                                    </lightning:select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- row ends here -->
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <lightning:select aura:id="field" name="Relation_Details_Applicant2__c" label="Relationship"  messageWhenValueMissing="Select fill this field" disabled="false"  value="{!v.Booking.Relation_Details_Applicant2__c}" >
+                                    <option value="S/o">S/o</option>
+                                    <option value="D/o">D/o</option>
+                                    <option value="W/o">W/o</option>
+                                    <option value="H/o">H/o</option>
+                                </lightning:select>
+                            </div>
+                        </div>
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <div class="slds-form-element__control">
+                                    <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Son_Daughter_Wife_of1__c" type="text" disabled="false" required="false" label="{!v.Booking.Relation_Details_Applicant2__c + ' of'}"  value="{!v.plot.Son_Daughter_Wife_of1__c}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- row ends here -->
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Passport_Aadhar_1__c" maxlength="8" type="Text" formatter="Text"  disabled="false" required="false" label="Passport Number"  value="{!v.Booking.Passport_Aadhar_1__c}" />
+                            </div>
+                        </div>
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <div class="slds-form-element__control">
+                                    <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Aadhaar_Number1__c" type="Text" formatter="Text"  disabled="false" required="false" label="Aadhar number"  value="{!v.Booking.Aadhaar_Number1__c}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- row ends here -->
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Pan_Number_Applicant2__c" type="Text" formatter="Text"  disabled="false" required="false" label="PAN Number"  value="{!v.Booking.Pan_Number_Applicant2__c}" />
+                            </div>
+                        </div>
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <div class="slds-form-element__control">
+                                    <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Occupation1__c" type="Text" formatter="Text"  disabled="false" required="false" label="Occupation"  value="{!v.Booking.Occupation1__c}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- row ends here -->
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Name_of_Company1__c" type="Text" formatter="Text"  disabled="false" required="false" label="Name of Company"  value="{!v.Booking.Name_of_Company1__c}" />
+                            </div>
+                        </div>
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <div class="slds-form-element__control">
+                                    <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Designation1__c" type="Text" formatter="Text"  disabled="false" required="false" label="Designation"  value="{!v.Booking.Designation1__c}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- row ends here -->
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <lightning:input  name="Anniverssary_Date1__c" type="Date" formatter="Date" step="0.01" messageWhenValueMissing="Select fill this field" disabled="{!v.Booking.Relation_Details_Applicant2__c != 'H/o'}" required="false" label="Anniversary Date" value="{!v.Booking.Anniverssary_Date1__c}" />
+                            </div>
+                        </div>
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <div class="slds-form-element__control">
+                                    <lightning:textarea  aura:id="field" messageWhenValueMissing="Select fill this field" name="Communication_address1__c"  formatter="Text"  disabled="false" required="false" label="Communication Address"  value="{!v.Booking.Communication_address1__c}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- row ends here -->
+                    <div class="slds-form__row">
+                        <div class="slds-form__item" role="listitem">
+                            <div class="slds-form-element slds-form-element_stacked">
+                                <lightning:textarea  aura:id="field" messageWhenValueMissing="Select fill this field" name="Permanent_Address1__c"  formatter="Text"  disabled="false" required="false" label="Permenent Address"  value="{!v.Booking.Permanent_Address1__c}" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- row ends here -->
+                </lightning:accordionSection>
+            </lightning:accordion>
+            
+            
+        </div>
+    </div>
+    <div class="slds-modal__footer">
+        <lightning:button  label="Close" title="Brand action" onclick="{!c.closeModel}" />
+        <lightning:button  variant="brand" label="Submit" title="Brand action" onclick="{!c.saveData}" />
+    </div>
+    <div>
+        <aura:if isTrue="{!v.spinner}">
+            <lightning:spinner class="spins" size="large" variant="brand" alternativeText="Loading" />
+        </aura:if>
+    </div>
+</aura:component>

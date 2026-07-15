@@ -1,0 +1,40 @@
+<apex:page renderAs="pdf" standardController="Booking__c"  showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false">
+    <html>
+        <head>
+            <style type="text/css" media="print">
+                @page {
+                size: A4;
+                font-family: Arial, sans-serif;
+              
+                }
+                
+                p {ss
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+                line-height: 1.8;
+                }
+                
+                .right-align {
+                text-align: right;
+                }
+                
+               
+            </style>
+        </head>
+        <br/><br/><br/>       <p><span style= "float:right;display: inline-block;"><strong>Date: <apex:outputText value="{0,date,dd/MM/yyyy}"> <apex:param value="{!TODAY()}" /> </apex:outputText> </strong></span></p>
+        <br/><br/><br/>                    <div style="text-align:center; padding-top:30px"><strong>TO WHOMSOEVER IT MAY CONCERN</strong></div>
+<br/><br/><br/>            <p style="text-align:justify; font-size:14px; padding-top:20px">
+    This is to confirm that  we have delivered vacant, physical and peaceful possession of
+        Flat no.{!Booking__c.Flat_Actual_Number__c} in  Block {!Booking__c.Plot__r.Name} in {!Booking__c.FloorNo__c} Floor, booked in the {!Booking__c.Project1__r.Name}, City on <apex:outputText value="{0,date,dd/MM/yyyy}"> <apex:param value="{!Booking__c.Date_of_NDC__c}" /> </apex:outputText>
+        </p>
+        <p style="text-align:justify; font-size:14px">
+    Thanking you,
+        </p>
+        <p style="text-align:justify; font-size:14px">
+    Yours faithfully,
+        </p>
+        <p style="text-align:justify; font-size:14px">
+    For&nbsp;<b>Company Name</b> </p>
+        <p style="text-align:justify; font-size:14px">CRM</p>
+    </html>
+</apex:page>

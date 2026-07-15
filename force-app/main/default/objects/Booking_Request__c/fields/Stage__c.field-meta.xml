@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Stage__c</fullName>
+    <label>Stage</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Waiting for Response</fullName>
+                <default>true</default>
+                <label>Waiting for Response</label>
+            </value>
+            <value>
+                <fullName>Cost Sheet Preparation</fullName>
+                <default>false</default>
+                <label>Cost Sheet Preparation</label>
+            </value>
+            <value>
+                <fullName>Request Abandoned</fullName>
+                <default>false</default>
+                <label>Request Abandoned</label>
+            </value>
+            <value>
+                <fullName>Request Successfully Closed</fullName>
+                <default>false</default>
+                <label>Request Successfully Closed</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,32 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+
+    <aura:attribute name="DocumentsList" type="ContentDocument[]"/>
+   
+    <table class="slds-table slds-table--bordered slds-table_fixed-layout"  >  
+                <!-- hide the table header if file is empty -->
+                <aura:if isTrue="{!not(empty(v.DocumentsList))}">
+                    <thead>  
+                        <tr>  
+                            <th width="75%" >File Name</th>  
+                            <th>Date</th>                  
+                        </tr>  
+                    </thead>  
+                <tbody>
+                    <aura:iteration items="{!v.DocumentsList}" var="f">  
+                        <tr>  
+                            <td  class="slds-cell-wrap">
+                                <a href="javascript:void(0)" id="{!f.Id}" onclick="{!c.previewFile}">
+                                    {!f.Title}
+                                </a>
+                            </td> 
+							 <td>
+                               {!f.SystemModstamp}
+                            </td> 
+                        </tr>  
+                    </aura:iteration>  
+                </tbody>  
+                     </aura:if>
+            </table>  
+    
+    
+</aura:component>

@@ -1,0 +1,579 @@
+<apex:page renderAs="pdf" controller="AadhyaBookingFormController"  showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false">
+    
+    <head>
+        <style>
+            @page {
+            size: A4;
+            margin: 10mm;
+            font-family: Arial, sans-serif;
+            border: 5px solid #005AA3;
+            }
+            body {
+            margin: 0;
+            padding: 0;
+            }
+            .photo-container {
+            width: 150px;
+            height: 170px;
+            border: 1px solid #000;
+            text-align: center;
+            border-radius: 10px;
+            overflow: hidden;
+            float: right; 
+            margin-right: 0; 
+            }
+             .checkbox {
+                    width: 12px;
+                    height: 12px;
+                    border: 1px solid #000;
+                    display: inline-block;
+                    margin-right: 5px;
+                    text-align: center;
+                    line-height: 12px;
+                    font-size: 12px;
+                    vertical-align: middle;
+           			 margin-top:20px;
+                }
+
+                .checkbox.checked {
+                    content: '✓';
+                    background-color: #0070d2;
+                    color: #fff;
+                    font-weight: bold;
+                    font-size: 7px !important;
+            		margin-top:20px;
+                }
+            
+            
+        </style>
+    </head>
+     <div style=" text-align:center;">
+        <img src="{!URLFOR($Resource.JainsLogo)}" style="width:20%; " />
+    </div>
+    
+    <p style="font-size:50px; text-align:center; padding-top:50px; padding-bottom:10; line-height:0">
+        <strong>JAIN HOUSING LLP</strong>
+    </p>
+    <p style="font-size:13px; text-align:center; margin-top:-20px; line-height:.5">
+        <strong>No. 98/99, Habibullah Road, T.Nagar - Chennai 600 017. </strong> 
+    </p>
+    <p style="font-size:13px; text-align:center; line-height:.5; padding-bottom:60px">
+        <strong>Ph: 044 - 46791111, E-Mail: support@jainhousing.com</strong> 
+    </p>
+    <div style="text-align:center">
+        <img src="{!URLFOR($Resource.AadhyaLogo)}" style="width:35%; height:20%;" />
+    </div>
+    <p style="font-size:30px; text-align:center; padding-top:70px; padding-bottom:50px;">
+        <u><strong>APPLICATION FOR FLAT ALLOTMENT</strong> </u>
+    </p>
+    
+    <div style="font-size:21px; padding-left:10px">
+        <span><strong>Name</strong></span>
+        <span style="display:inline-block; border-bottom:1px dashed #000; width:250px; margin-left:5px;">{!booking.First_Applicant_Name__c}</span>
+        <span><strong>Booking Date</strong></span>
+        <span style="display:inline-block; border-bottom:1px dashed #000; width:195px; margin-left:5px;"><apex:outputText value="{0, DATE, dd'-'MM'-'yyyy}"><apex:param value="{!booking.Booking_Date__c}" /></apex:outputText></span>
+    </div>
+    <div style="font-size:21px; padding-left:10px; padding-top:40px">
+        <span><strong>Flat No</strong></span>
+        <span style="display:inline-block; border-bottom:1px dashed #000; width:235px; margin-left:5px;">{!booking.Flat_Actual_Number__c}</span>
+        <span><strong>Floor</strong></span>
+        <span style="display:inline-block; border-bottom:1px dashed #000; width:270px; margin-left:5px;">{!booking.FloorNo__c}</span>
+    </div>
+    <div style="font-size:21px; padding-left:10px; padding-top:40px">
+        <span><strong>Total Area</strong></span>
+        <span style="display:inline-block; border-bottom:1px dashed #000; width:205px; margin-left:5px;">{!booking.Super_Built_up_area_NE__c}</span>
+        <span><strong>Carpet Area</strong></span>
+        <span style="display:inline-block; border-bottom:1px dashed #000; width:205px; margin-left:5px;">{!booking.Carpet_Area__c}</span>
+    </div>
+    <div style="font-size:21px; padding-left:10px; padding-top:40px">
+        <span><strong>Car Park No</strong></span>
+        <span style="display:inline-block; border-bottom:1px dashed #000; width:185px; margin-left:5px;"></span>
+        <span><strong>Car Park Type</strong></span>
+        <span style="display:inline-block; border-bottom:1px dashed #000; width:185px; margin-left:5px;">{!booking.Cost_Sheet__r.Car_Parking_Type__c}</span>
+    </div>
+    <div style="font-size:21px; padding-left:10px; padding-top:40px">
+        <span><strong>Total Cost</strong></span>
+        <span style="display:inline-block; border-bottom:1px dashed #000; width:205px; margin-left:5px;">{!booking.Total__c}</span>
+    </div>
+    <div style="page-break-after: always;"></div>
+   <div style="background-color:#005AA3; width:100%; height:30px; padding:0px; font-size:25px; font-weight:bold; color:#ffffff; text-align:center; margin: 0; display: flex; justify-content: center; align-items: center; ">
+        <strong> <strong>TERMS &amp; CONDITIONS</strong> </strong>
+    </div>
+      
+    <p style="padding-left:30px; font-size:10.7px; margin-bottom: 4px;">
+        <strong>Project Schedule, Value payable for the flat &amp; Transfer of ownership of undivided share in land:</strong>
+    </p> 
+    <p style="padding-left:15px; font-size:10.7px; margin-top: 0;">
+        The total cost of the flat to be allotted to you is indicated in the application over leaf and Cash Flow chart. All other estimates exchanged between us have been superseded by this Application/Cash Flow chart. The other charges such as GST, stamp duty, registration charges or any other levy are applicable based on Government norms and is not included in the sale price. The Name transfer of the EB card and property tax assessment of the owner do not form a part of the above cost. Transfer of ownership of the title is possible only after the completion of the entire 100% payment for construction as per stage payments. Failure to adhere to the payment terms or any other terms will lead to cancellation of allotment. In such an event the Allottee shall be entitled only for refund of the advance amount after deduction of cancellation charges and the Allottee shall not be entitled for specific performance of this allotment/understanding. 
+    </p>
+    <p style="padding-left:30px; font-size:10.7px; margin-bottom: 4px;">
+        <strong>Agreement:</strong>    
+    </p>
+    <p style="padding-left:15px; font-size:10.7px; margin-top: 0;">
+        Upon receipt 10% of the total cost, we will enter into a Stamped Agreement for Sale of the Flat with you. This agreement will give in detail the various obligations that you and we will have to fulfil to enable the smooth and satisfactory construction and completion of your flat/project. It will also contain the standard features of the complex and your flat. Please note that at any point of time, no additional amenities/facilities shall be provided over and above what is stated in the Agreements. In other words, as far as specifications/amenities are concernd, the Agreement to be entered shall be final and binding between both parties. 
+        
+    </p>
+    <p style="padding-left:15px; font-size:10.7px;">
+        The Allottee/Purchaser understands that the Promoter shall be entitled to allot Private Open terrace /private gardens as the case may be for the use of the Allottee/ Purchases. It is further agreed that the rights to use the exclusive private Terrace would run co-terminus with the rights of ownership of the apartment allotted. It is agreed that the Purchase shall have exclusive usage right over the private Terrace area allotted to them." The other Allotters shall have no objection in this regard. 
+        
+    </p>
+    
+    <p style="padding-left:30px; font-size:10.7px; margin-bottom: 4px;">
+        <strong>Payment Schedule: </strong>   
+    </p>
+    <p style="padding-left:15px; font-size:10.7px; margin-top: 0;">
+        The payment Schedule committed by you for this has been detailed in the cash flow chart. The scheduled completion of your flat will be considerably facilitated if your payments are made in conformity with these commitments. If you are depending on your employer and/ or other funding agency to release funds for your flat, please make sure that these payments are remitted as per the schedule, irrespective of our sending intimation letters regarding stage completion. GST is extra applicable. For payment made through cheques /Demand Drafts, the date of realisation of the cheque at our end will be treated as a payment and necessary bank charges will be deducted in case of outstation cheques. Please make sure that these payments are remitted as per the schedule. Payments received beyond 7 days after the stages of construction will attract interest/ delay charges 18% p/a calculated from the date on which the mile stone is reached. 
+        
+    </p>
+    
+    <p style="padding-left:30px; font-size:10.7px; margin-bottom: 4px;">
+        <strong>Delivery Schedule: </strong>  
+    </p>
+    <p style="padding-left:15px; font-size:10.7px; margin-top: 0;">
+        The completion of the project is expected in all human efforts to be within the committed time schedule more clearly set out in the Agreements proposed to be entered. However, changes to the flat/project completion schedule shall be purely subject to reasons which are beyond our control such as act of God, flood, incessant rain, riots, pandemic, bandhs, strikes, lock-outs. The common amenities shall be made operational only after completion of the whole project. However, the flats shall be made ready and handed over with all basic occupational amenities. 
+        
+    </p>
+    
+    <p style="padding-left:30px; font-size:10.7px; margin-bottom: 4px;">
+        <strong>Product Quality:</strong>   
+    </p>
+    <p style="padding-left:15px; font-size:10.7px; margin-top: 0;">
+        We will strive to give you a home of the highest quality possible for you comfortable living. However, while assessing the completed flat/project please keep in mind that construction is a highly labour intensive activity and involves the use of a variety of raw materials and finished goods. In the case of materials like ceramic tiles, granite, sanitary ware etc., the quality committed by the manufacturer decides the final quality of the flat irrespective of the intensity of the involvement or the meticulousness of the workmen. 
+    </p>
+    
+    <p style="padding-left:30px; font-size:10.7px; margin-bottom: 4px;">
+        <strong>Allotment of Open/Covered Car parking:</strong>   
+    </p>
+    <p style="padding-left:15px; font-size:10.7px; margin-top: 0;">
+        We shall be entitled to allot covered /open car park as the case may be for the use of the Allottees. If so allotted, the right to use the exclusive car park would run co-terminus with the rights of ownership of the relevant apartment. 
+        
+    </p>
+    
+    <p style="padding-left:30px; font-size:10.7px; margin-bottom: 4px;">
+        <strong>Water Available: </strong>  
+    </p>
+    <p style="padding-left:15px; font-size:10.7px; margin-top: 0;">
+        The Allottee/Purchaser acknowledges that the Promoter will not provide or establish any water sources, such as wells or borewells within the project, as the groundwater at the site is not fit for domestic use. The Purchaser, along with other co-owners or the Flat Owners' Association, agrees to independently arrange for water supply by either creating a water source or purchasing water through tanker services at their own expenses. Further, the Purchaser understands that the price of the apartment has been determined with this situation taken into consideration and proceeds with the purchase of the flat with full knowledge of these facts. 
+        
+    </p>
+    
+    <p style="padding-left:30px; font-size:10.7px; margin-bottom: 4px;">
+        <strong>Maintenance &amp; Corpus Fund:</strong>   
+    </p>
+    <p style="padding-left:15px; font-size:10.7px; margin-top: 0;">
+        We shall maintain the complex for certain initial period as explained to you and mentioned over-leaf. The scope of maintenance is enclosed herewith for your complete understanding. We shall be entitled to appoint any third party agency to carry out maintenance activities for which you shall not object till completion of maintenance tenure. Further to the cost paid towards maintenance, we shall be collecting from you a necessary sum at the time of the handover of the keys to your flat towards corpus fund. This sum will be passed on to the office bearers of the association who are invariably elected on completion of our maintenance period without interest. Even during our maintenance tenure, this corpus fund shall be utilized for any major repairs/AMC of lifts and other equipment or any other capital expenditure. Please understand the cost of the apartment is fixed only after taking all these parameters into account and hence no other request other than what is stated hereof shall be entertained at any cost. 
+        
+    </p>
+    
+    <p style="padding-left:30px; font-size:10.7px; margin-bottom: 4px;">
+        <strong>Cancellation/Transfer: </strong>   
+    </p>
+    <p style="padding-left:15px; font-size:10.7px; margin-top: 0;">
+        It is gratifying to record that most Allottees in our projects have stayed with us till the completion of their respective projects. Occasionally, however Allottees have had to withdraw from the project prior to completion either because (i) they had not planned the mobilization of their funds carefully enough (ii) they had not familiarized themselves with the rules governing their employer's housing loans or provident fund loans which they would have counted upon or (iii) for any other reason. The consequences of such withdrawal, as explained above can cause inconvenience not only to us but also to the allottee who withdraws and other flat owners as well. In spite of careful planning if you have to withdraw or flat Transfer from the project, you have to forfeit a sum of Rs. 20,000- minimum from the advance that you have already paid. If the withdrawal from the project is made after the signing of the agreement of registration, an additional sum as decided by us will be deducted towards stamp duty, registration, documentation and service charges. After signing the agreement, transfer request shall not be entertained under any circumstances. Allottee shall not be entitled to claim refund till the apartment is reallotted/sold to a prospective purchaser. 
+        
+    </p>
+    <p style="padding-left:15px; font-size:10.7px; margin-top: -10px;">
+        I/We have gone through the above terms &amp; conditions very carefully and understood the contents and meaning thereof. I/We agree to the above terms and conditions and affixed our signature at my/our free will &amp; volition. 
+ 
+    </p>
+     <div style="float:right">
+        <div style="text-align:center;align-items:center; font-size:12px; padding-right:50px; padding-top:2px;">
+            <img src="{!signatureUrl}" style="height: 30px;" />
+            <p style="padding-top:2px;font-size:15px;">
+                <strong>APPLICANT SIGNATURE</strong>
+            </p>
+        </div>
+         
+    </div>
+    <div style="page-break-after: always;"></div>
+    <div style="background-color:#005AA3; width:100%; height:30px; padding:0px; font-size:25px; font-weight:bold; color:#ffffff; text-align:center; margin: 0; display: flex; justify-content: center; align-items: center; ">
+        
+        <strong>APPLICANT DETAILS </strong>
+    </div>
+    
+    
+    
+    <div  style="padding-left: 24px; padding-top:30px; line-height:2.5; font-size:14px;">
+        <div class="photo-container" style="margin-right:10px; margin-top:-15px">
+            <apex:outputPanel rendered="{!NOT(ISNULL(applicantPhotoUrl))}">
+                <apex:image url="{!applicantPhotoUrl}" styleClass="photo-stamp-box-img" title="Applicant Photo"/>
+            </apex:outputPanel>
+            
+            <apex:outputPanel rendered="{!ISNULL(applicantPhotoUrl)}">
+                <span class="photo-stamp-text">
+                    Please affix<br/>
+                    passport size<br/>
+                    photo of the<br/>
+                    applicant
+                </span>
+            </apex:outputPanel>
+        </div>
+        <span><strong>Name of the Applicant</strong></span>
+        <span style="display:inline-block; border-bottom:1px dotted #000; width:260px; margin-left:5px;padding:0; margin=0; text-align:center">{!booking.salutation_Applicant1__c} {!booking.First_Applicant_Name__c}</span>
+        <br/>
+        <span><strong>Date of Birth</strong></span>
+        <span style="display:inline-block; border-bottom:1.5px dotted #000; width:150px; margin-left:5px; text-align:center"><apex:outputText value="{0, Date, dd'-'MM'-'yyyy}"><apex:param value="{!booking.Date_of_Birth1__c}"/></apex:outputText></span>&nbsp;<strong>Age</strong>&nbsp;<span style="display:inline-block; border-bottom:1px dotted #000; width:100px; margin-left:5px;"><apex:outputText value="{0,number,0}"><apex:param value="{!booking.Age__c}"/></apex:outputText> </span><br/>
+        <div style="padding-bottom:5px"></div>
+        
+        
+        <strong>Sex:</strong><span style="padding-left:20px"/><span style="font-family: DejaVu Sans, Arial Unicode MS, sans-serif; 
+                     color: {!IF(booking.Gender__c == 'Male', 'green', 'lightgray')};">
+            {!IF(booking.Gender__c == 'Male', '[✓]', '☐')}
+        </span>
+        &nbsp;&nbsp;<strong>Male</strong>
+        
+        <span style="padding-left:20px;"/>
+        <span style="font-family: DejaVu Sans, Arial Unicode MS, sans-serif;
+                     color: {!IF(booking.Gender__c == 'Female', 'green', 'lightgray')};">
+            {!IF(booking.Gender__c == 'Female', '[✓]', '☐')}
+        </span>
+        &nbsp;<strong>Female</strong>
+        
+        <span style="padding-left:20px"/>
+       <strong>Marital Status:</strong> <span style="padding-left:20px"/> <span style="font-family: DejaVu Sans, Arial Unicode MS, sans-serif; 
+                     color: {!IF(booking.Marital_Status__c == 'Married', 'green', 'lightgray')};">
+            {!IF(booking.Marital_Status__c == 'Married', '[✓]', '☐')}
+        </span>
+        &nbsp;&nbsp;<strong>Married</strong>
+        
+        <span style="padding-left:20px"/> <span style="font-family: DejaVu Sans, Arial Unicode MS, sans-serif;
+                     color: {!IF(booking.Marital_Status__c == 'Single', 'green', 'lightgray')};">
+            {!IF(booking.Marital_Status__c == 'Single', '[✓]', '☐')}
+        </span>
+        &nbsp;<strong>Single</strong>
+        <div style="padding-top:5px"></div>
+        
+        <span><strong>Anniversary Date</strong></span>
+        <span style="display:inline-block; border-bottom:1px dotted #000; width:250px; margin-left:5px; text-align:center"><apex:outputText value="{0, date, dd'-'MM'-'yyyy}"><apex:param value="{!booking.Anniverssary_Date__c}"/></apex:outputText></span>
+    
+    
+    <div style="padding:0 px; padding-top:10px; line-height:2.5; font-size:14px;">
+        <span><strong>Phone No.:</strong></span>
+        <span style="display:inline-block; border-bottom:1px dotted #000; width:250px; margin-left:5px; text-align:center">{!booking.Mobile_Primary1__c}</span>&nbsp;Alternative Ph.No.:&nbsp;<span style="display:inline-block; border-bottom:1px dotted #000; width:150px; margin-left:5px; text-align:center">{!booking.Mobile_Alternate1__c}</span>
+        <br/>
+        <span><strong>Email ID.:</strong></span>
+        <span style="display:inline-block; border-bottom:1px dotted #000; width:250px; margin-left:5px; text-align:center"> {!booking.Email1__c}</span>&nbsp;Alternative Email ID.:&nbsp;<span style="display:inline-block; border-bottom:1px dotted #000; width:150px; margin-left:5px; text-align:center">{!booking.Alternate_Email1__c}</span>
+        <br/>
+        <div style="padding-bottom:5px"></div>
+        
+
+        
+        <strong>Profession:</strong><span style="padding-left:20px"/><span style="font-family: DejaVu Sans, Arial Unicode MS, sans-serif; 
+                     color: {!IF(booking.Profession1__c == 'Salaried', 'green', 'lightgray')};">
+            {!IF(booking.Profession1__c == 'Salaried', '[✓]', '☐')}
+        </span>
+        &nbsp;&nbsp;<strong>Salaried</strong>
+        <span style="padding-left:20px"/>
+         <span style="font-family: DejaVu Sans, Arial Unicode MS, sans-serif;
+                     color: {!IF(booking.Profession1__c == 'Self Employed', 'green', 'lightgray')};">
+            {!IF(booking.Profession1__c == 'Self Employed', '[✓]', '☐')}
+        </span>
+        &nbsp;&nbsp;<strong>Self Employed</strong>
+        <span style="padding-left:30px"/>
+        <span style="font-family: DejaVu Sans, Arial Unicode MS, sans-serif;
+                     color: {!IF(booking.Profession1__c == 'Other', 'green', 'lightgray')};">
+            {!IF(booking.Profession1__c == 'Other', '[✓]', '☐')}
+        </span>
+        &nbsp;<strong>Other</strong>(Please specify)<br/>
+        
+        <div style="padding-top:5px"></div>
+      
+  <!-----     <span><strong>Correspondence Address.:</strong></span>
+<span style="display: inline-block; border-bottom: 1px dotted #000; line-height: 1.5em; width: auto; margin-left: 5px;">
+    {!LEFT(booking.Communication_address1__c, 80)}
+</span>
+<br/>
+<div style="border-bottom: 1px dotted #000; line-height: 1.5em; width: 600px; margin-left: 15px;">
+    {!MID(booking.Communication_address1__c,81, 100)}
+</div>--->
+        <span><strong>Correspondence Address.:</strong></span>
+        <span style="display:inline-block; border-bottom:1px dotted #000; width:500px; margin-left:5px;"> {!booking.Communication_address1__c}</span><br/>   
+        <!---<span style="display:inline-block; border-bottom:1px dotted #000; width:650px; margin-left:5px;"></span><br/>--->
+        <span><strong>Permanent Address.:</strong></span>
+        <span style="display:inline-block; border-bottom:1px dotted #000; width:520px; margin-left:5px;">{!booking.Permanent_Address1__c}</span><br/>   
+    </div>
+        </div>
+    <div style="padding-top:10px; padding-right:20px; padding-left:10px; margin:0;" >
+        
+        <div style= "padding-left:15px; font-size: 12.5px;">
+            <table width="100%" style="border-collapse: collapse; border: 1px solid #000;  line-height:3 ">
+                <thead>
+                    <tr>
+                        <td colspan="6" style="border: 1px solid #000; text-align:center; line-height:1.5"> <strong>PARTICULARS OF APPLICANT/(4) FROM DOCUMENTATION PURPOSE TO BE INCORPORATED IN<br/> 
+                            THE SALE DEED AND SALE AGREEMENT </strong></td>
+                    </tr>
+                    <tr style="vertical-align:top; line-height:1.5">
+                        <th style="border: 1px solid #000; text-align:center; width:8%; text align:center">Sl No.</th>
+                        <th style="border: 1px solid #000; text-align:center; width:31%;">Full Name (As per the Aadhar Card)</th>
+                        <th style="border: 1px solid #000; text-align:center; width:10%">Age</th>
+                        <th style="border: 1px solid #000; text-align:center; width:21%">Name of the Father<br/>/Husband/Guardian</th>
+                        <th style="border: 1px solid #000; text-align:center; width:15%">Aadhar Card No.</th>
+                        <th style="border: 1px solid #000; text-align:center; width:15%">PAN No.</th> 
+                    </tr>
+                </thead>
+                <tr>
+                    <th style="border: 1px solid #000; text-align:center;">1</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[0].fullName}</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[0].age}</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[0].relation}</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[0].aadhar}</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[0].pan}</th> 
+                </tr>
+                <tr>
+                    <th style="border: 1px solid #000; text-align:center;">2</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[1].fullName}</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[1].age}</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[1].relation}</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[1].aadhar}</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[1].pan}</th> 
+                </tr>
+                <tr>
+                    <th style="border: 1px solid #000; text-align:center;">3</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[2].fullName}</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[2].age}</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[2].relation}</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[2].aadhar}</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[2].pan}</th> 
+                </tr>
+                <tr>
+                    <th style="border: 1px solid #000; text-align:center;">4</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[3].fullName}</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[3].age}</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[3].relation}</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[3].aadhar}</th>
+                    <th style="border: 1px solid #000; text-align:center;">{!coApplicants[3].pan}</th> 
+                </tr>
+            </table>
+        </div>
+        
+        
+        <hr style="border: 1px solid #000; margin-left:15px"/>
+        
+        <span style="padding-left:40px"><strong>ADDRESS FOR REGISTRATION</strong></span> <span style="padding-left: 170px;"><strong>OCCUPATION DETAILS</strong></span>
+        <hr style="border: 1px solid #000; margin-left:15px "/>
+        <div style="padding-top:10px; "></div>
+        
+        <div style="font-size:12px; padding-left:15px; line-height:2">
+            <tr>
+                
+                <td width="60%"><span style="font-family: DejaVu Sans, Arial Unicode MS, sans-serif; 
+                     color: {!IF(booking.Address_for_Registration__c == 'Same as Correspondence Address', 'green', 'lightgray')};">
+            {!IF(booking.Address_for_Registration__c == 'Same as Correspondence Address', '[✓]', '☐')}
+        </span>
+        &nbsp;&nbsp;<strong>Same As Correspondence Address</strong></td>
+                <td width="40%; "> <strong>Company Name</strong> <span style="display:inline-block; border-bottom:1px dotted #000; width:180px;text-align:center">{!booking.Name_of_Company1__c}</span></td>
+            </tr>
+            
+            <tr>
+                
+                <td width="60%"> <span style="font-family: DejaVu Sans, Arial Unicode MS, sans-serif;
+                     color: {!IF(booking.Address_for_Registration__c == 'Same as Permanent Address', 'green', 'lightgray')};">
+            {!IF(booking.Address_for_Registration__c == 'Same as Permanent Address', '[✓]', '☐')}
+        </span>
+        &nbsp;&nbsp;<strong>Same As Permanent Address</strong></td>
+                <td width="40%; "><strong>Job Designation</strong>  <span style="display:inline-block; border-bottom:1px dotted #000; width:180px; text-align:center">{!booking.Designation1__c}</span></td>
+            </tr>
+            <tr>
+                
+                <td width="60%"><strong>Have you applied to any bank for Home Loan:</strong></td>
+                <td width="40%; "><strong>Company Address</strong> <span style="display:inline-block; border-bottom:1px dotted #000; width:170px;text-align:right">{!booking.Company_Address__c}</span></td>
+            </tr>
+            <tr>
+                
+                <td width="60%"><span style="font-family: DejaVu Sans, Arial Unicode MS, sans-serif; 
+                     color: {!IF(booking.Applied_to_any_Bank__c == 'Yes', 'green', 'lightgray')};">
+            {!IF(booking.Applied_to_any_Bank__c == 'Yes', '[✓]', '☐')}
+        </span>
+        &nbsp;&nbsp;<strong>Yes</strong>
+                <span style="font-family: DejaVu Sans, Arial Unicode MS, sans-serif;
+                     color: {!IF(booking.Applied_to_any_Bank__c == 'No', 'green', 'lightgray')};">
+            {!IF(booking.Applied_to_any_Bank__c == 'No', '[✓]', '☐')}
+        </span>
+        &nbsp;&nbsp;<strong>No</strong>
+                </td>
+                <td width="40%; "> <span style="display:inline-block; border-bottom:1px dotted #000; width:270px;text-align:right"></span></td>
+            </tr>  
+            <tr>
+                
+                <td width="60%"><strong>If No, please share your preferred bank&nbsp;</strong><span style="display:inline-block; border-bottom:1px dotted #000; width:120px;">{!booking.Bank__c}</span></td>
+                <td width="40%; "></td>
+            </tr> 
+            <div style="padding-top:10px"></div>
+            
+        </div>
+        
+        <div style=" margin-left:15px">
+            <hr style="border: 1px solid #000; "/>
+            <p style="font-size:12px">
+                <strong>I/We have gone through the terms and conditions and I / we undertake to abide by the same, we also hereby acknowledge the receipt of this and am/are aware of the features provided in my/our flat and project. 
+                </strong>
+            </p>
+            <div style="padding-top:20px"></div>
+                
+            
+            
+            <tr style="font-size:13px">
+                <td width="25%" style="text-align:left"><strong>SALES EXECUTIVE </strong></td>
+                <td width="65%" style="text-align:center"><strong>MANAGER </strong></td>
+                <td width="10%" style="text-align:right"><strong>APPLICANT/(S) </strong></td>
+                
+                
+            </tr>
+        </div>
+        
+        
+        
+    </div>
+    
+    
+    <div style="page-break-after: always;"></div>
+    
+     <div style="background-color:#005AA3;  height:30px; padding:0px; font-size:25px; font-weight:bold; color:#ffffff; text-align:center; margin: 0; align-items: center; ">
+        
+         <strong>SCOPE OF MAINTENANCE SERVICES </strong>
+    </div>
+        
+       
+    
+    <p style="text-align:left; font-size:13px; padding-left:20px "><strong>A) </strong>   <span style="padding-left:20px"><strong>HOUSE KEEPING</strong> </span>
+        
+    </p>
+    <table width="80%" style="border-collapse: collapse; border: 1px solid #000; font-size: 11.5px; margin-left:50px">
+        <thead>
+            <tr>
+                <th style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px; text-align:center">S No.</th>
+                <th style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px; text-align:center">Description</th>
+                <th style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px; text-align:center">Duration</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="border: 1px solid #000; padding:2px; text-align:center">1</td>
+                <td style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px;">Sweeping of road and club house</td>
+                <td style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px;">Daily</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #000; padding:2px; text-align:center">2</td>
+                <td style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px;">Collection of garbage </td>
+                <td style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px;">Daily</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #000; padding:2px; text-align:center">3</td>
+                <td style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px;">Cleaning of security cabins </td>
+                <td style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px;">Daily</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #000; padding:2px; text-align:center">4</td>
+                <td style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px;">Cleaning of all common toilets </td>
+                <td style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px;">Daily</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #000; padding:2px; text-align:center">5</td>
+                <td style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px;">Mopping of lobby </td>
+                <td style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px;">Daily</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #000; padding:2px; text-align:center">6</td>
+                <td style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px;">Cob web removing </td>
+                <td style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px;">Monthly once</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #000; padding:2px; text-align:center">7</td>
+                <td style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px;">Terrace cleaning </td>
+                <td style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px;">Monthly once</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #000; padding:2px; text-align:center">8</td>
+                <td style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px;">Tank and sump cleaning </td>
+                <td style="border: 1px solid #000; padding-left: 15px; padding-top:2px; padding-bottom:5px;">Once in 6 months</td>
+            </tr>
+            
+        </tbody>
+    </table>
+    <!-- Section B - PLUMBING -->
+    <p style="text-align:left; font-size:12px; padding-left:20px; margin-bottom:0;">
+        <strong>B)</strong> <strong style="margin-left:15px;">PLUMBING:</strong>
+    </p>
+    
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">a) <span style="text-align:left; font-size:10px; padding-left:20px;" >Checking motor and pumps running condition</span></p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">b) <span style="text-align:left; font-size:10px; padding-left:20px;" >Filling water in all water tanks and sumps</span></p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">c) <span style="text-align:left; font-size:10px; padding-left:20px;" >Checking plumbing lines</span></p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">d) <span style="text-align:left; font-size:10px; padding-left:20px;" >All motor and pump maintenance</span></p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">e) <span style="text-align:left; font-size:10px; padding-left:20px;" >Common area water supply line checking</span></p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">f) <span style="text-align:left; font-size:10px; padding-left:20px;" >Sewage line checking</span></p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">g) <span style="text-align:left; font-size:10px; padding-left:20px;" >Periodic check plumbing assets</span></p>
+    
+    
+    <p style="text-align:left; font-size:12px; padding-left:20px; margin-top:10px; margin-bottom:0;">
+        <strong>C)</strong> <strong style="margin-left:15px;">ELECTRICAL:</strong>
+    </p>
+    
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">a) <span style="text-align:left; font-size:10px; padding-left:20px;" >Lighting switch off and on schedules</span></p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">b) <span style="text-align:left; font-size:10px; padding-left:20px;" >Checking all common area lighting</span></p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">c) <span style="text-align:left; font-size:10px; padding-left:20px;" >Meter panel checking</span></p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">d) <span style="text-align:left; font-size:10px; padding-left:20px;" >DG operation</span></p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">e) <span style="text-align:left; font-size:10px; padding-left:20px;" >Periodic checking of electrical assets</span></p>
+    
+    <p style="text-align:left; font-size:12px; padding-left:20px; margin-top:10px; margin-bottom:0;">
+        <strong>D)</strong> <strong style="margin-left:15px;">GARDENING: :</strong>
+    </p>
+    
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">a) <span style="text-align:left; font-size:10px; padding-left:20px;" >Daily watering of all plants </span></p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">b) <span style="text-align:left; font-size:10px; padding-left:20px;" >Monthly trimming </span></p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">c) <span style="text-align:left; font-size:10px; padding-left:20px;" >Monthly loosening the soil </span></p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">d) <span style="text-align:left; font-size:10px; padding-left:20px;" >Maneuvering and adding fertilizers as and when necessary</span> </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">e) <span style="text-align:left; font-size:10px; padding-left:20px;" >Periodical pesticide spray treatment </span></p>
+    
+    
+    
+    
+    
+    <p style="text-align:left; font-size:12px; padding-left:20px; margin-top:10px; margin-bottom:0;">
+        <strong>F)</strong> <strong style="margin-left:15px;">SECURITY SERVICE:  </strong>
+    </p>
+    
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">a) <span style="text-align:left; font-size:10px; padding-left:20px;" >To monitor the vehicle movement </span> </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">b) <span style="text-align:left; font-size:10px; padding-left:20px;" >To monitor material movement </span></p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">c) <span style="text-align:left; font-size:10px; padding-left:20px;" >Maintaining visitor's pass</span>  </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">d) <span style="text-align:left; font-size:10px; padding-left:20px;" >Having a check on the unknown visitors </span> </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">e) <span style="text-align:left; font-size:10px; padding-left:20px;" >Patrolling </span> </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">f) <span style="text-align:left; font-size:10px; padding-left:20px;" >Regular checks during the night   </span></p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">g) <span style="text-align:left; font-size:10px; padding-left:20px;" >Monitoring on the service providers - Drivers and others </span> </p>
+    
+    <p style="text-align:left; font-size:12px; padding-left:20px; margin-top:10px; margin-bottom:0;">
+        <strong>E)</strong> <strong style="margin-left:15px;">Other maintenance scopes:
+        </strong>
+    </p>
+    
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">a) <span style="text-align:left; font-size:10px; padding-left:20px;" >Lift AMC and spare changing </span>  </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">b) <span style="text-align:left; font-size:10px; padding-left:20px;" >DG AMC, oil service and spare change </span> </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">c) <span style="text-align:left; font-size:10px; padding-left:20px;" >STP operation and maintenance  </span> </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">d) <span style="text-align:left; font-size:10px; padding-left:20px;" >Fused light changing  </span> </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">e) <span style="text-align:left; font-size:10px; padding-left:20px;" >Plumbing fittings change  </span> </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">f) <span style="text-align:left; font-size:10px; padding-left:20px;" >Club house maintenance   </span> </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">g) <span style="text-align:left; font-size:10px; padding-left:20px;" >Fire equipment maintenance and fire extinguisher refilling</span>  </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">h) <span style="text-align:left; font-size:10px; padding-left:20px;" >Common amenities maintenance   </span>  </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">i) <span style="text-align:left; font-size:10px; padding-left:20px;" >CCTV maintenance  </span>   </p>
+    
+    <p style="text-align:left; font-size:12px; padding-left:20px; margin:2px 0;">
+        <strong>TERMS</strong> 
+        
+    </p>
+    
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">a) <span style="text-align:left; font-size:10px; padding-left:20px;" >All activities mentioned above is only for the existing common area maintenance only not inside the flat.  </span> </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">b) <span style="text-align:left; font-size:10px; padding-left:20px;" >Any other activities beyond the scope of the agreement shall be estimated with 10% overheads &amp; charged as per actuals.  </span> </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">c) <span style="text-align:left; font-size:10px; padding-left:20px;" >The cost incurred for the purchase of water is not in the scope of this agreement. It will be organized by the Service Provider as per actual cost.   </span> </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">d) <span style="text-align:left; font-size:10px; padding-left:20px;" >The cost incurred in bailing out sewage shall be that of the Association. However, all necessary assistance shall be provided by the service provider.  </span> </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">e) <span style="text-align:left; font-size:10px; padding-left:20px;" >Replacement of dead plants or fixing new plants will not be under the scope of service provider.    </span></p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">f) <span style="text-align:left; font-size:10px; padding-left:20px;" >In case of scaffoldings are required it will be charged as per actual    </span></p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">g) <span style="text-align:left; font-size:10px; padding-left:20px;" >Electrical / Plumbing equipment &amp; fitting replacement if damaged or not serviceable, is not in the scope of this agreement. </span>  </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">h) <span style="text-align:left; font-size:10px; padding-left:20px;" >All cleaning mentioned above is applicable for accessible areas only.    </span> </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">i) <span style="text-align:left; font-size:10px; padding-left:20px;" >Common electricity bill will be paid up to limit of Rs. 1.2 lac per month only. Diesel limit shall be up to Rs. 25,000/- per month only.</span>  </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">j) <span style="text-align:left; font-size:10px; padding-left:20px;" > Civil works not covered in the scope</span>  </p>    
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">k) <span style="text-align:left; font-size:10px; padding-left:20px;" >Any government tax or any other payment not under the scope   </span> </p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">l) <span style="text-align:left; font-size:10px; padding-left:20px;" >Any Asset replacement is not in scope of the service provider.    </span></p>
+    <p style="text-align:left; font-size:10px; padding-left:20px; margin:2px 0;">m) <span style="text-align:left; font-size:10px; padding-left:20px;" >Any damage happened due to natural calamities is not in scope of the service provider.    </span></p>
+    
+    
+    
+</apex:page>

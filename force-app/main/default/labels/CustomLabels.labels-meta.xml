@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>BookingTriggerActive</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>BookingTriggerActive</shortDescription>
+        <value>True</value>
+    </labels>
+    <labels>
+        <fullName>Md_Profile</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Md_Profile</shortDescription>
+        <value>System Administrator</value>
+    </labels>
+    <labels>
+        <fullName>NewCallRouteNumber</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>NewCallRouteNumber</shortDescription>
+        <value>6381986369</value>
+    </labels>
+    <labels>
+        <fullName>Org_url</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Org url</shortDescription>
+        <value>https://jainhousing--sbox1.sandbox.my.salesforce-sites.com</value>
+    </labels>
+    <labels>
+        <fullName>Promptbulksms_API_Key</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Promptbulksms API Key</shortDescription>
+        <value>9d5c9065361cd05cf0d83dbb19410ebd</value>
+    </labels>
+    <labels>
+        <fullName>Promptbulksms_Base_URL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Promptbulksms Base URL</shortDescription>
+        <value>https://sms.promptbulksms.com/api/smsapi</value>
+    </labels>
+    <labels>
+        <fullName>Promptbulksms_Sender_ID</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Promptbulksms Sender ID</shortDescription>
+        <value>JAINHS</value>
+    </labels>
+    <labels>
+        <fullName>Public_Holidays</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Public_Holidays</shortDescription>
+        <value>2025-01-26,2025-02-26,2025-03-14,2025-03-31,2025-04-10,2025-04-18,2025-05-12,2025-06-07,2025-07-06,2025-08-15,2025-08-27,2025-09-05,2025-10-02,2025-10-20,2025-11-05,2025-12-25</value>
+    </labels>
+    <labels>
+        <fullName>System_Administrator_ID</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>System Administrator ID</shortDescription>
+        <value>005fI000000yFk9QAE</value>
+    </labels>
+    <labels>
+        <fullName>Tally_Auth_Key</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Tally_Auth_Key</shortDescription>
+        <value>awd74a6w4da132d4a8w4d5ad</value>
+    </labels>
+    <labels>
+        <fullName>UPI_ID</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>UPI ID</shortDescription>
+        <value>JainHousing@ybl</value>
+    </labels>
+    <labels>
+        <fullName>WhatsApp_API_Key</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WhatsApp API Key</shortDescription>
+        <value>1a9807d2-44f7-11ef-ad4f-92672d2d0c2d</value>
+    </labels>
+    <labels>
+        <fullName>WhatsApp_Base_URL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WhatsApp Base URL</shortDescription>
+        <value>https://wa.adznetworkmedia.ca</value>
+    </labels>
+    <labels>
+        <fullName>WhatsApp_From_Number</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WhatsApp From Number</shortDescription>
+        <value>919092448111</value>
+    </labels>
+</CustomLabels>

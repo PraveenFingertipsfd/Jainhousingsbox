@@ -1,0 +1,8 @@
+@media (max-width: 768px) {
+    .THIS tbody tr td {
+        display: table-cell;
+        width: 50%;
+        box-sizing: border-box;
+        white-space: nowrap;
+    }
+}

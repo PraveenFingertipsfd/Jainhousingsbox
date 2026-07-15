@@ -1,0 +1,136 @@
+<aura:component controller="PSAUnitController" implements="force:hasRecordId,force:lightningQuickActionWithoutHeader,flexipage:availableForAllPageTypes" access="global" >
+    <!-- All your existing attributes remain unchanged -->
+    <aura:attribute name="selectedUnitId" type="string" default=""/>
+    <aura:attribute name="BlockedPrice" type="decimal" />
+    <aura:attribute name="showModal" type="Boolean" default="true"/>
+    <aura:attribute name="showNextComponent" type="Boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <aura:attribute name="AllAvbUnits" type="object[]" default="[]"/>
+    <aura:attribute access="PUBLIC" name="SearchedUnits" type="object[]" default="[]"/>
+    <aura:attribute name="textSearch" type="string" default=""/>
+    <aura:attribute name="IsButtondisable" type="Boolean" default="false"/>
+    
+    <aura:html tag="style">
+        .slds-modal__container{
+        //max-width: 75rem !important;
+        width:100% !important;
+        max-width: 840px;
+        }
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        //padding: 0rem !important;
+        }
+        .slds-modal__content{
+        height:unset !important;
+        max-height:unset !important;
+        }
+        .slds-col{
+        margin-left:5px;
+        }
+        
+        .THIS .slds-combobox_container {
+        position: relative;
+        }
+        .THIS .slds-combobox.slds-is-open .slds-dropdown {
+        position: absolute !important;
+        z-index: 1050 !important;
+        background: white;
+        max-height: 300px; / Limit height so it scrolls internally /
+        overflow-y: auto;
+        width: 100%; / Match input width /
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        / Optional: Improve spacing inside dropdown /
+        .THIS .slds-listbox__item {
+        cursor: pointer;
+        padding: 0.5rem;
+        }
+    </aura:html>
+    
+    <!-- The rest of your component remains EXACTLY the same -->
+    <aura:if isTrue="{!v.showModal}">
+        
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <!--<lightning:buttonIcon iconName="utility:close" onclick="{! c.doCancel }" alternativeText="close" variant="bare-inverse" class="slds-modal__close"/>-->
+                    <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Select Preferred Unit</h1>
+                </header>
+                
+                <div class="slds-modal__content slds-p-around_medium " id="modal-content-id-1">
+                    <lightning:messages />
+                    <p>
+                        
+                        <div class="slds-size_4-of-4 slds-p-horizontal_x-small" style="position: relative;">
+                            <div class="slds-combobox_container">
+                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right">
+                                    <lightning:input iconName="standard:search"
+                                                     label="Unit"
+                                                     type="{!v.recordId != '' ? 'text':'search'}"
+                                                     required="true"
+                                                     value="{!v.textSearch}"
+                                                     placeholder="Search Unit..."
+                                                     aura:id="masterfield"
+                                                     messageWhenValueMissing="Select Unit"
+                                                     onchange="{!c.UnitSearchHandler}"
+                                                     disabled="{!v.selectedUnitId != ''}"/>
+                                    <aura:if isTrue="{!v.selectedUnitId != ''}">
+                                        <div style="position: absolute; right: 0.5rem; top: 2.7rem;">
+                                            <lightning:buttonIcon class="slds-input__icon slds-input__icon_right"
+                                                                  iconName="utility:close"
+                                                                  alternativeText="Clear"
+                                                                  onclick="{!c.clearselectedUnit}"
+                                                                  variant="bare"
+                                                                  />
+                                        </div>
+                                    </aura:if>
+                                </div>
+                                <div class="{!not(empty(v.SearchedUnits)) ? 'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open' : 'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click' }" aura:id="open">
+                                    <div id="listbox-id-1" class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid" role="listbox">
+                                        <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                            <aura:if isTrue="{!v.SearchedUnits}">   
+                                                <aura:iteration items="{!v.SearchedUnits}" var="item">
+                                                    <li role="presentation" class="slds-listbox__item">
+                                                        <div id="option1" class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta" role="option">
+                                                            <span class="slds-media__figure slds-listbox__option-icon">
+                                                                <span class="slds-icon_container slds-icon-standard-account">
+                                                                    <lightning:icon iconName="standard:orders" size="xx-small"/>&nbsp;
+                                                                </span>
+                                                            </span>
+                                                            <span class="slds-media__body">
+                                                                <div class="slds-lookup__result-text" data-id="{!item.Id}" data-name="{!item.Name}"  data-record="{!index}" onclick="{!c.UnitUpdateHandler }">
+                                                                    <span class="slds-listbox__option-text slds-listbox__option-text_entity" style="white-space:normal">{!item.Name}</span>
+                                                                </div>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                </aura:iteration>
+                                                
+                                            </aura:if>     
+                                        </ul>
+                                    </div>  
+                                </div>
+                            </div>    
+                        </div>
+                        
+                        
+                    </p>
+                </div>
+                
+                <!--<c:CreateBooking recordId = "{!v.recordId}"/>-->
+                <footer class="slds-modal__footer" style="text-align:center">
+                    <lightning:button label="Cancel" title="Cancel" onclick="{!c.doCancel }" />
+                    <lightning:button variant="brand" label="Create Cost Sheet" title="Send" onclick="{!c.dosave }" disabled="{!v.IsButtondisable}"/>
+                </footer>
+            </div>
+        </section>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.showNextComponent}">
+        <c:createCostSheetFromBRLWC currentRecId ="{!v.recordId}" preferredUnitId="{!v.selectedUnitId}"  onclose="{!c.handleClose}"/>
+    </aura:if>
+    
+</aura:component>

@@ -1,0 +1,660 @@
+<aura:component controller="BulkApprovalComponent" access="global"
+                implements="flexipage:availableForAllPageTypes,force:appHostable">
+    
+    <!-- Attributes -->
+    <aura:attribute name="selectedObject" type="String" default="All" />
+    <aura:attribute name="approvalRecords" type="List" default="[]" />
+    <aura:attribute name="filteredRecords" type="List" default="[]" />
+    <aura:attribute name="selectedRecords" type="List" default="[]" />
+    <aura:attribute name="isLoading" type="Boolean" default="true" />
+    <aura:attribute name="objectOptions" type="List" default="[]" />
+    <aura:attribute name="selectAll" type="Boolean" default="false" />
+    <aura:attribute name="totalPending" type="Integer" default="0" />
+    <aura:attribute name="totalPendingLabel" type="String" default="Total Pending: 0" />
+    
+    <aura:attribute name="showCommentModal" type="Boolean" default="false"/>
+    <aura:attribute name="selectedAction" type="String" default=""/>
+    <aura:attribute name="selectedRecordIds" type="List" default="[]"/>
+    <aura:attribute name="comments" type="String" default=""/>
+    
+    <aura:attribute name="hideActionColumn" type="Boolean" default="false" />
+    
+    <!-- NEW ATTRIBUTES FOR DETAILED VIEW -->
+    <aura:attribute name="showDetailedView" type="Boolean" default="false" />
+    <aura:attribute name="costSheetDetails" type="Object" default="{}" />
+    <aura:attribute name="paymentSchedules" type="List" default="[]" />
+    
+    <!-- New for Booking -->
+    <aura:attribute name="bookingDetails" type="Object" default="{}" />
+    <aura:attribute name="isBookingView" type="Boolean" default="false" />
+    <aura:attribute name="isCostSheetView" type="Boolean" default="false" />
+ 
+    <aura:attribute name="isMD" type="Boolean" default="false" />
+    <aura:attribute name="modalInfo" type="Map" default="{}"/>
+    <aura:attribute name="cancellationCharges" type="Decimal" default="0"/>
+    
+    <!-- Init -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="change" value="{!v.selectedObject}" action="{!c.handleObjectChange}" />
+    
+    <!-- Styles -->
+    <aura:html tag="style">
+        .custom-header {
+        background: linear-gradient(135deg, #f6f9fc 0%, #eef1f5 100%);
+        border-radius: 8px;
+        padding: 1rem;
+        /*border-left: 4px solid #0176d3; */
+        margin-bottom: -0.5rem;
+        }
+        .action-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 1.rem;
+        }
+        .filter-section {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+        }
+        .object-selector {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        min-width: 300px;
+        }
+        .object-selector-label {
+        font-weight: 600;
+        margin-right: 12px;
+        color: #444;
+        white-space: nowrap;
+        }
+        .pending-badge {
+        background-color: #fff;
+        border: 1px solid #dddbda;
+        border-radius: 20px;
+        padding: 8px 16px;
+        font-weight: 600;
+        color: #2e844a;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .pending-icon {
+        margin-right: 8px;
+        }
+        .custom-table {
+        border-collapse: separate;
+        border-spacing: 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        border-radius: 8px;
+        overflow: hidden;
+        }
+        .custom-table th {
+        background-color: #f3f2f2;
+        padding: 12px 16px;
+        font-weight: 600;
+        }
+        .custom-table td {
+        /*padding: 12px 16px;*/
+        vertical-align: middle;
+        }
+        .custom-table tr:hover td {
+        background-color: #f9f9f9;
+        }
+        @media (max-width: 768px) {
+        .filter-section {
+        flex-direction: column;
+        align-items: stretch;
+        }
+        .object-selector {
+        min-width: 100%;
+        }
+        }
+        
+        /* NEW STYLES FOR DETAILED VIEW */
+        .detailed-view-container {
+        padding: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-top : 1rem;
+        }
+        .cost-sheet-grid {
+        display: flex;
+        grid-template-columns: 1fr 1fr;
+        /*gap: 20px;*/
+        }
+        .cost-sheet-table {
+        width: 100%;
+        border-collapse: collapse;
+        }
+        .cost-sheet-table th, .cost-sheet-table td {
+        padding: 8px 12px;
+        text-align: left;
+        border-bottom: 1px solid #f0f0f0;
+        }
+        .cost-sheet-table th {
+        font-weight: 600;
+        color: #444;
+        width: 40%;
+        }
+        .back-button-container {
+        margin-bottom: 20px;
+        }
+    </aura:html>
+    
+    
+    <!-- Card -->
+    <lightning:card title="Bulk Approval" iconName="standard:approval">
+        <div class="slds-p-around_medium">
+            
+            <!-- Header Section - Redesigned -->
+            <div class="custom-header">
+                
+                <aura:if isTrue="{!!v.showDetailedView}">
+                    
+                    <!-- Filter Section -->
+                    <div class="filter-section">
+                        <!-- Object Selector -->
+                        <div class="object-selector">
+                            <span class="object-selector-label">Approval Type:</span>
+                            <lightning:combobox name="objectPicker"
+                                                value="{!v.selectedObject}"
+                                                placeholder="Choose Object..."
+                                                options="{!v.objectOptions}"
+                                                onchange="{!c.handleObjectChange}"
+                                                class="slds-size_medium" style="margin-top:-15px"/>
+                        </div>
+                        
+                        <!-- Total Pending Badge -->
+                        <div class="pending-badge">
+                            <lightning:icon iconName="utility:approval" size="small" class="pending-icon"/>
+                            {!v.totalPendingLabel}
+                        </div>
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!v.showDetailedView}">
+                    <!-- Back Button for Detailed View -->
+                    <div class="back-button-container" aura:if="{!v.showDetailedView}">
+                        <lightning:button variant="neutral"
+                                          label="Back to List"
+                                          iconName="utility:back"
+                                          onclick="{!c.handleBackToList}"
+                                          class="slds-m-horizontal_x-small" />
+                    </div>    
+                    
+                </aura:if>
+                <br/>
+                <!-- Action Buttons - Centered at Top -->
+                <div class="action-buttons" aura:if="{!not(v.showDetailedView)}">
+                    <lightning:button variant="brand"
+                                      label="Approve Selected"
+                                      iconName="utility:check"
+                                      onclick="{!c.handleApprove}"
+                                      disabled="{!empty(v.selectedRecords)}"
+                                      class="slds-m-horizontal_x-small" />
+                    <lightning:button variant="destructive"
+                                      label="Reject Selected"
+                                      iconName="utility:close"
+                                      onclick="{!c.handleReject}"
+                                      disabled="{!empty(v.selectedRecords)}"
+                                      class="slds-m-horizontal_x-small" />
+                </div>
+                
+                
+                
+            </div>
+            
+            <!-- Loading Spinner -->
+            <aura:if isTrue="{!v.isLoading}">
+                <div class="slds-align_absolute-center slds-m-vertical_large">
+                    <lightning:spinner alternativeText="Loading" size="large" />
+                </div>
+            </aura:if>
+            
+            <!-- Data Table -->
+            <aura:if isTrue="{!and(not(v.isLoading), not(v.showDetailedView))}">
+                <div class="slds-m-top_medium">
+                    <table class="slds-table slds-table_bordered slds-table_cell-buffer custom-table">
+                        <thead>
+                            <tr class="slds-text-title_caps" style="text-align:center;">
+                                <!-- S.No Column -->
+                                <th scope="col" style="width: 5%;">S.No</th>
+                                
+                                <th scope="col" style="width: 5%;">
+                                    <lightning:input type="checkbox"
+                                                     checked="{!v.selectAll}"
+                                                     onchange="{!c.handleSelectAll}" />
+                                </th>
+                                <th scope="col" style="width: 20%;">Approval Type</th>
+                                <th scope="col" style="width: 10%;">Record Name</th>
+                                <th scope="col" style="width: 15%;text-align:center;">Detailed View</th>
+                                <th scope="col" style="width: 15%;">Approval Name</th>
+                                <th scope="col" style="width: 15%;">Status</th>
+                                <th scope="col" style="width: 20%;">Owner</th>
+                                <th scope="col" style="width: 20%;">Submission Date</th>                              
+                                <!--th scope="col" style="width: 10%;text-align:center;">Action</th> -->
+                                <th class="{!'action-col ' + (v.hideActionColumn ? 'hide-col' : '')}" style="text-align:center;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{!v.filteredRecords}" var="record" indexVar="index">
+                                <tr>
+                                    <!-- Serial Number -->
+                                    <td>{!index + 1}</td>
+                                    <td>
+                                        <lightning:input aura:id="recordCheckbox"
+                                                         type="checkbox"
+                                                         value="{!record.Id}"
+                                                         checked="{!record.selected}"
+                                                         onchange="{!c.handleRecordSelection}" />
+                                    </td>
+                                    <td>{!record.ObjectType}</td>
+                                    
+                                    <td>
+                                        <a href="{!'/' + record.Id}" target="_blank">
+                                            {!record.Name}
+                                        </a>
+                                    </td>
+                                    
+                                    <!-- NEW: Detailed View Column -->
+                                    <td style="text-align:center;">
+                                        <aura:if isTrue="{!or(record.ObjectType == 'Cost Sheet', record.ObjectType == 'Booking')}">
+                                            <lightning:button label="View" 
+                                                              variant="base" 
+                                                              onclick="{!c.handleViewDetails}"
+                                                              value="{!record.Id}" 
+                                                              />
+                                        </aura:if>
+                                    </td>
+                                    
+                                    <td>{!record.ApprovalProcessName}</td>
+
+                                    
+                                    <td>
+                                        <span class="{!'slds-badge ' + (record.Status == 'Pending' ? 'slds-theme_warning' : '')}">
+                                            {!record.Status}
+                                        </span>
+                                    </td>
+                                    <td>{!record.OwnerName}</td>
+                                    <td>
+                                        <lightning:formattedDateTime value="{!record.SubmittedDate}"
+                                                                     year="numeric"
+                                                                     month="short"
+                                                                     day="2-digit" />
+                                    </td>
+                                    
+                                    <!-- Action Column Always Visible -->
+                                    
+                                    <td class="{!'action-col ' + (v.hideActionColumn ? 'hide-col' : '')}" style="text-align:center;">
+                                        <!-- Approve Button -->
+                                        <lightning:buttonIcon 
+                                                              iconName="utility:check"
+                                                              alternativeText="Approve"
+                                                              title="Approve"
+                                                              variant="bare"
+                                                              class="approve-btn action-btn"
+                                                              onclick="{!c.handleSingleApprove}"
+                                                              value="{!record.Id}" />
+                                        
+                                        <!-- Reject Button -->
+                                        <lightning:buttonIcon 
+                                                              iconName="utility:close"
+                                                              alternativeText="Reject"
+                                                              title="Reject"
+                                                              variant="bare"
+                                                              class="reject-btn action-btn"
+                                                              onclick="{!c.handleSingleReject}"
+                                                              value="{!record.Id}" />
+                                        
+                                    </td>
+                                    
+                                </tr>
+                            </aura:iteration>
+                        </tbody>
+                    </table>
+                    
+                    
+                    
+                    <aura:if isTrue="{!empty(v.filteredRecords)}">
+                        <div class="slds-align_absolute-center slds-m-vertical_large">
+                            No pending approval records found.
+                        </div>
+                    </aura:if>
+                </div>
+            </aura:if>
+            
+            <!-- Detailed View for Cost Sheet -->
+            <aura:if isTrue="{!v.showDetailedView}">
+                
+                
+                <aura:if isTrue="{!v.isBookingView}">
+                    <div class="booking-view-container">
+                        <h3 class="slds-text-heading_small slds-m-bottom_x-small" style="text-align: center;"><strong>Booking Details</strong></h3>
+                        <div class="booking-grid slds-grid">
+                            
+                            <!-- Block 1: Booking Information -->
+                            <div class="slds-size_1-of-4 slds-p-around_xx-small">
+                                <div class="booking-card slds-box slds-box_x-small">
+                                    <h3 class="slds-text-heading_small slds-m-bottom_x-small">Booking Information</h3>
+                                    <table class="booking-table">
+                                        <tr><th>Booking Id:</th><td>{!v.bookingDetails.Name}</td></tr>
+                                        <tr><th>Owner:</th><td>{!v.bookingDetails.Owner.Name}</td></tr>
+                                        <tr><th>Stage:</th><td>{!v.bookingDetails.Stage__c}</td></tr>
+                                        <tr><th>Project:</th><td>{!v.bookingDetails.Project1__r.Name}</td></tr>
+                                        <tr>
+                                            <th>Booking Date:</th>
+                                            <td>
+                                                <lightning:formattedDateTime value="{!v.bookingDetails.Booking_Date__c}" year="numeric" month="short" day="2-digit" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- Block 2: Unit Details -->
+                            <div class="slds-size_1-of-4 slds-p-around_xx-small">
+                                <div class="booking-card slds-box slds-box_x-small">
+                                    <h3 class="slds-text-heading_small slds-m-bottom_x-small">Unit Details</h3>
+                                    <table class="booking-table">
+                                        <tr><th>Unit:</th><td>{!v.bookingDetails.Plot__r.Name}</td></tr>
+                                        <tr><th>Floor No:</th><td>{!v.bookingDetails.FloorNo__c}</td></tr>
+                                        <tr><th>BHK Type:</th><td>{!v.bookingDetails.Unit_BHK_Type__c}</td></tr>
+                                        <tr><th>Flat No:</th><td>{!v.bookingDetails.Flat_Actual_Number__c}</td></tr>
+                                        <tr><th>Tower:</th><td>{!v.bookingDetails.Tower_Name__c}</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- Block 3: Primary Applicant -->
+                            <div class="slds-size_1-of-4 slds-p-around_xx-small">
+                                <div class="booking-card slds-box slds-box_x-small">
+                                    <h3 class="slds-text-heading_small slds-m-bottom_x-small">Primary Applicant</h3>
+                                    <table class="booking-table">
+                                        <tr><th>Name:</th><td>{!v.bookingDetails.First_Applicant_Name__c}</td></tr>
+                                        <tr><th>Profession:</th><td>{!v.bookingDetails.Profession1__c}</td></tr>
+                                        <tr><th>Mobile:</th><td>{!v.bookingDetails.Mobile_Primary1__c}</td></tr>
+                                        <tr><th>Email:</th><td>{!v.bookingDetails.Email1__c}</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- Block 4: Payment Summary -->
+                            <div class="slds-size_1-of-4 slds-p-around_xx-small">
+                                <div class="booking-card slds-box slds-box_x-small">
+                                    <h3 class="slds-text-heading_small slds-m-bottom_x-small">Payment Summary</h3>
+                                    <table class="booking-table">
+                                        <tr>
+                                            <th>Grand Total:</th>
+                                            <td>₹ <lightning:formattedNumber value="{!v.bookingDetails.Total__c}" maximumFractionDigits="2" /></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Total Received:</th>
+                                            <td>₹ <lightning:formattedNumber value="{!v.bookingDetails.Total_received_Amount__c}" maximumFractionDigits="2" /></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Pending Amount:</th>
+                                            <td>₹ <lightning:formattedNumber value="{!v.bookingDetails.Pending_Amount__c}" maximumFractionDigits="2" /></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <hr></hr>
+                </aura:if>
+
+
+                
+                <!--aura:if isTrue="{!v.isCostSheetView}"> -->
+                    <div class="detailed-view-container">
+                        <h3 class="slds-text-heading_small slds-m-bottom_x-small" style="text-align: center;"><strong>Cost Sheet Details</strong></h3>
+                        <div class="cost-sheet-grid slds-grid">
+                            <!-- Block 1: Basic Information -->
+                            <div class="slds-size_1-of-4 slds-p-around_xx-small">
+                                <div class="detail-card slds-box slds-box_x-small">
+                                    <h3 class="slds-text-heading_small slds-m-bottom_x-small">Basic Information</h3>
+                                    <table class="cost-sheet-table">
+                                        <tr><th>Cost Sheet No:</th><td>{!v.costSheetDetails.Name}</td></tr>
+                                        <tr><th>Project Name:</th><td>{!v.costSheetDetails.Project__r.Name}</td></tr>
+                                        <tr><th>Unit Number:</th><td>{!v.costSheetDetails.Unit__r.Name} - {!v.costSheetDetails.Unit__r.Block1__r.Name}</td></tr>
+                                        <tr><th>Floor:</th><td>{!v.costSheetDetails.Floor__c}</td></tr>
+                                        <tr><th>BHK Type:</th><td>{!v.costSheetDetails.BHK_Type__c}</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- Block 2: Area Details -->
+                            <div class="slds-size_1-of-4 slds-p-around_xx-small">
+                                <div class="detail-card slds-box slds-box_x-small">
+                                    <h3 class="slds-text-heading_small slds-m-bottom_x-small">Area Details</h3>
+                                    <table class="cost-sheet-table">
+                                        <tr><th>Carpet Area:</th><td>{!v.costSheetDetails.Carpet_Area__c != null ? v.costSheetDetails.Carpet_Area__c : 0} sq.ft</td></tr>
+                                        <tr><th>Super Built Up:</th><td>{!v.costSheetDetails.Super_Built_Up_Area__c != null ? v.costSheetDetails.Super_Built_Up_Area__c : 0} sq.ft</td></tr>
+                                        <tr><th>Balcony Area:</th><td>{!v.costSheetDetails.Balcony_Area__c != null ? v.costSheetDetails.Balcony_Area__c : 0} sq.ft</td></tr>
+                                        <tr><th>Open Terrace:</th><td>{!v.costSheetDetails.Open_Terrace_Area__c != null ? v.costSheetDetails.Open_Terrace_Area__c : 0} sq.ft</td></tr>
+                                        <tr><th>Price Per Sq Ft:</th><td>₹ <lightning:formattedNumber value="{!v.costSheetDetails.Final_Price_Per_Sq_ft__c != null ? v.costSheetDetails.Final_Price_Per_Sq_ft__c : 0}" maximumFractionDigits="2" /></td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- Block 3: Cost Breakdown -->
+                            <div class="slds-size_1-of-4 slds-p-around_xx-small">
+                                <div class="detail-card slds-box slds-box_x-small">
+                                    <h3 class="slds-text-heading_small slds-m-bottom_x-small">Cost Breakdown</h3>
+                                    <table class="cost-sheet-table">
+                                        <tr><th>Basic Price:</th><td>₹ <lightning:formattedNumber value="{!v.costSheetDetails.Basic_Price__c != null ? v.costSheetDetails.Basic_Price__c : 0}" maximumFractionDigits="2" /></td></tr>
+                                        <tr><th>Floor Rise:</th><td>₹ <lightning:formattedNumber value="{!v.costSheetDetails.Floor_Rise_Charges__c != null ? v.costSheetDetails.Floor_Rise_Charges__c : 0}" maximumFractionDigits="2" /></td></tr>
+                                        <tr><th>Premium Charges:</th><td>₹ <lightning:formattedNumber value="{!v.costSheetDetails.Premium_Charges__c != null ? v.costSheetDetails.Premium_Charges__c : 0}" maximumFractionDigits="2" /></td></tr>
+                                        <tr><th>Car Parking Charges:</th><td>₹ <lightning:formattedNumber value="{!v.costSheetDetails.Car_Parking_Charges__c != null ? v.costSheetDetails.Car_Parking_Charges__c : 0}" maximumFractionDigits="2" /></td></tr>
+                                        <tr><th>Other Charges:</th><td>₹ <lightning:formattedNumber value="{!v.costSheetDetails.Other_Charges__c != null ? v.costSheetDetails.Other_Charges__c : 0}" maximumFractionDigits="2" /></td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- Block 4: Taxes & Additional -->
+                            <div class="slds-size_1-of-4 slds-p-around_xx-small">
+                                <div class="detail-card slds-box slds-box_x-small">
+                                    <h3 class="slds-text-heading_small slds-m-bottom_x-small">Taxes &amp; Additional</h3>
+                                    <table class="cost-sheet-table">
+                                        <tr><th>GST on Total:</th><td>₹ <lightning:formattedNumber value="{!v.costSheetDetails.GST_Charges_On_Total_Cost__c != null ? v.costSheetDetails.GST_Charges_On_Total_Cost__c : 0}" maximumFractionDigits="2" /></td></tr>
+                                        <tr><th>Corpus Fund:</th><td>₹ <lightning:formattedNumber value="{!v.costSheetDetails.Corpus_Fund__c != null ? v.costSheetDetails.Corpus_Fund__c : 0}" maximumFractionDigits="2" /></td></tr>
+                                        <tr><th>GST on Corpus:</th><td>₹ <lightning:formattedNumber value="{!v.costSheetDetails.GST_for_Corpus_Fund__c != null ? v.costSheetDetails.GST_for_Corpus_Fund__c : 0}" maximumFractionDigits="2" /></td></tr>
+                                        <tr><th>Maintenance:</th><td>₹ <lightning:formattedNumber value="{!v.costSheetDetails.Maintenance_Charges__c != null ? v.costSheetDetails.Maintenance_Charges__c : 0}" maximumFractionDigits="2" /></td></tr>
+                                        <tr><th>GST on Maintenance:</th><td>₹ <lightning:formattedNumber value="{!v.costSheetDetails.GST_for_Maintenance_Charge__c != null ? v.costSheetDetails.GST_for_Maintenance_Charge__c : 0}" maximumFractionDigits="2" /></td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Final Totals (Full Width) -->
+                        <div class="slds-size_1-of-1 slds-p-around_xx-small slds-m-top_x-small">
+                            <div class="totals-card slds-box slds-box_x-small">
+                                <h3 class="slds-text-heading_small slds-m-bottom_x-small" style="text-align: center;">Final Totals</h3>
+                                <div class="slds-grid slds-wrap">
+                                    <div class="slds-size_1-of-3 slds-p-around_xx-small">
+                                        <div class="total-item">
+                                            <span class="total-label">Total Cost</span>
+                                            <span class="total-value">₹ <lightning:formattedNumber value="{!v.costSheetDetails.Total_Cost__c != null ? v.costSheetDetails.Total_Cost__c : 0}" maximumFractionDigits="2" /></span>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3 slds-p-around_xx-small">
+                                        <div class="total-item">
+                                            <span class="total-label">Total Cost with GST</span>
+                                            <span class="total-value">₹ <lightning:formattedNumber value="{!v.costSheetDetails.Total_Cost_Including_GST__c != null ? v.costSheetDetails.Total_Cost_Including_GST__c : 0}" maximumFractionDigits="2" /></span>
+                                        </div>
+                                    </div>
+                                    <div class="slds-size_1-of-3 slds-p-around_xx-small">
+                                        <div class="total-item">
+                                            <span class="total-label">Grand Total</span>
+                                            <span class="total-value grand-total">₹ <lightning:formattedNumber value="{!v.costSheetDetails.Grand_Total__c != null ? v.costSheetDetails.Grand_Total__c : 0}" maximumFractionDigits="2" /></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <!--/aura:if> -->
+                
+                <hr></hr>
+                
+                <!-- Payment Schedules Section -->
+                <div class="slds-size_1-of-1 slds-p-around_xx-small slds-m-top_medium">
+                    <div class="payment-schedule-card slds-box slds-box_x-small">
+                        <div class="payment-schedule-header slds-align_absolute-center slds-m-bottom_small">
+                            <lightning:icon iconName="standard:payment" size="small" class="slds-m-right_x-small header-logo"/>
+                            <h3 class="slds-text-heading_small slds-m-bottom_x-small" style="text-align: center;"><strong>Payment Schedules</strong></h3>
+                            <!--h2 class="payment-schedule-heading slds-text-heading_medium">Payment Schedules</h2> -->
+                        </div>
+                        
+                        <aura:if isTrue="{!not(empty(v.paymentSchedules))}">
+                            <!-- Payment Schedule Table -->
+                            <div class="payment-schedule-table-container">
+                                <table class="payment-schedule-table">
+                                    <thead>
+                                        <tr class="slds-text-title_caps">
+                                            <th scope="col" class="schedule-name">Name</th>
+                                            <aura:if isTrue="{!v.isBookingView}">
+                                                <th scope="col" class="schedule-status">Status</th>
+                                            </aura:if>
+                                            <th scope="col" class="schedule-percentage">Percentage</th>
+                                            <th scope="col" class="schedule-amount">Total Amount</th>
+                                            <aura:if isTrue="{!v.isBookingView}">
+                                                <th scope="col" class="schedule-pamount">Pending Amount</th>
+                                            </aura:if>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <aura:iteration items="{!v.paymentSchedules}" var="schedule">
+                                            <tr>
+                                                <td class="schedule-name">{!schedule.Name}</td>
+                                                <aura:if isTrue="{!v.isBookingView}">
+                                                    <td class="schedule-status">{!schedule.status__c}</td>
+                                                </aura:if>  
+                                                <td class="schedule-percentage">{!schedule.Payment_percent__c}%</td>
+                                                <td class="schedule-amount">₹ <lightning:formattedNumber value="{!schedule.AmountB__c != null ? schedule.AmountB__c : 0}" maximumFractionDigits="2" /></td>
+                                                <aura:if isTrue="{!v.isBookingView}">
+                                                    
+                                                    <td class="schedule-pamount">₹ <lightning:formattedNumber value="{!schedule.Pending_Amount__c!= null ? schedule.Pending_Amount__c : 0}" maximumFractionDigits="2" /></td>
+                                                </aura:if> 
+                                                
+                                                
+                                                
+                                            </tr>
+                                        </aura:iteration>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <aura:set attribute="else">
+                                <!-- No Payment Schedules Found -->
+                                <div class="slds-align_absolute-center slds-p-vertical_large">
+                                    <div class="slds-text-body_regular slds-text-color_weak">
+                                        <lightning:icon iconName="utility:payment" size="small" class="slds-m-right_x-small"/>
+                                        No payment schedules found for this cost sheet.
+                                    </div>
+                                </div>
+                            </aura:set>
+                        </aura:if>
+                    </div>
+                </div>
+                
+                <aura:if isTrue="{!v.isCostSheetView}">
+                    <hr></hr>
+                    <!-- Booking Request Section -->
+                    <div class="booking-request-container slds-m-top_medium">
+                        <h3 class="slds-text-heading_small slds-m-bottom_x-small" style="text-align: center;">
+                            <strong>Booking Request Details</strong>
+                        </h3>
+                        <div class="slds-grid slds-wrap">
+                            <!-- Booking Info Card -->
+                            <div class="slds-size_1-of-2 slds-p-around_xx-small">
+                                <div class="booking-card slds-box slds-box_x-small">
+                                    <h3 class="slds-text-heading_small slds-m-bottom_x-small">Booking Information</h3>
+                                    <table class="booking-table">
+                                        <tr><th>Booking No:</th><td>{!v.costSheetDetails.Booking_Request__r.Name}</td></tr>
+                                        <tr><th>Project Name:</th><td>{!v.costSheetDetails.Project__r.Name}</td></tr>
+                                        <tr><th>Unit Number:</th><td>{!v.costSheetDetails.Unit__r.Name}</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <!-- Customer Info Card -->
+                            <div class="slds-size_1-of-2 slds-p-around_xx-small">
+                                <div class="booking-card slds-box slds-box_x-small">
+                                    <h3 class="slds-text-heading_small slds-m-bottom_x-small">Customer Information</h3>
+                                    <table class="booking-table">
+                                        <tr><th>Customer Name:</th><td>{!v.costSheetDetails.Booking_Request__r.Customer_Name__c}</td></tr>
+                                        <tr><th>Email:</th><td>{!v.costSheetDetails.Booking_Request__r.Email__c}</td></tr>
+                                        <tr><th>Mobile:</th><td>{!v.costSheetDetails.Booking_Request__r.Mobile__c}</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </aura:if>
+                
+            </aura:if>
+            
+            <!-- COMMENTS MODAL -->
+            <aura:if isTrue="{!v.showCommentModal}">
+                <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        
+                        <!-- Header -->
+                        <header class="slds-modal__header">
+                            <h2 class="slds-text-heading_medium">
+                                {!v.selectedAction} Records
+                            </h2>
+                        </header>
+                        
+                        <!-- Body -->
+                        <div class="slds-modal__content slds-p-around_medium">
+                            
+                            <!-- Cancellation Type (for Cancellation Approval - all users) -->
+                            <aura:if isTrue="{!v.modalInfo.approvalProcessName == 'Cancellation Approval'}">
+                                <div class="slds-form-element slds-m-bottom_medium">
+                                    <label class="slds-form-element__label">Cancellation Type</label>
+                                    <div class="slds-form-element__control">
+                                        <span class="slds-input">{!v.modalInfo.cancellationType}</span>
+                                    </div>
+                                </div>
+                            </aura:if>
+                            
+                            <!-- Cancellation Charges (only for MD profile on Cancellation Approval) -->
+                            <aura:if isTrue="{!and(v.modalInfo.approvalProcessName == 'Cancellation Approval', v.isMD)}">
+                                <div class="slds-form-element slds-m-bottom_medium">
+                                    <lightning:input type="number" 
+                                                     label="Cancellation Charges"
+                                                     formatter="currency" 
+                                                     step="0.01" 
+                                                     value="{!v.cancellationCharges}" 
+                                                     name="cancellationCharges"/>
+                                </div>
+                            </aura:if>
+                            
+                            
+                            <lightning:textarea label="Comments"
+                                                value="{!v.comments}"
+                                                required="{!v.selectedAction=='Reject'}"
+                                                placeholder="Enter comments (required for Reject)">
+                            </lightning:textarea>
+                        </div>
+                        
+                        <!-- Footer -->
+                        <footer class="slds-modal__footer" style="text-align:center;">
+                            <lightning:button variant="neutral" label="Cancel" onclick="{!c.handleModalClose}" />
+                            <lightning:button variant="brand" label="Submit" onclick="{!c.handleModalSubmit}" />
+                        </footer>
+                        
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </aura:if>
+            
+        </div>
+    </lightning:card>
+</aura:component>

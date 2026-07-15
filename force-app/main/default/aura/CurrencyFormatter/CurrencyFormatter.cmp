@@ -1,0 +1,13 @@
+<aura:component>
+    <aura:attribute name="value" type="Decimal" />
+    <aura:attribute name="formattedValue" type="String" />
+
+    <!-- Reactively format whenever 'value' changes -->
+    <aura:handler name="change" value="{!v.value}" action="{!c.onValueChange}" />
+    <aura:if isTrue="{!not(empty(v.formattedValue))}">
+        ₹ {!v.formattedValue}
+    <aura:set attribute="else">
+        ₹ 0
+    </aura:set>
+    </aura:if>
+</aura:component>

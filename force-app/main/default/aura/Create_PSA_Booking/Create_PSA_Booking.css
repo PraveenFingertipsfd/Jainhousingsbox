@@ -1,0 +1,8 @@
+.THIS .slds-dropdown-trigger_click.slds-is-open .slds-dropdown,
+.THIS .slds-dropdown-trigger--click.slds-is-open .slds-dropdown {
+    position: absolute !important;
+    z-index: 1050 !important;
+}
+.THIS.forceQuickAction .slds-modal__close {
+    display: none;
+}

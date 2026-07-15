@@ -1,0 +1,414 @@
+<aura:component controller="csrFill_Controller" implements="force:appHostable,lightning:isUrlAddressable,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,lightning:actionOverride,force:lightningquickAction" access="global">
+    <!-- Attributes -->
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="jointInspection" type="Object" />
+    <aura:attribute name="snags" type="Object[]" default="[]" />
+    <aura:attribute name="isChecked" type="Boolean" default="false" />
+    <aura:attribute name="CusComments" type="String" default="" />
+    <aura:attribute name="IsResponded" type="Boolean" default="false" />
+    <aura:attribute name="spinner" type="Boolean" default="false" />
+    <aura:attribute name="signatureData" type="String" />
+    <aura:attribute name="problems" type="List" default="[]"/>
+    
+    <aura:attribute name="currentStep" type="String" default="Step1" />
+    
+    
+    <aura:attribute name="encouragementFactors" type="String" default=""/>
+    <aura:attribute name="desiredImprovements" type="String" default=""/>
+     
+    
+    <aura:attribute name="ratingOptions" type="List" default="[
+        {'label': 'Excellent', 'value': 'Excellent'},
+        {'label': 'Good', 'value': 'Good'},
+        {'label': 'Fair', 'value': 'Fair'},
+        {'label': 'Poor', 'value': 'Poor'}
+    ]"/>
+    
+    
+    <aura:attribute name="feedbackQuestions" type="List" default="[
+    {'label': 'Did the marketing team explain the project well?', 'field': 'FBQ1__c', 'value': ''},
+    {'label': 'How pleasant was your site visit before booking this flat?', 'field': 'FBQ2__c', 'value': ''},
+    {'label': 'After booking, did you receive all the necessary documents on time?', 'field': 'FBQ3__c', 'value': ''},
+    {'label': 'In case of bank loan arrangement, how do you rate our assistance in co-ordinating with Financial institutions', 'field': 'FBQ4__c', 'value': ''},
+    {'label': 'Did our customer care representative detail you with all our process?', 'field': 'FBQ5__c', 'value': ''},
+    {'label': 'Rate the customer care representative process Knowledge.', 'field': 'FBQ6__c', 'value': ''},
+    {'label': 'Rate how often you received communications /response from the Customer care representative', 'field': 'FBQ7__c', 'value': ''},
+    {'label': 'Was our Customer care representative approachable?', 'field': 'FBQ8__c', 'value': ''},
+    {'label': 'Rate the architecture and design of your dream home', 'field': 'FBQ9__c', 'value': ''},
+    {'label': 'How do you rate our quality of construction?', 'field': 'FBQ10__c', 'value': ''},
+    {'label': 'How would you rate the response of our Site Engineer during your site visit?', 'field': 'FBQ11__c', 'value': ''},
+    {'label': 'Did all our staff act in a professional, courteous and helpful manner?', 'field': 'FBQ12__c', 'value': ''},
+    {'label': 'How would you rate the registration experience of your flat?', 'field': 'FBQ13__c', 'value': ''},
+    {'label': 'How would you rate our CRM reperesentatives’s Overall Performance ?', 'field': 'FBQ14__c', 'value': ''}
+]"/>
+    
+<!-- new -->      
+
+    <aura:attribute name="ratingOptions1" type="List" default="[
+        {'label': 'Yes', 'value': 'Yes'},
+        {'label': 'No', 'value': 'No'},
+		]"/>
+    
+  <aura:attribute name="feedbackQuestions1" type="List" default="[
+        {'label': 'Would you utilize the services of Jains again in the future?', 'field': 'FBQ15__c', 'value': ''},
+        {'label': 'Would you recommend Jains to a friend or colleague?', 'field': 'FBQ16__c', 'value': ''},
+        {'label': 'Would you like to have a call from our Senior Respresentative/Management?', 'field': 'FBQ18__c', 'value': ''}
+    ]"/>
+    
+<!-- new -->    
+    
+    <aura:attribute name="ratingOptions2" type="List" default="[
+        {'label': 'Advertisement', 'value': 'Advertisement'},
+        {'label': 'Referred By Customer', 'value': 'Ref from Customer'},
+		{'label': 'Site Board', 'value': 'Site Board'},
+        {'label': 'Others', 'value': 'Others'},
+		]"/>
+    
+  <aura:attribute name="feedbackQuestions2" type="List" default="[
+        {'label': 'How did you come to know about Jain Housing?', 'field': 'Booking_Source__c', 'value': ''}
+    ]"/>
+    
+    <!-- Handlers -->
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}" />
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}" />
+    
+    <lightning:messages />
+    <aura:if isTrue="{!!v.IsResponded}">
+    <div class="slds-grid slds-align_absolute-baseline" style="height: 100vh; width: 100vw; padding: 60px;">  
+        <div style="width:100%;padding-top: 0px; align-items: center;">
+            <!-- Header -->
+            <div class="slds-grid slds-gutters" style="width:100%; padding-top:0px; text-align:center;">
+                <div class="slds-col" style="padding-left: 100px; align-content: center;padding-top: 0px;">
+                    <h2 style="font-weight: 900; font-size: 30px; font-style: oblique; color: navy;">
+                        Customer Satisfactory Form &nbsp;&nbsp; 
+                        <img style="width:100px;height:100px;" src="{!$Resource.JainHousingLOGO}" alt="JainHousing"/>
+                    </h2>
+                </div>
+            </div>
+            <br/>
+            
+            <!-- Joint Inspection Details -->
+            <table style="table-layout:fixed; width:75%; border-collapse: separate;border-spacing: 0; border-radius:15px; margin:auto; margin-top:8px; border:1px solid black">
+                <tr style="color:black;">
+                    <th style="width:100%; font-style:arial; height:25px; background: coral; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                        <div style="font-family:Arial Unicode MS bold; font-size:20px; text-align:center; font-weight:bold; color: ghostwhite; font-style: italic;">
+                            <b>Joint Inspection Details</b>
+                        </div>
+                    </th>
+                </tr>
+                <div class="border boxShadow" style="background:antiquewhite; padding:15px; margin:auto; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+                    <div class="slds-grid slds-wrap slds-grid_pull-padded-x-small">
+                        <div class="slds-size_1-of-2 slds-p-horizontal_x-small">
+                            <table style="padding:15px;line-height:inherit;font-size: 16px;">
+                                <tr><th>Joint Inspection ID:</th><td><a style="font-size: 14px;color:black;font-weight: 500;">{!v.jointInspection.Name}</a></td></tr>
+                                <tr><th>Inspection Date:</th><td><lightning:formattedDateTime  style="font-weight: 500;" value="{!v.jointInspection.Joint_Inspection_Completed_Date__c}" year="numeric" month="short" day="2-digit"> </lightning:formattedDateTime></td></tr>                              
+                            </table>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-p-horizontal_x-small">
+                            <table style="padding:15px;line-height:inherit;font-size: 16px;">
+                                <tr><th>Project:</th><td><a style="font-size: 14px;color:black;font-weight: 500;">{!v.jointInspection.Booking__r.Project1__r.Name}</a></td></tr>
+                                <tr><th>Unit:</th><td><a style="font-size: 14px;color:black;font-weight: 500;">{!v.jointInspection.Booking__r.Plot__r.Name}</a></td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </table>
+            <br/>
+            
+            <aura:if isTrue="{!v.currentStep == 'Step1'}">
+            <table style="table-layout:fixed; width:75%; border-collapse: separate;border-spacing: 0; border-radius:15px; margin:auto; margin-top:8px; border:1px solid black">
+                <tr style="color:black;">
+                    <th style="width:100%; font-style:arial; height:25px; background: coral; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                        <div style="font-family:Arial Unicode MS bold; font-size:20px; text-align:center; font-weight:bold; color: ghostwhite; font-style: italic;">
+                            <b>OverAll Experience</b>
+                        </div>
+                    </th>
+                </tr>
+                
+                 <tr>
+                    <td style="background:antiquewhite; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; padding:15px;">
+                       
+                        <div style="overflow-x: auto;">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width : 60%">Question</th>
+                                    <th class="slds-text-align_center" style="width : 10%">Advertisement</th>
+                                    <th class="slds-text-align_center" style="width : 10%">Referred By Customer</th>
+                                    <th class="slds-text-align_center" style="width : 10%">Site Board</th>
+                                    <th class="slds-text-align_center" style="width : 10%">Others</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.feedbackQuestions2}" var="question" indexVar="index">
+                                    <tr>
+                                        <td style="width : 60%">{!question.label}</td>
+                                        <aura:iteration items="{!v.ratingOptions2}" var="opt">
+                                            <td class="slds-text-align_center" style="width : 10%">
+                                                <!--ui:inputRadio 
+                                                               name="{!'rating_' + index}"  
+                                                               text="{!index + '|' + opt.value}" 
+                                                               change="{!c.handleManualRatingChange}"
+                                                               value="{!question.value == opt.value}" 
+                                                               label="" /-->
+                                                <!--ui:inputRadio 
+                                                               name="{!'rating_feedbackQuestions_' + index}"  
+                                                               text="{!index + '|' + opt.value}" 
+                                                               change="{!c.handleManualRatingChange}"
+                                                               value="{!question.value == opt.value}" 
+                                                               label="" /-->
+                                                <ui:inputRadio 
+                                                               name="{!'group_feedbackQuestions2_' + index}"  
+                                                               text="{!index + '|' + opt.value}" 
+                                                               change="{!c.handleManualRatingChange}"
+                                                               value="{!question.value == opt.value}" 
+                                                               label="" />
+                                            </td>
+                                        </aura:iteration>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                        </div>
+                        <br/>
+                        
+                        <div style="overflow-x: auto;">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width : 40%">Question</th>
+                                    <th class="slds-text-align_center" style="width : 15%">Excellent</th>
+                                    <th class="slds-text-align_center" style="width : 15%">Good</th>
+                                    <th class="slds-text-align_center" style="width : 15%">Fair</th>
+                                    <th class="slds-text-align_center" style="width : 15%">Poor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.feedbackQuestions}" var="question" indexVar="index">
+                                    <tr>
+                                        <td style="width : 40%">{!question.label}</td>
+                                        <aura:iteration items="{!v.ratingOptions}" var="opt">
+                                            <td class="slds-text-align_center" style="width : 15%">
+                                                <!--ui:inputRadio 
+                                                               name="{!'rating_' + index}"  
+                                                    text="{!index + '|' + opt.value}" 
+                                                    change="{!c.handleManualRatingChange}"
+                                                    value="{!question.value == opt.value}" 
+                                                    label="" /-->
+                                                <!--ui:inputRadio 
+                                                               name="{!'rating_feedbackQuestions_' + index}"  
+                                                               text="{!index + '|' + opt.value}" 
+                                                               change="{!c.handleManualRatingChange}"
+                                                               value="{!question.value == opt.value}" 
+                                                               label="" /-->
+                                                <ui:inputRadio 
+                                                               name="{!'group_feedbackQuestions_' + index}"  
+                                                               text="{!index + '|' + opt.value}" 
+                                                               change="{!c.handleManualRatingChange}"
+                                                               value="{!question.value == opt.value}" 
+                                                               label="" />
+                                                </td>
+                                            </aura:iteration>
+                                        </tr>
+                                    </aura:iteration>
+                                </tbody>
+                            </table>
+                        </div>
+                        <br/>
+                        
+                        <div style="overflow-x: auto;">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width : 80%">Question</th>
+                                    <th class="slds-text-align_center" style="width : 10%">Yes</th>
+                                    <th class="slds-text-align_center" style="width : 10%" >No</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.feedbackQuestions1}" var="question" indexVar="index">
+                                    <tr>
+                                        <td style="width : 80%">{!question.label}</td>
+                                        <aura:iteration items="{!v.ratingOptions1}" var="opt">
+                                            <td class="slds-text-align_center" style="width : 10%">
+                                                <!--ui:inputRadio 
+                                                               name="{!'rating_' + index}"  
+                                                               text="{!index + '|' + opt.value}" 
+                                                               change="{!c.handleManualRatingChange}"
+                                                               value="{!question.value == opt.value}" 
+                                                               label="" /-->
+                                                <!--ui:inputRadio 
+                                                               name="{!'rating_feedbackQuestions_' + index}"  
+                                                               text="{!index + '|' + opt.value}" 
+                                                               change="{!c.handleManualRatingChange}"
+                                                               value="{!question.value == opt.value}" 
+                                                               label="" /-->
+                                                <ui:inputRadio 
+                                                               name="{!'group_feedbackQuestions1_' + index}"  
+                                                               text="{!index + '|' + opt.value}" 
+                                                               change="{!c.handleManualRatingChange}"
+                                                               value="{!question.value == opt.value}" 
+                                                               label="" />
+                                            </td>
+                                        </aura:iteration>
+                                    </tr>
+                                </aura:iteration>
+                            </tbody>
+                        </table>
+                        </div>
+                        <br/>
+                        
+                        <div style="margin: 20px auto; width: 100%;">
+                            <!--h3 class="slds-text-heading_small">Additional Feedback</h3-->
+                            
+                            <!-- First new field -->
+                            <lightning:textarea
+                                                name="encouragementFactors"
+                                                label="What factors encouraged you to buy our product?"
+                                                value="{!v.encouragementFactors}"
+                                                maxlength="1000"
+                                                messageWhenBadInput="Please limit to 1000 characters"
+                                                class="slds-m-bottom_medium"/>
+                            
+                            <!-- Second new field -->
+                            <lightning:textarea
+                                                name="desiredImprovements"
+                                                label="What changes/improvements you would like to see in our service?"
+                                                value="{!v.desiredImprovements}"
+                                                maxlength="1000"
+                                                messageWhenBadInput="Please limit to 1000 characters"/>
+                            
+                            <div class="slds-align_absolute-center" style="margin-top: 20px;">
+                                <lightning:button label="Next" onclick="{!c.gotoStep2}" />
+                            </div>
+                        </div>
+                        
+                        
+                    </td>
+                </tr>
+                
+                
+            </table>
+                
+            </aura:if>
+                <br/>
+            
+            <aura:if isTrue="{!v.currentStep == 'Step2'}">
+            <!-- Main Form Content -->
+            <div class="slds-modal__content slds-p-around--medium slds-p-around--xx-small boxShadow" style="background:antiquewhite; border-radius:15px; margin: auto; width:75%">
+                <aura:if isTrue="{!v.spinner}">
+                    <lightning:spinner alternativeText="Loading" size="medium"/>
+                </aura:if>
+                
+                <aura:if isTrue="{!!v.IsResponded}">
+                    
+                    
+                    
+                    <!-- Issues Toggle and Add Snag Button -->
+                    <div style="width: 100%; margin: 0 auto; padding: 10px 0;">
+                        <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                            <div class="slds-col slds-align_absolute-center">
+                                <div class="slds-form-element">
+                                    <label class="slds-checkbox_toggle slds-grid">
+                                        <span class="slds-form-element__label slds-m-right_small" style="font-size: 16px;font-weight: bold;font-style: italic;color: darkred;">
+                                            Having any issues to address?
+                                        </span>
+                                        <input type="checkbox" name="checkbox" checked="{!v.isChecked}" onchange="{!c.handleToggleChange}"/>
+                                        <span class="slds-checkbox_faux_container" aria-live="assertive">
+                                            <span class="slds-checkbox_faux"></span>
+                                            <span class="slds-checkbox_on" style="font-style: italic;text-align:center;">&nbsp;Yes</span>
+                                            <span class="slds-checkbox_off" style="font-style: italic;text-align:center;">No</span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <aura:if isTrue="{!v.isChecked}">
+                                <div class="slds-col slds-no-flex slds-align_absolute-center">
+                                    <lightning:button label="Add Snag" class="btnAdd" onclick="{!c.addSnag}" iconName="utility:add"/>
+                                </div>
+                            </aura:if>
+                        </div>
+                    </div>
+                    
+                    <!-- Snags List - Only shown when toggle is on -->
+                    <aura:if isTrue="{!v.isChecked}">
+                        <aura:iteration items="{!v.snags}" var="snag" indexVar="index">
+                            <table style="table-layout:fixed; width:100%; border-collapse: separate;border-spacing: 0; border-radius:15px; margin:auto; margin-top:8px; border:1px solid black;margin: 20px auto; width: 75%;">
+                                <tr style="color:black;">
+                                    <th style="width:100%; font-style:arial; height:25px; background: coral; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                        <div style="font-family:Arial Unicode MS bold; font-size:20px; text-align:center; font-weight:bold; color: ghostwhite; font-style: italic;">
+                                            <b>Snag {!index + 1}</b>
+                                            <aura:if isTrue="{!index > 0}">
+                                                <lightning:button variant="destructive" label="Remove" class="btnCancel" onclick="{!c.removeSnag}" name="{!index}" iconName="utility:close"/>
+                                            </aura:if>
+                                        </div>
+                                    </th>
+                                </tr>
+                                <div class="border boxShadow" style="background:antiquewhite; padding:15px; margin:auto; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+                                    <div class="slds-grid slds-wrap slds-grid_pull-padded-x-small">
+                                        <div class="slds-size_1-of-1 slds-p-horizontal_x-small">
+                                            <table style="padding:15px; width:100%">
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>Problem Type:</th>
+                                                    <td>
+                                                        <lightning:select aura:id="Snag_Type_{!index}" value="{!snag.Problem_Type__c}">
+                                                            <option value="">--None--</option>
+                                                            <aura:iteration items="{!v.problems}" var="prob">
+                                                                <option value="{!prob}">{!prob}</option>
+                                                            </aura:iteration>
+                                                        </lightning:select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>Problem Description:</th>
+                                                    <td>
+                                                        <lightning:textarea aura:id="Snag_Description_{!index}" value="{!snag.Problem_Description__c}"  placeholder="Describe the problem in detail" />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </table>
+                           
+                        </aura:iteration>
+                    </aura:if>
+                    
+                    <!-- Comments Field -->
+                    <div style="margin: 20px auto; width: 75%;">
+                        <lightning:textarea name="comments" aura:id="comments" value="{!v.CusComments}" 
+                                            label="Comments" placeholder="Your valuable comments" 
+                                            messageWhenValueMissing="Please enter comments"/>
+                        <br/>
+                    </div>
+                    
+                    <!-- Signature Pad -->
+                    <div class="slds-box slds-theme_default" style="margin: 20px auto; width: 75%;">
+                        <h3 class="slds-text-heading_medium">Signature</h3>
+                        <c:digitalSignaturePad aura:id="signaturePad"/>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="slds-align_absolute-center">
+                        <lightning:button label="Back" onclick="{!c.gotoStep1}" class="slds-m-right_small"/>
+                        <lightning:button label="Submit" class="btnAccept" onclick="{!c.handleSubmit}"/>
+                    </div>
+                    
+                    
+                </aura:if>
+            </div>
+            </aura:if>
+            <br/>
+        </div>
+    </div>
+        </aura:if>
+    
+    <aura:if isTrue="{!v.IsResponded}">
+        <!-- Thank You Message -->
+        <div class="slds-align_absolute-center" style="font-size:20px; color: saddlebrown; height:6rem;">
+            <b>Thank you! Your response has been submitted.</b><br/>
+        </div>
+    </aura:if>
+</aura:component>

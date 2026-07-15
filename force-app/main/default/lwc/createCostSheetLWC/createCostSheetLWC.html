@@ -1,0 +1,113 @@
+<template>
+    <lightning-card>
+        <div class="slds-p-around_medium">
+            <template if:true={showSpinner}>
+                <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+            </template>
+
+            <template if:false={showSpinner}>
+                <!-- Details Step -->
+                <template if:true={isDetailsStep}>
+                    <h2 class="slds-text-heading_medium slds-m-bottom_medium">Create Quote</h2>
+                    
+                    <div class="slds-grid slds-wrap">
+                        <!-- Unit Details Section -->
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning-input type="text" label="Project" disabled value={oppPlot.Project__c}></lightning-input>
+                            <p>{recordId}</p>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning-input type="text" label="Unit Number" disabled value={oppPlot.Name}></lightning-input>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning-input type="text" label="Carpet Area" disabled value={oppPlot.Carpet_Area__c}></lightning-input>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning-input type="text" label="Balcony Area" disabled value={oppPlot.Balcony_Area__c}></lightning-input>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning-input type="text" label="Price Per Sqft" disabled value={oppPlot.Price_Per_Sq_Ft__c}></lightning-input>
+                        </div>
+                        
+                        <!-- Add other unit detail fields here following the same pattern -->
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning-input type="text" label="Scheme" disabled value={oppPlot.Scheme__c}></lightning-input>
+                        </div>
+                        
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning-input type="text" label="Wing" disabled value={oppPlot.Wing__c}></lightning-input>
+                        </div>
+
+                        <!-- Options Section -->
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning-select label="Car Parking Option" value={parkingOption} onchange={handleParkingOptionChange}>
+                                <option value="">-- No --</option>
+                                <option value="Yes">Yes</option>
+                            </lightning-select>
+                        </div>
+                        
+                        <template if:true={isSingleCheckboxChecked}>
+                            <div class="slds-size_1-of-2 slds-p-around_x-small">
+                                <lightning-input type="number" label="Car Parking Charge" disabled value={oppPlot.Car_Parking__c}></lightning-input>
+                            </div>
+                        </template>
+                        
+                        <!-- GST Options -->
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning-select label="GST Option For Agreement" value={gstAggrementOption} onchange={handleGSTAggrementOptionChange}>
+                                <option value="">-- No --</option>
+                                <option value="Yes">Yes</option>
+                            </lightning-select>
+                        </div>
+                        
+                        <template if:true={isGSTChecked}>
+                            <div class="slds-size_1-of-2 slds-p-around_x-small">
+                                <lightning-input type="number" label="GST for Agreement Value" disabled value={oppPlot.GST_for_Aggrement_Value__c}></lightning-input>
+                            </div>
+                        </template>
+                        
+                        <!-- Discount Price if multiple quotes -->
+                        <template if:true={ismultiplequotes}>
+                            <div class="slds-size_1-of-2 slds-p-around_x-small">
+                                <lightning-input type="currency" label="Discount Price" required value={oppPlot.Discount_Price__c}></lightning-input>
+                            </div>
+                        </template>
+                    </div>
+                    
+                    <div class="slds-m-top_medium">
+                        <lightning-button variant="neutral" label="Cancel" onclick={closeAction}></lightning-button>
+                        <lightning-button variant="brand" label="Next" onclick={handleNext} class="slds-m-left_x-small"></lightning-button>
+                    </div>
+                </template>
+                
+                <!-- Payment Schedule Step -->
+                <template if:true={isPaymentStep}>
+                    <h2 class="slds-text-heading_medium slds-m-bottom_medium">Payment Schedule</h2>
+                    
+                    <!-- Payment Schedule Table -->
+                    <div class="slds-scrollable" style="max-height: 400px;">
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th scope="col">Sl. No</th>
+                                    <th scope="col">Payment Schedule Name</th>
+                                    <th scope="col">Percent</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Due Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="slds-m-top_medium">
+                        <lightning-button variant="neutral" label="Previous" onclick={handlePrevious}></lightning-button>
+                        <lightning-button variant="brand" label="Save" onclick={handleSave} class="slds-m-left_x-small"></lightning-button>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

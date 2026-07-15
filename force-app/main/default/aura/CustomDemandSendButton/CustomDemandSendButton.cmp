@@ -1,0 +1,15 @@
+<aura:component controller="DemandRaisedSave" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name="showPopup" type="boolean" default="false" /> 
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="bookingRecord" type="Booking__c" />
+    <aura:attribute name="currentMilestone" type="Payment_schedule__c" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="slds-no-flex slds-float_right">
+        <lightning:button variant="brand" label="Raise Custom demand" title="Raise Custom demand" onclick="{! c.handleClick }" />
+    </div>
+    <div class="slds-clear"></div>
+    <aura:if isTrue="{!v.showPopup}">
+        <c:CustomDemandSend  visible="{!v.showPopup}" currentMilestone="{!v.currentMilestone}" booking="{!v.bookingRecord}"/>
+    </aura:if>
+</aura:component>

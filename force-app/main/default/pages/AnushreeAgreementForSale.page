@@ -1,0 +1,2053 @@
+<apex:page standardController="Booking__c" extensions="convertValueToWords" renderAs="pdf" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false">
+    <head>
+        <style>
+            @page {
+            size: A4;
+            
+            margin: 10mm;
+            font-family: Arial, sans-serif;
+            margin-bottom: 250px;
+            @bottom-center {
+            content: element(footer);
+            }
+            }
+            .footer {
+            position: fixed;
+            font-size: 11px;
+            padding-bottom:100px;
+            padding-top:10px;
+            position: running(footer);
+            }
+            p{
+            font-size:14px"
+            }
+            
+            
+        </style>
+    </head>
+    <body>
+        <div class="footer">
+            <table width="90%">
+                <tr>
+                    <td colspan="3" style="text-align:center"> <strong>M/s. Jain Housing LLP</strong></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                
+                
+                <tr>
+                    <td colspan="3" style="text-align:center"><strong>Authorised Signatory</strong>
+                    </td></tr>
+                <tr>
+                    <td width="30%" style="text-align:center"><strong>VENDOR</strong></td>
+                    <td width="30%" style="text-align:center"><strong>PROMOTER</strong></td>
+                    <td width="30%" style="text-align:center"><strong>PURCHASER/S</strong></td>
+                    
+                </tr>
+                
+            </table>
+        </div>
+        
+        
+        <div style="padding-top:220px; text-align:center; margin-right:90px; margin-left:90px;  line-height:1.9; font-size:13px;" >
+            <span ><Strong><u>AGREEMENT FOR SALE OF FLAT</u></Strong></span>
+        </div>
+        <div style="text-align:center; margin-right:90px; margin-left:90px; line-height:1.8; font-size:13px;">
+            
+            
+            <p style="text-align:justify; font-size:14px">
+                <span><strong>THIS AGREEMENT FOR SALE OF FLAT ENTERED INTO AT CHENNAI ON this the <apex:outputText value="{0, date, dd MMMM yyyy}"><apex:param value="{!Booking__c.Sale_Agreement_Date__c}" /></apex:outputText>.</strong></span>
+            </p>
+            <p style="padding-top:10px; padding-bottom:10px; font-size:14px">
+                <strong>BY AND BETWEEN</strong> 
+            </p>
+            <p style="text-align:justify; font-size:14px">
+            <strong>M/s. JAIN HOUSING LLP, (PAN: AAOFJ0016H)</strong> a Limited Liability Partnership firm, registered under the Limited Liability Partnership Act, 2008, having its registered office at No.98/99, Habibullah Road, T. Nagar, Chennai – 600017, represented by its Authorized signatory  Mr. CHENARAM SENI (AADHAAR: 4318 8506 6098), S/o. Mr. Ridharamji, aged about 52 years, (duly authorized vide Board Resolution dated 26-03-2025) residing at No.167A/F10, Jains Eiffel Garden, Arcot Road, Vadapalani, Chennai- 600 026 hereinafter referred to as the “VENDOR/PROMOTER” (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include his/her heirs, executors, administrators, successors-in-interest and permitted assignees).
+    
+            </p>
+            <p style="padding-top:10px; padding-bottom:10px; font-size:14px">
+                <strong>TO AND IN FAVOUR OF</strong>
+            </p>
+            <p style="text-align:justify; font-size:14px">
+                {!Booking__c.salutation_Applicant1__c} {!Booking__c.First_Applicant_Name__c}, (Aadhar No {!Booking__c.Aadhaar_Number1__c}) (PAN {!Booking__c.PAN_Number1__c}) {!Booking__c.Relation_Details_Applicant1__c} {!Booking__c.Son_Daughter_Wife_of1__c} aged about&nbsp;<apex:outputText value="{0, Number,###,###,###}"> <apex:param value="{!Booking__c.Age__c}" /></apex:outputText> years, residing at {!Booking__c.Communication_address1__c}  hereinafter called the<strong> “ALLOTTEE/PURCHASER”</strong> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include his/her heirs, executors, administrators, successors-in-interest and permitted assignees).
+                
+            </p>
+            <div style="page-break-after: always"></div>
+            
+            <p style="text-align:justify; font-size:14px">
+                <strong>WHEREAS </strong>the Vendor/Promoter is the absolute owner of the property measuring an extent 70 cents in S.No. 130/2
+                and 70 cents in S.No. 113/2A totaling in all to 1 Acre 40 Cents, (60,984 Sq.ft. at No. 34, situated at Egattur Village, 
+                Thiruporur Taluk, Chengalpattu District, having purchased the same from Mr.Madhususanam Pillai and Mr.P.N.Ravi, vide Sale Deed
+                dated 20.10.2023 registered as Doc. No. 25943/2023 in the office of the Sub Registrar Thiruporur.
+            </p>   
+            
+            
+            <p style="text-align:justify; font-size:14px; padding-top:20px">
+                <strong>WHEREAS </strong> the Vendor/Promoter has gifted an extent of 432.09 Sq.mt. in S.No. 130/2 part and 138.72 Sq.mt. in S.No. 130/2 
+                part towards OSR I and OSR II respectively, President, Muttukadu Panchayat, Thiruporur, vide Gift Deed dated 23.04.2024 
+                registered as Doc. No. 8517/2024 in the office of Sub Registrar at Thiruporur. 
+            </p>
+            
+            
+            <p style="text-align:justify; font-size:14px; padding-top:20px">
+                <strong>WHEREAS,</strong> the Vendor/Promoter after gifting an extent of 570.81 Sq.mt. (14.11 Cents) in S.No. 130/2 part, the
+                Vendor/Promoter became vested with an extent of 125.89 cents, comprising of 70 cents in S.No. 113/2A and 55.89 cents in 
+                S.No. 130/2 part, situated at Egattur Village, Thiurporur Taluk, Chengalpattu District, more fully described in the Schedule “B”
+                hereunder. 
+            </p>
+            <p style=""></p>
+            <p style="text-align:justify; font-size:14px; padding-top:20px">
+                <strong>WHEREAS</strong> WHEREAS the Vendor/Promoter had obtained requisite sanctions, authorizations, consents, no objections,
+                permissions and approvals from the appropriate authorities for construction and development of the Project vide <strong>Planning Permit</strong>
+                and <strong>Building Permit ROC.No. 48/2024-2025 both dated 19/11/2024</strong> duly issued by Muthukaadu Village Panchayat.
+            </p>
+            <p style="text-align:justify; font-size:14px; padding-top:20px">
+                <strong>WHEREAS</strong> the VENDOR/PROMOTER has registered the project under the provisions of the Act with<strong> Real Estate Regulatory Authority
+                at Chennai on 12-02-2025 under Registration No.TN/29/Building/0050/2025</strong>
+             </p>
+            <div style="page-break-after:always;"></div>
+            <p style="text-align:justify; font-size:14px; padding-top:30px">
+              <strong>WHEREAS</strong> the Allottee/Purchaser has already scrutinized / verified all sanctions, authorizations, consents, no objections,
+                permissions and approvals issued by the appropriate authorities and is satisfied with the title and statutory compliance with
+                regards to the Project; and </p>
+          <!--  <p style="text-align:justify; font-size:14px; padding-top:20px">
+                <strong>WHEREAS</strong> the <strong> Vendor/Promoter </strong>have proposed to construct Residential buildings in the schedule 
+                "B" property hereunder and obtained necessary approval for the same from Competent Authorities.
+                
+            </p>
+            <p style="text-align:justify; padding-top:20px">
+                <strong>WHEREAS</strong> the Allottee/Purchaser has already scrutinized / verified all sanctions, authorizations, consents, 
+                no objections, permissions and approvals issued by the appropriate authorities and is satisfied with the title and statutory
+                compliance with regards to the Project; and 
+                
+            </p>-->
+            <p style="text-align:justify; padding-top:20px">
+                
+                <strong>WHEREAS </strong> the Allottee/Purchaser is interested in purchasing one residential Flat No {!Booking__c.Unit_NumberFor__c} having super built up
+                area of {!Booking__c.Super_Built_up_area_NE__c} Sq.ft of the building and corresponding common rights in stair case, common veranda other common facilities and
+                amenities and approached the Vendor/Promoters. The Vendor/Promoters have agreed to sell the said apartment and car park together
+                with {!Booking__c.UDS_Area__c} sq.ft undivided rights out of Schedule “B” property more fully described in Schedule “C” hereunder and the
+                Allottee/Purchaser has agreed to purchase the same for a total sale consideration of Rs.{!totalCostInString} /- (Rupees {!TotalCostAmountInWords} only).
+
+            </p>
+            <p style="text-align:justify; padding-top:20px">
+                <strong>WHEREAS</strong> the Vendor/Promoter have assured the Allottee/Purchaser that Schedule “C” property is completely free
+                from mortgage, charge, lease, lien, attachment by court and such other authorities, suit, arrears of taxes, arrears of
+                electricity and water charges and other dues and other encumbrances and impediments whatsoever. </p>
+            <p style="text-align:justify; padding-top:20px">
+                <strong>WHEREAS</strong> the Allottee/Purchaser having inspected all the documents of title of the property in the possession 
+                of the Vendor/Promoter as well as the plans, specifications and all other documents relating to the property and the building 
+                project and having been satisfied on the validity of the title and feasibility of the project, the Allottee/Purchaser has come
+                forward to purchase the flat /apartment more particularly mentioned in Schedule “C” hereunder written.</p>
+            <p style="text-align:justify; padding-top:20px">
+                <strong>WHEREAS</strong> the Vendor/Promoter offered to sell the Flat bearing No.{!Booking__c.Unit_NumberFor__c}, {!Booking__c.FloorNo__c} Floor, measuring {!Booking__c.Super_Built_up_area_NE__c} Sq.ft.
+                super built up area together with {!Booking__c.UDS_Area__c} Sq.ft. undivided share out of Schedule “B” property and _____ No. of Covered/Open/Combined Car Park,
+                more fully described in Schedule “C” to the Allottee/Purchaser for a consideration of Rs.{!totalCostInString}/- (Rupees {!TotalCostAmountInWords} only) free of
+                all encumbrances.
+            </p>
+            <p style="text-align:justify; padding-top:20px">
+                <strong>WHEREAS</strong> the Allottee/Purchaser on the faith of the representation of the Vendor/Promoters that the Vendor/Promoters
+                have an absolute and indefeasible title to the Schedule “A” land and the Vendor/Promoter is entitled to develop the Schedule “B”
+                property, agrees to purchase the flat more fully described in Schedule “C” and hereinafter referred to as the property for the said 
+                consideration of Rs.{!totalCostInString} (Rupees {!TotalCostAmountInWords} only) free of all encumbrances on the following terms and consideration.</p>
+            <p style="text-align:justify; padding-top:20px"> 
+                Now, in consideration of the premises hereinbefore recited and further consideration of the benefits, rights, restrictions and
+                obligations respectively accruing to and undertaken by the parties hereto, this agreement witnessed as follows:
+            </p>
+            <p style="text-align:justify; padding-top:20px">
+                <strong>WHEREAS</strong> the Parties have decided to reduce the terms and conditions mutually agreed upon into writing through these presents.
+            </p>
+            <p style="text-align:justify; padding-top:20px">
+                <strong><u>NOW THEREFORE THIS AGREEMENT WITNESSETH AS FOLLOWS:</u></strong>
+            </p>
+            <p style="text-align:justify; padding-top:10px">
+                The Vendor/Promoter and the Allottee/Purchaser mutually agree and covenant as follows:
+            </p>
+            <p style="padding-top:20px; text-align:justify;">
+                1. <span style="padding-left: 30px"><strong><u>ALLOTMENT:</u></strong></span>
+            </p>
+            <p style="text-align:justify; padding-top:10px">
+                The Vendor/Promoter hereby agrees to sell/construct &amp; allot and deliver the
+                Apartment, as per the specifications mentioned in the Annexure 1 hereunder, to the Allottee/Purchaser at the cost of the Allottee/Purchaser.
+                
+            </p>
+            <p style="padding-top:20px; text-align:justify;">
+                2.<span style="padding-left: 30px"><strong><u>SALE CONSIDERATION AND OTHER RELATED PAYMENTS:</u></strong></span>
+            </p>
+            
+            <table>
+                <tr>
+                    <td width="5%">a)</td>
+                    <td width="95%" style="text-align:justify;">The Sale Consideration for the Schedule “C” mentioned apartment based on the carpet area is Rs.{!totalCostInString}/-(Rupees {!TotalCostAmountInWords}). The Sale Consideration includes the following</td>
+                </tr>
+                <br/><br/> <br/><br/> <br/><br/>
+                <div style="padding-left:30px; padding-top:15px; padding-bottom:15px">
+                    <table width="100%" style="border-collapse:collapse; border:1px solid line; ">
+                        <tr>
+                            <td width="40%" style="padding-left:20px; padding-right:10px; padding-top:5px; padding-top:5px; border:1px solid #000">
+                                Apartment No.{!Booking__c.Unit_NumberFor__c}, 
+                                in {!Booking__c.FloorNo__c} Floor, 
+                                measuring 
+                                Sq.ft. of Carpet Area, Total Area of {!Booking__c.Super_Built_up_area_NE__c} Sq.ft (Comprising of carpet area + Wall
+                                Thickness &amp; Balcony  and   + proportionate share in common areas) and the cost of undivided share of land
+                            </td>
+                            <td width="40%" style="border:1px solid #000">Amount</td>
+                        </tr>
+                        <tr>
+                            
+                            <td style="border:1px solid #000">Sale Consideration</td>
+                            <td style="border:1px solid #000">Rs. {!totalCostInString}</td>
+                            
+                        </tr>
+                        
+                    </table>
+                </div>
+            </table>
+            <table>
+                <tr >
+                    <td width="5%"></td>
+                    <td width="95%" style="text-align:justify;">The Sale consideration above includes the booking amount paid by the Allotte/Purchaser to the
+                        Vendor/Promoter towards the Apartment; The Sale Consideration mentioned above is a consolidated cost which is final and supersedes all
+                        calculations/estimates shared to the Allottee[s]/Purchaser[s]. The aforesaid Sale Consideration is payable as per the milestones set
+                        out in Schedule D hereunder (excluding GST).</td>
+                </tr>
+                <div style="padding-top:20px;"></div>
+                
+                
+                <tr>
+                    <td width="5%" style="text-align:justify; vertical-align:top;" >b)</td>
+                    <td width="95%" style="text-align:justify;">The sale consideration above is exclusive of Taxes payable to the Government as per 
+                        the norms/rules which are prevailing at present. In case of any change/modification in the quantum of GST or introduction of
+                        any new/additional tax before handing over possession, the Allottee/Purchaser undertakes to pay the same in addition to the
+                        above said construction cost before handing over possession of Schedule “C” property.  Provided that in case there is any
+                        change / modification in the existing taxes and/or introduction of any other new taxes in future which is subsequent to the 
+                        handing over possession of Schedule “C” property, the Allottee/Purchaser undertakes to pay the same without any objection.</td>
+                </tr>
+                <div style="padding-top:20px;"></div>
+                
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">c)</td>
+                    <td width="95%" style="text-align:justify;">The Vendor/Promoter shall not be obliged to send a separate intimation regarding 
+                        the stage completion and demand of any payment.  The delay in payment shall attract interest @ 18 % p.a.</td>
+                </tr>
+                
+                <div style="padding-top:20px;"></div>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">d)</td>
+                    <td width="95%" style="text-align:justify;">The Allottee/Purchaser shall contribute with other Purchasers of
+                        divided/undivided share/s in the said Land, for any levy for betterment or development of the land that may be levied 
+                        by the Corporation, Government or any other Public or Town Planning Authority and in this regard on and from this day,
+                        the Allottee/Purchaser shall bear and pay the taxes that may be levied on the said land in proportion to his/her share
+                        as set out in Schedule ‘C’ hereunder.</td>
+                </tr>
+                <div style="padding-top:20px;"></div>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">e)</td>
+                    <td width="95%" style="text-align:justify;">The Allottee/Purchaser shall bear and pay the stamp duty, registration fee,
+                        documentation and legal charges in respect of this Agreement and/or on any other document that may be called for or
+                        levied by the Government, Stamp or Registration Authorities or Tax Authorities as applicable at the time of registration.
+                        Provided that in the event of any increase or enhancement/introduction of a new levy in future / post registration, the
+                        same shall also be borne and paid by the Allottee/Purchaser.
+
+                    </td>
+                </tr>
+                <div style="padding-top:20px;"></div>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">f)</td>
+                    <td width="95%" style="text-align:justify;">The Allottee/Purchaser shall bear, contribute and pay in proportion to his/her
+                        share for all and any deposits, expenses, and levies for the purpose of securing electricity, water (if applicable for 
+                        the locality) and sewage connections and also for securing the assessment for property tax and vacant land tax by the
+                        Corporation now levied and that may be levied in future.
+
+                    </td>
+                </tr>
+                <div style="padding-top:20px;"></div>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">g)</td>
+                    <td width="95%" style="text-align:justify;">The Sale Consideration is escalation-free, save and except increases, which the
+                        Allottee/Purchaser hereby agrees to pay, due to any additional work requested by the Allottee/Purchaser, increase on
+                        account of development and other charges payable to the competent authority and/or any other increase in charges, which 
+                        may be levied or imposed by the competent authority on the Project from time to time. It is also agreed that owing to 
+                        Mivan Structure any alteration or changes in the specifications / plan shall not be entertained under any circumstances. 
+                    </td>
+                </tr>
+                <div style="padding-top:20px;"></div>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">h)</td>
+                    <td width="95%" style="text-align:justify;">The Vendor/Promoter undertakes and agrees that while raising a demand on the
+                        Allottee/Purchaser for increase in development charges, cost/charges imposed by the competent authorities, the 
+                        Vendor/Promoter shall quote the said notification/order/rule/regulation to that effect along with the demand letter
+                        being issued to the Allottee/Purchaser.
+                    </td>
+                </tr>
+                <div style="padding-top:20px;"></div>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">i)</td>
+                    <td width="95%" style="text-align:justify;">The Allottee/Purchaser) shall make the payment as per the payment plan set out
+                        in Schedule “D” (“Payment Plan”). The Allottee/Purchaser authorizes the Vendor/Promoter to adjust/appropriate all 
+                        payments made by him/her under any head(s) of dues against lawful outstanding, if any, in his/her name as the
+                        Vendor/Promoter may in its sole discretion deem fit and the Allottee/Purchaser undertakes not to object/demand/direct
+                        the Vendor/Promoter to adjust this payment in any manner.
+                    </td>
+                </tr>
+                <div style="padding-top:20px;"></div>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">j)</td>
+                    <td width="95%" style="text-align:justify;">
+                    The Allottee/Purchaser agrees to pay towards maintenance charges Rs. 3.5/- per sq.ft. per month + Applicable GST 
+                    charges per month for the period of 36 Months to the Vendor/Promoter before taking over possession of the flat towards 
+                    maintaining the amenities and common amenities for the entire project. Such maintenance charges shall become applicable
+                    from the date of intimation regarding the readiness of Schedule “C” property with basic occupational amenities such as water,
+                    drainage, electricity and lift facilities. The scope of maintenance services is more clearly described in the Annexure 2
+                    herein.  No additional requests shall be entertained other than the scope. However, if any additional works done over and
+                    above the scope mentioned in Annexure 2, the expenses shall be met with by the Vendor/Promoter from and out of the Corpus
+                    fund. The Allottee agrees that the maintenance shall be automatically stand renewed and extended for a further period of
+                    36 months from the date of expiration of initial 36 months subject to the terms as detailed in clause 6(d) herein below.</td>
+
+                </tr>
+                <div style="padding-top:20px;"></div>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">k)</td>
+                    <td width="95%" style="text-align:justify;">The Allottee/Purchaser shall also, before handing over of possession of Schedule 
+                        “C” mentioned apartment, pay to the Vendor/Promoters sum of Rs. 29,500/- (Rupees Twenty Nine Thousand Five Hundred  Only)
+                        as Owner’s contribution towards “Corpus Fund”. The Corpus Fund will be utilized towards major repairs, payment of AMCS for
+                        various equipment / infrastructures provided thereof (STP/Lift/DG etc), diesel consumption for DGs, fused bulb / electrical
+                        fixture replacements, STP O &amp; M cost &amp; electricity charges, landscaping improvements, and for any capital expenditure such
+                        as purchase of additional motors, DGS and any other up-gradation or enhancement activities done to the project or
+                        enhancements / improvements done towards the maintenance services over and above the scope envisaged in Annexure 2
+                        hereunder and every other up-gradation/repair works done towards up- keeping the common amenities during Vendor/Promoter’s
+                        maintenance tenure.  The Vendor/Promoter, after attaining 85% of sales of the entire project, shall transfer the above
+                        corpus fund to the Flat Owners Association/Society without interest, after adjusting all the expenditure incurred thereof.
+                        The OWNERS or the Owner’s Association/Society shall have no right or authority to claim the refund/transfer of the corpus
+                        fund from the Developer before attaining 85% of sales of the entire project as set out above. The contribution towards
+                        Corpus Fund is collected to ensure funds availability for the above mentioned purposes.
+                    </td>
+                </tr>
+                <div style="padding-top:20px;"></div>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">l)</td>
+                    <td width="95%" style="text-align:justify;">It is made clear that the cost incurred for any additional specification which 
+                        are provided in the Schedule “C” apartment, but are not forming Part of the Annexure – 1 herein shall be claimed by the
+                        VENDOR/PROMOTER from the ALLOTTEE/PURCHASER at any point of time even after handing over possession of Schedule ”C”
+                        property. 
+                    </td>
+                </tr>
+                
+            </table>
+            <p style="padding-top:20px; text-align:justify;">
+                3.<span style="padding-left: 30px"><strong><u>MODE OF PAYMENT:</u></strong></span>
+            </p>
+            <div style="padding-top:20px"></div>
+            
+            
+            <table>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(a)</td>
+                    <td width="95%" style="text-align:justify;">
+                        The Allottee/Purchaser has paid a sum of<b> Rs.{!totlreceivedinIndian}/-(Rupees. {!tillDateReceived} ),</b> to the Vendor/Promoter vide
+                        <apex:repeat value="{!recpList}" var="rep">
+                            ChequeNo.{!rep.checkNo},  dated <apex:outputText value="{0, date, dd MMMM yyyy}"><apex:param value="{!rep.repDate}" /></apex:outputText> drawn on {!rep.BankName} Bank.
+                        </apex:repeat>
+                        Chennai, as booking amount at the time of allotment of the Apartment;
+                        
+                    </td>
+                </tr>
+                <div style="padding-top:20px"></div>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(b)</td>
+                    <td width="95%" style="text-align:justify;">
+                        The Allottee/Purchaser shall pay the balance consideration amount as per the schedule of payments detailed in the 
+                        SCHEDULE– D hereunder;
+                    </td>
+                </tr>
+                <div style="padding-top:20px"></div>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(c)</td>
+                    <td width="95%" style="text-align:justify;">The Allottee/Purchaser hereby undertake/s and assure/s that based on the stage
+                        intimation letter issued/ to be issued by the Vendor/Promoter to the Allottee, the above payments shall be made by the
+                        Allottee within due date as time for payment of the above said sums being the essence of the contract and the Allottee 
+                        is fully informed by the Vendor/Promoter that any default in payment of the above said amount would affect the completion
+                        of the Project; All the delayed payment would attract interest @ 18% p.a.                         
+                    </td>
+                </tr>
+                <div style="padding-top:20px"></div>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(d)</td>
+                    <td width="95%" style="text-align:justify;">
+                        The Vendor/Promoter further clarified to the Allottee/Purchaser that the Allottee/Purchaser shall be solely responsible
+                        for availing housing loan from any Bank/Financial Institution towards the purchase of the Schedule “C” property and if
+                        there is any delay of payment out of such funding then the Allottee/Purchaser shall be responsible for the same.                        
+                    </td>
+                </tr>
+                <div style="padding-top:20px"></div>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(e)</td>
+                    <td width="95%" style="text-align:justify;">All payments shall be made by Cheque/s or Demand Draft/s or through RTGS.  The date of credit of the amount into the account of the
+                        Vendor/Promoter will be considered as the date of payment made by the Allottee/Purchaser and the delayed payment 
+                        charges will become payable from the due date;
+                        
+                    </td>
+                </tr>
+                <div style="padding-top:20px"></div>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(f)</td>
+                    <td width="95%" style="text-align:justify;">
+In the event that the Allottee[s] / Purchaser or his/her banker makes payment through RTGS/NEFT or any other mode of electronic fund transfer,
+                        or through any other bank account operated by the co-allottee or any other account, the Allottee[s]/Purchaser[s] shall
+                        intimate/keep intimated the Vendor/Promoter of such payments within 3 working days of such payment either through a 
+                        written / electronic mail communication, so as to enable to Vendor/Promoter to credit such payments to their respective
+                        account.  Failing to do so, the Allottee[s]/Purchaser[s] understand that the reconciliation of their respective
+                        ledger/account shall be hampered drastically and would cause delay in the process of handing over.
+                        
+                    </td>
+                </tr>
+                <div style="padding-top:20px"></div>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(g)</td>
+                    <td width="95%" style="text-align:justify;">
+                       The Allottee/Purchaser shall not delay, withhold or postpone the payments due as mentioned in SCHEDULE-“D”, on whatever
+                        reason and in that event, Allottee/Purchaser shall be responsible for any consequential sufferance or damages and they
+                        shall adhere to clause5(a)(1)mentioned herein.
+
+                    </td>
+                </tr>
+                <div style="padding-top:20px"></div>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(h)</td>
+                    <td width="95%" style="text-align:justify;">
+The Allottee/Purchaser, if resident outside India, shall be solely responsible for complying with the necessary formalities as laid down in
+                        Foreign Exchange Management Act, 1999, Reserve Bank of India Act and Rules and Regulations made there under or any
+                        statutory amendment(s) modification(s) made thereof and all other applicable  laws  including  that of remittance of
+                        payment acquisition/sale/transfer of immovable properties in India etc. and provide the Vendor/Promoter with such 
+                        permission, approvals which would enable the Vendor/Promoter to fulfill its obligations under  this Agreement. Any
+                        refund, transfer of security, if provided in terms of the Agreement shall be  made in accordance with the provisions of
+                        Foreign Exchange Management Act, 1999 or statutory enactments or amendments thereof and the Rules and Regulations of 
+                        the Reserve Bank of India or any other applicable law. The Allottee/Purchaser understands and agrees that in the event 
+                        of any failure on his/her part to comply with the applicable guidelines issued by the Reserve Bank of India; he/she 
+                        shall be liable for any action under the Foreign Exchange Management Act, 1999 or other laws as applicable, as amended 
+                        from time to time. The Vendor/Promoter accepts no responsibility in this regard. The Allottee/Purchaser shall keep the 
+                        Vendor/Promoter fully indemnified and harmless in this regard. Whenever there is any change in the residential status 
+                        of the Allottee/Purchaser subsequent to the signing of this Agreement, it shall be the sole responsibility of the 
+                        Allottee/Purchaser to intimate the same in writing to the Vendor/Promoter immediately and comply with necessary 
+                        formalities if any under the applicable laws. The Vendor/Promoter shall not be responsible towards any third party 
+                        making payment/remittances on behalf of any Allottee/Purchaser and such third party shall not have any right in the 
+                        application/allotment of the said apartment applied for herein in any way and the Vendor/Promoter shall be issuing 
+                        the payment receipts in favor of the Allottee/purchaser only.
+                        
+                    </td>
+                </tr>
+                <div style="padding-top:20px"></div>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(i)</td>
+                    <td width="95%" style="text-align:justify;">
+The Allottee/Purchaser shall be entitled to possession or even seek possession of the property described in Schedule “C” hereunder ONLY upon
+                        completion of all payments due and payable to the Vendor/Promoter and subject to the condition mentioned in clause 3(j)
+                        below. Further, the Allottee/Purchaser shall not be entitled to either by himself/herself or through any agent/ workers,
+                        carry out any interior or furnishing work in the Apartment described  in  SCHEDULE “C”, until all payments are completed
+                        and possession is handed over to the Allottee/Purchaser</td>
+                </tr>
+                <div style="padding-top:20px"></div>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(j)</td>
+                    <td width="95%" style="text-align:justify;">
+                       The Allottee/Purchaser agrees and shall pay all the amount dues as per this agreement before he/she could claim or
+                        become entitled to delivery of possession of the Apartment as well as delivery of the Original of this Agreement and 
+                        the Sale Deed. After making the entire payment as stipulated in this Agreement, the Allottee/Purchaser shall duly make
+                        an application to the VENDOR/PROMOTER for issuance of No Due Certificate along with other documents such as Affidavit,
+                        Customer Satisfaction Report etc., in the form and manner prescribed by the Vendor/Promoter within 15 days of which,
+                        the VENDOR/PROMOTER shall issue No Due Certificate to the Allottee/Purchaser.  The possession of Schedule “C” mentioned
+                        property shall be delivered to the Allottee/Purchaser within 15 days from the date of issuance of No Due Certificate. 
+
+                    </td>
+                </tr>
+            </table>
+            <p style="padding-top:20px; text-align:justify;">
+                4.<span style="padding-left: 30px"><strong><u>PERIOD  OF COMPLETION  AND HANDING OVER OF POSSESSION:</u></strong></span>
+            </p>
+            <table>
+                
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">a)</td>
+                    <td width="95%" style="text-align:justify;">
+                       The Vendor/Promoter shall endeavor to complete the construction of the Apartment in the project within _________with 
+                        grace period of __ months from the date of this Agreement. The Vendor/Promoter agrees and understands that timely 
+                        delivery of possession of the Apartment is the essence of the Agreement. The Vendor/Promoter, based on the approved plans 
+                        and specifications, assures to hand over possession of the Apartment as committed, unless there is delay or failure due to war, 
+                        flood, drought, fire, cyclone, earthquake, epidemic/pandemic/lockdown or any other calamity caused by nature affecting the regular 
+                        development of the real estate project (“Force Majeure”). If, however, the completion of the Project and/or delivery of the
+                        apartment is delayed due to the Force Majeure conditions and/or delay in securing completion certificate and amenities like water,
+                        electricity, etc., from the Concerned Authorities including getting the Apartments assessed to tax notwithstanding the completion
+                        of the construction of the apartment,  then the Allottee/Purchaser agrees that the Vendor/Promoter shall be entitled to the 
+                        extension of time for delivery of possession of the Apartment, provided that such conditions are not of a nature, which make it 
+                        impossible for the contract to be implemented. The Allottee/Purchaser agrees and confirms that, in the event it becomes impossible 
+                        for the Vendor/Promoter to implement the project due to Force Majeure conditions, then this allotment shall stand terminated and 
+                        the Vendor/Promoter shall refund to the Allottee/Purchaser the entire amount received by the Vendor/Promoter from the allotment
+                        within (60) days from that date of determination of impossibility of performance. After refund of the money paid by the
+                        Allottee/Purchaser, Allottee/Purchaser agrees that he/ she shall not have any rights, claims etc. against the Vendor/Promoter and 
+                        that the Vendor/Promoter shall be released and discharged from all its obligations and liabilities under this Agreement. In event
+                        of VENDOR/PROMOTER undertakes any alteration / change / additional / extra work,  then the VENDOR/PROMOTER shall have unfettered
+                        right to schedule / take up such work at any point of time as they deem fit and shall be entitled to delay/defer the handing over 
+                        schedule of Schedule “C” property.  In such an event, the said delay shall not be construed as default by the Vendor/Promoter and
+                        ALLOTTEE/PURCHASER shall not be entitled to any compensation for such delays.
+
+                    </td>
+                </tr>
+                
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">b)</td>
+                    <td width="95%" style="text-align:justify;">
+                       The Vendor/Promoter[s], soon after the Schedule “C” is ready [except the finishing works such as final coat of paint,
+                        electrification/wiring, fixation of CP/Sanitary fixing and common amenities etc.,] shall intimate the Allottee/Purchaser
+                        post which, with prior appointment, the Allottee/Purchaser shall visit the Schedule C apartment and notify the snag 
+                        points [construction defects] to the Vendor/Promoter so as to enable the Vendor/Promoter to fix the same before handing
+                        over of possession of Schedule “C” apartment to the Allottee[s] /Purchaser.  The total duration for fixing the same may
+                        vary from item to item based on the complexity of the snag/problem notified by the Allottee[s] /Purchaser.  However, 
+                        the Allottee[s] /Purchaser understands that this shall be an ongoing affair which may consume considerable time based on
+                        various factors such as nature of complaint/snag, availability of man-power/material etc., and the shall  not be
+                        entitled to retain/hold the final due payable to the Vendor/Promoter on account of delay in fixing the snag points.          
+                    </td>
+                </tr>
+                
+ <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">c)</td>
+                    <td width="95%" style="text-align:justify;">
+                     The Allottee/Purchaser shall be entitled for possession of the Schedule “C” property after he/she makes the final payment
+                        as set out in this Agreement and all other dues arising out of any increase in developmental charges, extra works etc.,
+                        The Allottee/Purchaser shall duly make an application to the VENDOR/PROMOTER for issuance of No Due Certificate and
+                        other document as specified in clause 3(j) supra.  The possession of Schedule “C” mentioned property shall be delivered
+                        to the Allottee/Purchaser within 15 days from the date of issuance of No Due Certificate. The Vendor/Promoter shall not
+                        be liable in any manner whatsoever, for failure of the Allottee/Purchaser to take over possession of the Apartment.
+                    </td>
+                </tr>
+                
+ <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">d)</td>
+                    <td width="95%" style="text-align:justify;">
+                    The Allottee/Purchaser shall take possession of the Apartment from the Vendor/Promoter by executing necessary Affidavits,
+                        indemnities, undertakings and such other documentation as prescribed by the Vendor/Promoter, and the Vendor/Promoter 
+                        shall give possession of the Apartment to the Allottee/Purchaser. In case the Allottee/Purchaser fails to take 
+                        possession within the time provided in clause 4(b), such Allottee shall continue to be liable to pay maintenance charges 
+                        as applicable.
+
+                    </td>
+                </tr>
+                
+ <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">e)</td>
+                    <td width="95%" style="text-align:justify;">
+                        The Vendor/Promoter shall hand over possession of the Apartment to the Allottee/Purchaser as committed subject to receipt of the
+                        entire consideration including the other payments and subject to the condition set out in clause 3(j) supra. It is made abundantly
+                        clear that the obligation of the Vendor/Promoter to hand over the Apartment to the Allottee/Purchaser does not arise until the
+                        Vendor/Promoter receives the entire payment/s as mentioned in Schedule “D” and issue No Due Certificate.</td>
+                </tr>
+                
+ <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">f)</td>
+                    <td width="95%" style="text-align:justify;">
+The Allottee/Purchaser shall not permit any agent/workers to carry out any work in the Apartment, until possession is handed over
+                        to the Allottee. </td>
+                </tr>
+            </table>
+            <p style="padding-top:20px; text-align:justify;">
+                5.<span style="padding-left: 30px"><strong><u>BREACH OF TERMS AND ITS REMEDY:</u></strong></span>
+            </p>
+            <p style="padding-left:30px; text-align:justify;">
+             <strong>(a)</strong>  <span style="padding-left: 20px"><strong>ALLOTTEE’S COVENANT: </strong></span>
+            </p>
+            <table>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">1.</td>
+                    <td width="95%" style="text-align:justify;">
+                    In the event of the Allottee/Purchaser failing to pay the aforesaid sums, in the manner provided in Schedule-“D” or 
+                        cancel/withdraw from the Project except for the default of the Vendor/Promoter, then the Vendor/Promoter, at their
+                        discretion after due notice of 15 days to the Allottee/Purchaser, is entitled to cancel this Agreement and re-allot
+                        the Apartment, to another party and the Allottee/Purchaser shall thereafter have no right, interest or claim over the
+                        Apartment. Consequent to such termination and re-allotment of the apartment to the prospective purchaser, subject to
+                        deduction of the booking amount, the Vendor/Promoter shall refund the monies collected from the Allottee/Purchaser
+                        within 15 days of such re-allotment without interest, simultaneous to the Allottee/Purchaser executing necessary
+                        cancellation and registration of the Agreement and/or sale deed by the Allottee/Purchaser. It is clarified that the
+                        Allottee shall not be entitled to claim refund till the Apartment is re-allotted/sold to a prospective purchaser and
+                        execution of cancellation of the Agreement/s executed in favour of the Allottee/Purchaser. The period of 15 days 
+                        provided for refund shall commence only from the date of re-allotment or sale of the Apartment to a prospective 
+                        purchaser, as the case may be and/or execution of cancellation agreements, whichever is later.
+
+                    </td>
+                </tr>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">2.</td>
+                    <td width="95%" style="text-align:justify;">
+The Allottee/Purchaser hereby agrees that the assignment of the Allottee’s/Purchaser right under this agreement to any third party is subject to
+                        the prior written permission of the Vendor/Promoter and further agrees to pay to the Vendor/Promoter an Assignment fee 
+                        of 5% of Construction Cost (‘Assignment Fee’).                    </td>
+                </tr>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">3.</td>
+                    <td width="95%" style="text-align:justify;">
+                     The Parties hereby confirm that this Agreement and the Agreement for Sale of even date entered into by the
+                        Allottee/Purchaser shall co-exist or co-terminate and that breach either will result in the breach of the other also.
+   
+                    </td>
+                </tr>
+            </table>
+            <p style="padding-left:30px; text-align:justify;">
+             <strong>(b)</strong>  <span style="padding-left: 20px"><strong>VENDOR/PROMOTER’S COVENANT: </strong></span>
+            </p>
+            <p style="padding-left:30px; text-align:justify;">
+                Subject to the Force Majeure clause, the Vendor/Promoter shall be considered to be on default, in the following events:
+
+            </p>
+            <table>
+                 <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">1.</td>
+                    <td width="95%" style="text-align:justify;">
+                     Vendor/Promoter fails to provide ready to move in possession of the Apartment to the Allottee/Purchaser within the time 
+                        period specified. For the purpose of this clause, 'ready to move in possession' shall mean that the apartment shall be 
+                        in a habitable condition which is complete in all respects;
+
+                    </td> </tr>
+                 <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">2.</td>
+                    <td width="95%" style="text-align:justify;">
+                      Discontinuance of the Vendor/Promoter’s business as a developer on account of suspension or revocation of his registration
+                        under the provisions of the RERA Act or the rules or regulations made there under;
+                    </td>
+                </tr>
+                 <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">3.</td>
+                    <td width="95%" style="text-align:justify;">
+In case of Default by Vendor/Promoter under the conditions listed above, Allottee/Purchaser is entitled to the following:  </td>
+                </tr>
+            </table>
+                    
+                <table>
+                 <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top; padding-left:30px">(i)</td>
+                    <td width="95%" style="text-align:justify; padding-left:30px;">
+                      Stop making further payments to Vendor/Promoter as demanded by the Vendor/Promoter. If the Allottee/Purchaser stops making 
+                        payments, the Vendor/Promoter shall correct the situation by completing the construction milestones and only thereafter
+                        the Allottee/Purchaser be required to make the next payment without any penal interest; or
+
+                    </td>
+                </tr>
+                    <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top; padding-left:30px">(ii)</td>
+                    <td width="95%" style="text-align:justify; padding-left:30px;"> 
+                        The Allottee/Purchaser shall have the option of terminating the Agreement in which case the Vendor/Promoter shall be 
+                        liable to refund the entire money paid by the Allottee/Purchaser under any head whatsoever towards the purchase of the 
+                        Apartment, along with interest at the rate specified in the Rules within 30 days of receiving the termination notice, 
+                        simultaneous to the execution of cancellation agreement and registration thereof, if required.
+                    </td>
+                </tr>
+                    <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top; padding-left:30px">(iii)</td>
+                    <td width="95%" style="text-align:justify; padding-left:30px;"> 
+                      Provided that where an Allottee/Purchaser does not intend to withdraw from the project or terminate the Agreement, he/she
+                        shall be paid, by the Vendor/Promoter, interest at the rate specified in the Rules, for every month of delay till the
+                        handing over of the possession of the Apartment.
+
+                    </td>
+                </tr>
+            </table>
+            <p style="padding-top:20px; text-align:justify;">
+                6.<span style="padding-left: 30px"><strong><u>MAINTENANCE OF COMMON AREAS AND AMENITIES IN THE PROJECT:</u></strong></span>
+            </p>
+            <table>
+                 <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">a)</td>
+                    <td width="95%" style="text-align:justify;">
+                     The Allottee/Purchaser shall become a member of the Association of Owners in the project and subject himself or herself to the Rules
+                        and By-laws framed therefore and use the Apartment only for residential purpose and consistent with the rights of other owners and 
+                        occupiers of other Apartments and use its drains, sewages, water supplies, power connection and other common amenities with care and diligence.</td>
+                </tr>
+                 <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">b)</td>
+                    <td width="95%" style="text-align:justify;">
+                     The Allottee/Purchaser shall bear the expenses along with other Apartment owners, for the maintenance and repairs of sewage
+                        drains, water and power supplies, white washing, maintenance of common space and other common area and amenities etc. 
+                        The Allottee/Purchaser agrees and shall pay the maintenance charges as per the scope mentioned in Annexure – 2 herein 
+                        for the amenities/common area as fixed by the Vendor/Promoter, Maintenance Agency or the Association, as the case may be.
+                    </td>
+                </tr>
+                 <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">c)</td>
+                    <td width="95%" style="text-align:justify;">
+                     In the event of the maintenance of the common areas and amenities is by a Third Party Maintenance Agency, the
+                        Allottee/Purchaser, along with the  owners of the other Apartments,  agree to execute an independent maintenance
+                        agreement with such maintenance agency as per the Scope of Maintenance as mentioned in Annexure -2 herein. The rights,
+                        duties and obligation of maintenance of the Common Areas and amenities provided   in   the   Project   may   be 
+                        captured   in   the   said   maintenance   agreement (‘Maintenance Agreement’).
+
+
+                    </td>
+                </tr>
+                 <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">d)</td>
+                    <td width="95%" style="text-align:justify;">
+                      The Vendor/Promoter shall provide essential maintenance services to common areas/amenities/ facilities those are pertaining
+                        to the entire project, from the date of completion of the respective phase of the Project for a period 36 months @
+                        Rs. 3.5/- per sq.ft. per month plus applicable GST  by themselves or through any other agency appointed by the 
+                        Vendor/Promoter.  The scope of maintenance is more clearly set out in the Annexure 2 hereto. It is further agreed and
+                        accepted by the Allottee/Purchaser that, until the VENDOR/PROMOTER sells 85% of the project, the maintenance shall
+                        automatically renewed and extended for another period of 36 months from the date of expiration of initial 36 months as 
+                        said above. In such an event, the Allottee/Purchaser shall pay the maintenance charges for the extended period with an 
+                        escalation of 10% p.a from the existing cost. The Allottee/Purchaser undertakes to pay the maintenance charges by way of 
+                        12 equated quarterly installments payable at the beginning of the every quarter, so as to enable the Vendor/Promoter to
+                        carry out the maintenance without any demur. In the event of failure thereof, the Vendor/Promoter shall be entitled to
+                        debit the Corpus fund paid by the respective Allottee[s] /Purchaser who is at default.    It is clarified that the right
+                        of maintenance shall be vested with the Vendor/Promoter until the Vendor/Promoter sells 85% of its stake in the entire 
+                        project.  It is further clarified that if Association desires to take over the maintenance before attaining sales of
+                        85% of entire project as stated above, the same shall be handed over to the Association on a specific condition that the
+                        Vendor/Promoter shall not be liable to contribute any maintenance charges for the unsold inventory.
+
+                    </td>
+                </tr>
+                 <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">e)</td>
+                    <td width="95%" style="text-align:justify;">
+                        Any expenditure towards providing additional amenities/specifications over and above the specifications detailed out in 
+                        Annexure 1 &amp; 2 shall be met out by the Vendor/Promoter from and out of the Corpus Fund and the Allottee/Purchaser 
+                        /Association may keep informed about the same through proper means of communication.
+                  </td>
+                </tr>
+                 <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">f)</td>
+                    <td width="95%" style="text-align:justify;">
+                    Notwithstanding the amount paid by the Allottee[s] /Purchaser towards maintenance &amp; Corpus fund as set out above, it is hereby made clear to
+                        the Allottee[s] /Purchaser that the cost involved in creating IT infrastructure, either Hardware(Computers, keyboards,
+                        etc.,) or Software (ADDA etc.,) towards maintaining the day-to-day operations relating to facility management for the
+                        Society/Association, shall be paid by the Purchaser/Allottee separately. However the Vendor/Promoter shall coordinate to 
+                        provide such facilities in consultation with the Association.   
+                    </td>
+                </tr>
+                 <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">g)</td>
+                    <td width="95%" style="text-align:justify;">
+                       The capital expenditure spent of the Corpus Fund shall be replenished by raising pro-rate demand and collection from
+                        each Allottee/Purchaser, if the Allottee/Purchaser defaults in making the proportionate Corpus Fund the Vendor/Promoter
+                        shall be entitled to collect the prescribed interest for the due payments, or the Vendor/Promoter is entitled to deduct
+                        the same from and out of the Corpus Fund.
+                    </td>
+                </tr>
+                 <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">h)</td>
+                    <td width="95%" style="text-align:justify;">
+                        The Allottee/Purchaser along with the other Allottees/Purchasers of the Project shall ensure that the Owners Welfare
+                        Association is formed as per the provisions of the Tamil Nadu Apartment Ownership Act, 2022 (‘Owners Association’). 
+                        The Vendor/Promoter shall render its co-operation and facilitate in formation of the Owners Association.
+
+                    </td>
+                </tr>
+                 <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">i)</td>
+                    <td width="95%" style="text-align:justify;">
+                       It is agreed by the Allottee/Purchaser herein that only after the VENDOR/PROMOTER attains sale of 85% stake in the entire 
+                        project as envisaged in clause 6(d) supra, the Flat Owners  Association shall be entitled take over the maintenance and 
+                        the Allottee/Purchaser shall continue to pay the all costs, charges, expenses, relating to the management, maintenance 
+                        and up keep of common areas and common facilities/amenities including but not limited to STP/ETP, Lifts, Motors, pumps, 
+                        etc., within the Project on pro-rata basis or in another manner as deem fit by the Association. The Vendor/Promoter shall
+                        not be liable for any shortcomings or deficiency thereof, in any manner whatsoever. However, the Vendor/Promoter shall 
+                        contribute 20% of actual maintenance charges towards unsold inventory.
+                    </td>
+                </tr>
+                 <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">j)</td>
+                    <td width="95%" style="text-align:justify;">
+                     It  is  specifically  agreed  by  the  Allottee/Purchaser  that  the  Allottee/Purchaser  shall  pay  their  pro-rata 
+                        maintenance charges for the common areas, common amenities / facilities in the Project in time and without any delay and
+                        in the event of the Allottee’s/Purchaser’s inability to pay the maintenance charges or any default or delay in payment 
+                        of maintenance charges and deposits if any,  the Allottee/Purchaser may be deprived  of his/her/its/their rights to enjoy
+                        the common facilities and amenities. In addition to that, such defaults will be displayed in the notice board within the
+                        Project.
+
+                    </td>
+                </tr>
+            </table>
+            <p style="padding-top:20px; text-align:justify;">
+                7.<span style="padding-left: 30px"><strong><u>SANCTIONS AND APPROVALS:</u></strong></span>
+            </p>
+            <table>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(a)</td>
+                    <td width="95%" style="text-align:justify;">
+The statutory approvals, including State and Central Government approvals/permissions including amendments/modifications/ alterations, 
+                        its departments, local bodies, authorities, CMDA, TNEB, Corporation of Chennai, and all other concerned authorities,
+                        may mandate the Vendor/Promoter to hand over certain percentage of land to the statutory authorities concerned, as a 
+                        condition for granting approval.  The Vendor/Promoter shall have absolute discretion to vary/revise the internal plan
+                        from the presently approved plan by the competent authorities based on customer’s requirement with respect to individual
+                        flats in any/all blocks to satisfy the needs of the customer. The Vendor/Promoter shall have absolute discretion to 
+                        determine and identify the portion of the land to be handed over for complying with the terms and conditions of
+                        statutory approvals.                     </td>
+                </tr>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(b)</td>
+                    <td width="95%" style="text-align:justify;">
+The Vendor/Promoter hereby covenants that the Project shall be constructed as per the approved building plan.                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(c)</td>
+                    <td width="95%" style="text-align:justify;">
+                     The Allottee/Purchaser is aware that the present plans sanctioned by the competent authority is valid for specific term,
+                        the Vendor/Promoter shall be responsible to get the approvals duly renewed, the Allottee/Purchaser hereby give their 
+                        specific consent and empower the Vendor/Promoter to file necessary renewal application with the appropriate authority 
+                        and to comply with any statutory requirement for such renewal.
+                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(d)</td>
+                    <td width="95%" style="text-align:justify;">
+                     The Allottee/s/Purchaser hereby further and specifically consents/agrees that the VENDOR/PROMOTER, during the construction
+                        of the project/any phase, shall be absolutely entitled to apply for revision of the existing approved plan in order to 
+                        accommodate any new rule/regulation introduced by CMDA/DTCP/Fire Department/TNEB and other Competent Authorities [OR] in 
+                        order to achieve more FSI, increase/decrease the size of the dwelling units, increase the number car parking, 
+                        combining/amalgamating two or more dwelling units or to develop any additional phase by amalgamating adjacent properties 
+                        to the property more fully described in the Schedule “B” hereunder which are permissible within the developments control
+                        rules or and carryout the same. Further, the VENDOR/PROMOTER shall, on behalf of the Allottee/Purchaser, be fully 
+                        authorized to sign all forms, applications, declarations, undertaking or any other document in this regard.  This clause
+                        shall be treated as a Power of Attorney entrusted upon the VENDOR/PROMOTER / No objection Letter issued to the 
+                        VENDOR/PROMOTER in this regard.    The Allottee[s] /Purchaser undertake that’s he/she shall not object/create any 
+                        hindrance for such revision for any reason whatsoever.  The Allottee[s] /Purchaser further understand that such hindrance
+                        may delay the approval process and delivery of possession, for which the Vendor/Promoter shall not be held responsible.  
+    
+
+                    </td>
+                </tr>
+
+            </table>
+            <p style="padding-top:20px; text-align:justify;">
+              <strong> 8.</strong> <span style="padding-left: 30px"><strong><u>DEFECTS LIABILITY:</u></strong></span>
+            </p>
+           <p style="text-align:justify; font-size:14px">
+               The Vendor/Promoter shall rectify any structural defects with respect to the Apartment (normal wear and tear is exempted), 
+               which shall not be as the result of any commission or omission of the Allottee/Purchaser, any damages caused due to the acts 
+               of god or natural calamities or fire accidents, any willful or accidental damages caused, any damages caused due to tampering by
+               the Allottee/Purchaser, any product that has been installed by the Vendor/Promoter brought to the notice of the Vendor/Promoter 
+               within 5 years from the date of intimating the readiness to handover of the Apartment and thereafter no claim shall be entertained
+               against the Vendor/Promoter in respect of any alleged defective work in the Apartment and/or Project under any circumstances. 
+               The above liability of the Vendor/Promoter shall be restricted only to rectify /repair the above defects and any consequential 
+               damages will not be covered under this Agreement. Structural defects shall not include plastering hairline crack. Third party 
+               warranty on products shall be governed by the terms and conditions provided by the manufacturer of the respective products.
+            </p>
+<p style="padding-top:20px; text-align:justify;">
+               <strong> 9.</strong><span style="padding-left: 30px"><strong><u> SEWAGE TREATEMENT PLANT / LIFT / DIESEL GENERATOR (MEP)</u></strong></span>
+            </p>
+            <table>
+                 <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">a)</td>
+                    <td width="95%" style="text-align:justify;">
+                      The Vendor/Promoter, as part of the specification/common amenities, shall provide a Sewage/Effluent Treatment of a required
+                        capacity in order to manage the drainage/sewage in the project and treat the sewage water generated thereof.  
+                        The location of STP shall be as per the choice of the Vendor/Promoter. The Allottee[s]/Purchaser hereby undoubtedly
+                        understands that the responsibility of the Vendor/Promoter shall be ended on the date of erection of the plant in all
+                        respects.  The commissioning of STP shall be done and shall become operational only if the occupancy reaches 50% of the
+                        total no. of apartments in the project / phase.  The Association shall take over possession of the STP unit in all respects
+                        maximum within 30 days from the date of commissioning.  It is further made clear that notwithstanding the maintenance charges
+                        paid by the Allottee[s]/Purchaser, the Association shall alone be responsible towards the cost of operation &amp; maintenance of
+                        STP including electricity charges / AMC charges etc., howsoever arising on account of maintenance of STP.  The Vendor/Promoter,
+                        till the STP is made operational, shall facilitate the removal of sewage through tanker lorries / or by any other means and debit
+                        the cost to the corpus fund account. However, the Vendor/Promoter shall ensure that the cost incurred in disposal of sewage shall
+                        not exceed the day-to-day operational cost of STP unit which the Association would incur otherwise, if the STP is operational.
+
+                    </td>
+                </tr>
+                 <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">b)</td>
+                    <td width="95%" style="text-align:justify;">
+                      The Vendor/Promoter shall provide one or more Diesel Generators with required capacity in order to give power back up to the minimum
+                        essential points inside the apartment and in the common areas as the case may be as per the specification mentioned in this
+                        Agreement. The location of DGs shall be as per the choice of the Vendor/Promoter. The Allottee[s]/Purchaser hereby undoubtedly understand that the responsibility of the Vendor/Promoter shall be ended on the date of erection of DG in all respects.  The procurement &amp; installation of DGs shall happen progressively based on the occupancy and electricity load to be consumed therein the project / phase.  The Association shall take over possession of the DGs as and when it is installed. It is further made clear that notwithstanding the maintenance charges paid by the Allotte[e]/Purchaser the Association shall alone be responsible towards the cost of operation amp;&amp; maintenance of DGs including AMC charges, Fuel consumption charges etc.,  and hence, the Vendor/Promoter shall debit such cost to the Corpus Fund account. 
+  
+                    </td>
+                </tr>
+
+                 <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">c)</td>
+                    <td width="95%" style="text-align:justify;">
+                     The Vendor/Promoter shall provide one or more passenger/service lifts in the block/core as the case may be as per the specification mentioned in this Agreement. The Allottee[s]/Purchaser hereby undoubtedly understand that the commissioning of Lifts shall happen progressively based on the occupancy and usage in the respective Blocks. It is further made clear that notwithstanding the maintenance charges paid by the Allottee /Purchaser, the Association shall alone be responsible towards the cost of operation &amp; maintenance of Lifts including AMC charges and hence, the Vendor/Promoter shall debit such cost to the corpus fund account.   
+                    </td>
+                </tr>
+            </table>
+            <p style="padding-top:20px; text-align:justify;">
+               <strong> 10.</strong><span style="padding-left: 30px"><strong><u>INFRASTRUCTURE FOR / FIRE FIGHTING SYSTEM </u></strong></span>
+            </p>
+            <p style="text-align:justify; font-size:14px">
+                 The Vendor/Promoter has provided Fire Fighting system in the project as per approval firefighting norms.  The Vendor/Promoter, after erection of Fire Fighting system, shall make it operational and demonstrate the workability only before the Competent Authorities before obtaining the NOCs.  The Association representatives, if desired, can be present during such demonstration. The repair/maintenance cost shall be that of the Association and shall be debited to the Corpus Fund.  In the event of any additional Demonstration is required by the Association, the same shall be facilitated only on chargeable basis.
+
+            </p>
+            <p style="padding-top:20px; text-align:justify;">
+               <strong> 11.</strong><span style="padding-left: 30px"><strong><u>LOANS AND FINANCIAL ASSISTANCES:</u></strong></span>
+            </p>
+            <table>
+                
+            
+             <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(a)</td>
+                    <td width="95%" style="text-align:justify;">
+                       The original Sale Deed relating to the SCHEDULE “C” PROPERTY will be under the custody of the Vendor/Promoter till such time all / last payment including cost of construction and extra amenities are paid / settled by the Allottee/Purchaser to the Vendor/Promoter. However, if the Allottee/Purchaser prefers/s to avail loan, the original Sale Deed in respect of SCHEDULE “C” PROPERTY will be released directly to the mortgagee  /  Banks  /  Financial  Institutions,  after  obtaining  a  commitment  letter  from  the mortgagee / banks / financial institutions. 
+ 
+                    </td>
+                </tr>
+
+
+             <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(b)</td>
+                    <td width="95%" style="text-align:justify;">
+                      The Vendor/Promoter undertakes to furnish one set of photocopies of title deeds pertaining to the SCHEDULE “B” PROPERTY to the Allottee/Purchaser. In the event of foreclosure of the loan by the Allottee/Purchaser prior to handing over the SCHEDULE “C” PROPERTY by the Vendor/Promoter to the Allottee/Purchaser, the Allottee/Purchaser shall hand over the original Sale Deed to the Vendor/Promoter and the Vendor/Promoter will have the custody of the documents till such time all / last payment including cost of construction and extra amenities are paid / settled by the Allottee/Purchaser to the Vendor/Promoter.
+   
+                    </td>
+                </tr>
+
+
+             <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(c)</td>
+                    <td width="95%" style="text-align:justify;">
+                      All the payments to be paid under this Agreement by the Allottee/Purchaser to the Vendor/Promoter, apart from the loan amount, shall be paid directly by the Allottee/Purchaser to the Vendor/Promoter;
+  
+                    </td>
+                </tr>
+
+
+             <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(d)</td>
+                    <td width="95%" style="text-align:justify;">
+                      All the loan amount/s, availed by the Allottee/Purchaser, shall be directly disbursed / released by the bank / financial institution to the Vendor/Promoter and the same shall be treated as payments made on behalf of the Allottee/Purchaser;
+  
+                    </td>
+                </tr>
+
+
+             <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(e)</td>
+                    <td width="95%" style="text-align:justify;">
+                      Notwithstanding whether the loan is obtained or not, the Allottee/Purchaser shall still be liable to pay to the Vendor/Promoter on the due dates the relevant installments and all other sums due under this Agreement and in the event, if there is any delay and or default is made in payment of such amount/s, the Allottee/Purchaser shall be liable for the consequences including payment of delayed payment charges on the outstanding payment as provided in this agreement.
+  
+                    </td>
+                </tr>
+                </table>
+            <p style="padding-top:20px; text-align:justify;">
+               <strong> 12.</strong><span style="padding-left: 30px"><strong><u> RIGHTS AND DUTIES OFTHE ALLOTTEE:</u></strong></span>
+            </p>
+            <table>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(a)</td>
+                    <td width="95%" style="text-align:justify;">
+                     While the Allottee/Purchaser would have absolute and exclusive ownership possession/enjoyment of the Apartment, after handing over, the Allottee’s/Purchaser’s right, title and interest in the common areas shall be enjoyed in concurrence with other owners/residents of other apartments in the Project, who would be equally entitled to the common amenities/facilities/easements available in the Project, all costs of repairs/maintenance of which common enjoyments shall be shared by all the owners, including the Allottee/Purchaser as per the articles/regulations/bye-laws of the Association to be formed by all the apartment owners in the Project;
+   
+                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(b)</td>
+                    <td width="95%" style="text-align:justify;">
+                      It is abundantly made clear that all the service lines, ducts, water courses and other facilities passing through the Said Land shall be treated as common to all the owners, which shall be maintained by the Association. The owners of the apartments shall not object to the common services passing through their respective apartments and allow the service persons to do the maintenance services in the areas through which the services are passing through;
+  
+                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(c)</td>
+                    <td width="95%" style="text-align:justify;">
+                      The Allottee/Purchaser shall adhere to the maintenance and usage guidelines provided by the Association to maintain harmonious community living and ensure that rights and enjoyment of other apartment owners are not affected;
+  
+                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(d)</td>
+                    <td width="95%" style="text-align:justify;">
+                       The Allottee/Purchaser covenants not to make any alteration in the structure of the Apartment, which may affect directly or indirectly, the structural safety &amp; stability and the aesthetic elevation of the building complex; In the event of the structural or other defect arising in the construction due to any alteration and/or interior work carried out by the Allottee, the Vendor/Promoter shall not be responsible for the same or  its rectification;
+ 
+                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(e)</td>
+                    <td width="95%" style="text-align:justify;">
+                      The Allottee/Purchaser or their tenants(Occupants)and/or Association shall not, at any time, encroach and carry on in the common areas or within the SCHEDULE “B” PROPERTY, any commercial trade or business or use it for  storage of anything  which is offensive in nature, hazardous or inflammable or is likely to be a nuisance or danger or diminish the value or the utility of the other portions of the building in the Project in occupation of the owners of other apartments or their successors in title and further shall not do or commit any activity which is unlawful and anti– social;
+  
+                    </td>
+                </tr>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                     The Allottee/Purchaser shall either in his/her/its/their individual capacity or as a member of the Association Society, after its formation, come to an understanding with the other owners of the apartment shall operate and maintain all the essential amenities like STP, Genset, elevator, Rainwater harvesting etc., either individually or through the Association whenever required and in good running condition. It is the responsibility of the Allottee/Purchaser and or the Association to ensure proper assistance to the government officials concerned during periodical inspection. The Allottee/Purchaser shall not either in his/her/its/their individual capacity or as a member of the Association, after its formation, come to an understanding with the other owners of the apartment to utilize the common areas for commercial purposes or for earning income from outsiders;
+   
+                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(f)</td>
+                    <td width="95%" style="text-align:justify;">
+                      The Allottee/Purchaser agrees to sign from time to time all papers and documents and to do all things as the Vendor/Promoter 
+                        may require, for the effective completion of the construction and in matters connected with obtaining, erecting and 
+                        providing the infrastructural facilities like water, sewerage, electricity, etc.;
+  
+                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(g)</td>
+                    <td width="95%" style="text-align:justify;">
+                      The Allottee/Purchaser shall not encroach upon the common areas;  
+                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(h)</td>
+                    <td width="95%" style="text-align:justify;">
+                     The Allottee/Purchaser shall not decorate the exterior of the proposed buildings in the Project otherwise than in a manner
+                        agreed to by the majority of the apartment owners with the prior permission of the Association; However, the
+                        Allottee/Purchaser, for a period of three years from the date of handing over possession of Schedule C property,
+                        shall not be authorized to cover the balcony by erecting/putting up grill or any other material.  In the event of the
+                        Vendor/Purchaser doing so, the VENDOR/PROMOTER shall be entitled to remove the same by itself or through any third party agency at the cost of the Allottee/Purchaser.  In case of non-payment of such cost within 30 days from the date of its occurrence, the VENDOR/PROMOTER is also entitled to deduct the same from the Corpus fund paid by respective Allottees/Purchasers.  In such an event, the Promoter shall have a right to retain or forfeit the Corpus fund paid by the respective Allottees/Purchasers till the rectification is carried out and cost for the same is recovered in full.
+   
+                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(i)</td>
+                    <td width="95%" style="text-align:justify;">
+                     The Allottee/Purchaser shall not put up any temporary or permanent structure anywhere in the Project nor change the elevation of the proposed buildings; In the event of the Allottee/Purchaser doing so, the VENDOR/PROMOTER shall be entitled to remove the same by itself or through any third party agency at the cost of the Allottee/Purchaser.   
+                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(j)</td>
+                    <td width="95%" style="text-align:justify;">
+                      The Allottee/Purchaser shall not make any alterations in the structural feature of the proposed building like R.C.C.Flooring, Roofing, columns and external walls during \after completion, including the parking space allotted;
+  
+                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(k)</td>
+                    <td width="95%" style="text-align:justify;">
+                      The Allottee/Purchaser shall use the Apartment only for residential purposes and not to use for any other purposes and for business prohibited by law; 
+  
+                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(l)</td>
+                    <td width="95%" style="text-align:justify;">
+                        The Allottee/Purchaser shall not cause any nuisance to the other occupants of proposed apartments in the Project;
+
+                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(m)</td>
+                    <td width="95%" style="text-align:justify;">
+                       The Allottee/Purchaser shall have no right to hinder the progress of construction of the residential apartment buildings in the Project or any part thereof under any circumstances whatsoever, and at whatever stage of construction; It is further clarified to the Allottee/Purchaser that, in order to ensure smooth work flow and quality of work, he/she shall be liable to obtain prior appointment from the Vendor/Promoter before visiting the project site for inspection of construction progress and/or for any other purposes.  The Vendor/Promoter or their representative/staff are not liable to meet/attend the Allottee[s] /Purchaser or their representatives, in case of no prior appointment.
+ 
+                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(n)</td>
+                    <td width="95%" style="text-align:justify;">
+                      The Allottee/Purchaser shall give all necessary support, assistance to the other apartment owners/Association. The supporting common walls and roofs and all common areas of the buildings in the Project shall be maintained and repaired in common by all the owners of the apartments in the Project;  
+  
+                    </td>
+                </tr>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(o)</td>
+                    <td width="95%" style="text-align:justify;">
+                     The Allottee/Purchaser shall park their cars/vehicles only at the specific car parking space allotted to the Allottee/Purchaser  and not at any other place around the building and shall use the Car Parking space only for parking their vehicles and shall not use the parking space for other purposes including storage of materials;
+   
+                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(p)</td>
+                    <td width="95%" style="text-align:justify;">
+                     The Allottee/Purchaser or the Association of Owners shall not in any way obstruct or interfere with the construction and related activity that may be on going and  required to complete the project, particularly the balances phases, where the project is being developed in phases. In this regard the Allottee/Purchaser and/or the Association shall not interfere or obstruct the movement of men, material, etc., as may require for the construction and completion of the Project. 
+   
+                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(q)</td>
+                    <td width="95%" style="text-align:justify;">
+                      The Vendor/Promoter is, until the entire project is fully sold and handed over or completion of maintenance tenure whichever is later, entitled to take photographs / video of the project site or any part thereof during day / night for the purpose of their marketing activity and to conduct any sale/marketing event/mela etc., by itself or by engaging any other event management/marketing/third party agency.  The Allottee/Purchaser or the Flat Owner’s Association shall not be authorized to object to the same.  However, such activity shall be done/carried out without causing any hindrance/nuisance to the residents. The Allottee/Purchaser undertakes/consents that the bye-law/objective of the Association shall be framed only in consonance with various covenants the Allottee/Purchaser have agreed herein.  
+  
+                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(r)</td>
+                    <td width="95%" style="text-align:justify;">
+                      It is unambiguously agreed by the Allottee[s] /Purchaser that any dispute/difference of opinion which may arise between the Allottee[s]/Association and Vendor/Promoter in respect of maintenance, construction quality etc., and the same shall be sorted out/settled only by due process of law by way of the guideline set out in the clause 31 [Dispute Resolution].  It further agreed by the Allottee(s) /Purchaser(s) that, apart from settling the dispute/difference of opinion in the manner stated in clause 31 below, the Allottee(s) /Purchaser(s) or the Association shall not create any kind hindrance to the marketing activities / pending works in unsold apartments carried out by the Vendor/Promoter by (i) restraining the entry/exit of the staff / labourers / prospective customers to the project site (ii) display banners / hoardings with negative phrases or (iii) do any other activity which may hamper the business of the Vendor/Promoter.  Despite this undertaking, if the Allottee/Purchaser in his/her individual capacity or the Association involves in such activities including but not limited to those which are mentioned above, the Vendor/Promoter shall be entitled to deduct 2% of Corpus Fund per day towards liquidated damages.  If the entire corpus fund is exhausted by way of the aforesaid adjustments, even after which the Association continues to create hindrance to the marketability of the project, the Vendor/Promoter shall have right to deduct / recover these losses from the maintenance cost paid by the Allottee/Purchaser.  The Allottee[s] /Purchaser[s] understand that in such an event, the maintenance tenure shall be automatically stand reduced in proportion to the amount deducted as mentioned above.
+  
+                    </td>
+                </tr>
+
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(s)</td>
+                    <td width="95%" style="text-align:justify;">
+                        It is specifically agreed by the Allottee/Purchaser that the Allottee/Purchaser shall bear all statutory charges from the date of intimating the readiness of the Apartment for handover by the Vendor/Promoter.
+
+                    </td>
+                </tr>
+            </table>
+            <p style="padding-top:20px; text-align:justify;">
+               <strong> 13.</strong><span style="padding-left: 30px"><strong><u>RIGHTS AND DUTIES OF THE VENDOR/PROMOTER:</u></strong></span>
+            </p>
+            <table>
+                
+           
+             <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(a)</td>
+                    <td width="95%" style="text-align:justify;">
+                     The Vendor/Promoter undertakes to develop the Project with good workmanship using standard materials, through its own
+                        labour, materials, tools, machineries and other equipment for the purpose of construction,  or by  appointing  
+                        contractors  / sub – contractors,  engineers and supervisors at their choice and to take steps to complete the
+                        SCHEDULE“B” PROPERTY within the time stipulated for completion of the same;
+   
+                    </td>
+                </tr>
+
+             <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(b)</td>
+                    <td width="95%" style="text-align:justify;">
+                      The Vendor/Promoter shall be responsible and liable to pay the land tax in respect of the said Land up to the date of
+                        execution and registration of Sale Deed in respect of SCHEDULE-C PROPERTY or delivery of possession of the SCHEDULE-C 
+                        PROPERTY to the Allottee/Purchaser, whichever is earlier. From the date of intimating the readiness to hand over
+                        possession, the Allottee/Purchaser is solely responsible and liable for property tax and other relevant taxes/charges
+                        and duties to the respective authorities with respect to the SCHEDULE "C" PROPERTY;
+  
+                    </td>
+                </tr>
+
+             <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(c)</td>
+                    <td width="95%" style="text-align:justify;">
+                     The Vendor/Promoter will provide only electrical points.  The cost  of  all  electrical  fixtures and consumables like bulbs, fans, fittings etc., will be borne by the Allottee/Purchaser;
+   
+                    </td>
+                </tr>
+
+             <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(d)</td>
+                    <td width="95%" style="text-align:justify;">
+                      The Vendor/Promoter shall be entitled to erect and maintain their own/group companies/subsidiaries/sister concern advertisements in the Project till such time the Project is fully sold, handed over or maintenance completion, whichever is later.  If in phases, till all the phases are sold. On the completion of the Project/phases, the Vendor/Promoter shall entitled to place their name/logo/sign/hoarding  permanently in the form, size, manner and place as may be decided by the Vendor/Promoter without any cost and the Allottee /Purchaser or the Association shall not be entitled to object or remove the same.
+  
+                    </td>
+                </tr>
+             <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">(e)</td>
+                    <td width="95%" style="text-align:justify;">
+                       The Vendor/Promoter shall be entitled to carry on construction and other related activity including passage of men, materials, etc., and also its storage so as to enable them to complete the Project in full, particularly in case where the Project is being implemented in Phases. 
+ 
+                    </td>
+                </tr>
+                 </table>
+            <p style="padding-top:20px; text-align:justify;">
+               <strong> 14.</strong><span style="padding-left: 30px"><strong><u>NAME OF THE PROJECT:</u></strong></span>
+            </p>
+            <table>
+                
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                       The Project to be developed by the Vendor/Promoter in the SCHEDULE “B” PROPERTY is named as “JAINS ANUSHREE” which shall
+                        not be changed / altered by the Allottee/Purchaser at any point of time.   The Vendor/Promoter is expressly permitted to
+                        display, at all times, the name and logo of the Project along with the name of the Vendor/Promoter or their group 
+                        companies, upon the Project in such location and in the style and format of the Vendor/Promoter’s choice. 
+                        The Vendor/Promoter shall have exclusive proprietary and other rights, title and interest on such name.
+ 
+                    </td>
+                </tr>
+
+            </table>
+            <p style="padding-top:20px; text-align:justify;">
+               <strong> 15.</strong><span style="padding-left: 30px"><strong><u>RIGHT TO ENTER THE APARTMENT FOR REPAIRS:</u></strong></span>
+            </p>
+            <table>
+                
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                      The Vendor/Promoter / maintenance agency /association of Allottees/Purchaser shall have rights of unrestricted access of all common Areas, garages/closed parking’s and parking spaces for providing necessary maintenance services and the Allottee/Purchaser agrees to permit the association of Allottees/Purchaser and/or maintenance agency to enter into the Apartment or any part thereof, after due notice and during the normal working hours, unless the circumstances warrant otherwise, with a view to set right any defect.
+  
+                    </td>
+                </tr>
+
+            </table>
+            <p style="padding-top:20px; text-align:justify;">
+               <strong> 16.</strong><span style="padding-left: 30px"><strong><u>USAGE:</u></strong></span>
+            </p>
+            <table>
+                
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                     Use of Basement and Service Areas: The basement(s) and service areas, if any, as located within the project <b>“JAINS ANUSHREE”, </b>shall be earmarked for purposes such as parking spaces and services including but not limited to electric sub-station, transformer, DG set rooms, underground water tanks, pump rooms, maintenance and service rooms, firefighting pumps and equipment’s etc. and other permitted uses as per sanctioned plans. The Allottee/Purchaser shall not be permitted to use the services areas and the basements in any manner whatsoever, other than those earmarked as parking spaces, and the same shall be reserved for use by the association of Allottees/Purchasers formed by the Allottees/Purchasers for rendering maintenance services.
+   
+                    </td>
+                </tr>
+
+            </table>
+            <p style="padding-top:20px; text-align:justify;">
+               <strong> 17.</strong><span style="padding-left: 30px"><strong><u> COMPLIANCE OF LAWS, NOTIFICATIONS ETC., BY ALLOTTEE:
+</u></strong></span>
+            </p>
+            <table>
+                
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                     The Allottee/Purchaser is entering into this Agreement for the allotment of  Apartment with the full knowledge of all laws, rules, regulations, notifications applicable to the Project in general and this project in particular. That the Allottee/Purchaser hereby undertakes that he/she shall comply 
+with and carryout, from time to time after he/she has taken over for occupation and use the said Apartment, all the requirements, requisitions, demands and repairs which are required by any competent Authority in respect of the Apartment/ at his/ her own cost.
+   
+                    </td>
+                </tr>
+
+            </table>
+            <p style="padding-top:20px; text-align:justify;">
+               <strong> 18.</strong><span style="padding-left: 30px"><strong><u> ADDITIONAL CONSTRUCTIONS:
+</u></strong></span>
+            </p>
+            <table>
+                
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                      The Vendor/Promoter undertakes that it has no right to make additions or to put up additional structure(s) anywhere in the Project after the building plan has been approved by the competent authority (ies) except for as provided in the Act.  However, the VENDR/PROMOTER shall be at its liberty to do so if such additional construction is approved by the Competent Authorities. 
+  
+                    </td>
+                </tr>
+
+            </table>
+            <p style="padding-top:20px; text-align:justify;">
+               <strong> 19.</strong><span style="padding-left: 30px"><strong><u> APARTMENT OWNERSHIP ACT:
+</u></strong></span>
+            </p>
+            <table>
+                
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                     The Vendor/Promoter has assured the Allottees/Purchasers that the project in its entirety is in accordance with the provisions of the Tamil Nadu Apartment ownership Act, 1994 and Allottee/Purchasers shall comply with the compliance as required under the Apartment Ownership Act.
+   
+                    </td>
+                </tr>
+
+            </table>
+             <p style="padding-top:20px; text-align:justify;">
+               <strong> 20.</strong><span style="padding-left: 30px"><strong><u> ENTIRE AGREEMENT:
+</u></strong></span>
+            </p>
+            <table>
+                
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                     This Agreement, along with its schedules, constitutes the entire Agreement between the Parties with respect to the subject matter hereof and supersedes any and all understandings, any other agreements,  allotment  letter,  correspondences,  arrangements  whether  written or  oral,  if  any, between the Parties in regard to the said apartment/plot/building, as the case may be.
+   
+                    </td>
+                </tr>
+
+            </table>
+            <p style="padding-top:20px; text-align:justify;">
+               <strong> 21.</strong><span style="padding-left: 30px"><strong><u> RIGHT TO AMEND:
+
+</u></strong></span>
+            </p>
+            <table>
+                <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                     This Agreement may only be amended through written consent of the     
+           Parties.
+   
+                    </td>
+                </tr>
+
+            </table>
+            <p style="padding-top:20px; text-align:justify;">
+               <strong> 22.</strong><span style="padding-left: 30px"><strong><u> PROVISIONS OF THIS AGREEMENT APPLICABLE ON ALLOTTEE/ SUBSEQUENT ALLOTTEES:
+
+</u></strong></span>
+            </p>
+            
+<tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                        It is clearly understood and so agreed by and between the Parties hereto that all the provisions contained herein and the obligations arising hereunder in respect of the Project shall equally be applicable to and enforceable against any subsequent Allottees/Purchaser of the Apartment, in case of a transfer, as the said obligations go along with the Apartment for all intents and purposes.
+
+                    </td>
+                </tr>
+             <p style="padding-top:20px; text-align:justify;">
+               <strong> 23.</strong><span style="padding-left: 30px"><strong><u> WAIVER NOT A LIMITATION TO ENFORCE:
+
+</u></strong></span>
+            </p>
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top; padding-left:30px">a.</td>
+                    <td width="95%" style="text-align:justify; padding-left:30px;">  
+                        The Vendor/Promoter may, at its sole option and discretion, without prejudice to its rights as set out in this Agreement, waive the breach by the Allottee/Purchaser in not making payments as per the Payment Plan including waiving the payment of interest for delayed payment. It is made clear and so agreed by the Allottee /Purchaser that exercise of discretion by the Vendor/Promoter in the case of one Allottee/Purchaser e shall not be construed to be a precedent and /or binding on the Vendor/Promoter to exercise such discretion in the case of other Allottees/Purchasers.
+
+                    </td>
+                </tr>
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top; padding-left:30px">b.</td>
+                    <td width="95%" style="text-align:justify; padding-left:30px;">  
+                        Failure on the part of the Vendor/Promoter to enforce at any time or for any period of time the provisions hereof shall not be construed to be a waiver of any provisions or of the right thereafter to enforce each and every provision.
+
+                    </td>
+                </tr>
+            <p style="padding-top:20px; text-align:justify;">
+               <strong> 24.</strong><span style="padding-left: 30px"><strong><u> SEVERABILITY:
+
+</u></strong></span>
+            </p>
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                       If any provision of this Agreement shall be determined to be void or unenforceable under the Act or the Rules and Regulations made thereunder or under other applicable laws, such provisions of the Agreement shall be deemed amended or deleted in so far as reasonably inconsistent with the purpose of this Agreement and to the extent necessary to conform to Act or the Rules and Regulations made thereunder or the applicable law, as the case may be, and the  remaining provisions of this Agreement shall remain valid and enforceable as applicable at the time of execution of this Agreement.
+ 
+                    </td>
+                </tr>
+            <p style="padding-top:20px; text-align:justify;">
+               <strong> 25.</strong><span style="padding-left: 30px"><strong><u>METHOD  OF  CALCULATION OF  PROPORTIONATE SHARE  
+         WHEREVER REFERRED TO IN THEAGREEMENT:</u></strong></span>
+            </p>
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                      Wherever in this Agreement it is stipulated that the Allottee/Purchaser has to make any payment, in common with other Allottee(s) /Purchaser in Project, the same shall be the proportion which the carpet area of the Apartment bears to the total carpet area of all the [Apartments/Plots] in the Project.
+  
+                    </td>
+                </tr>
+             <p style="padding-top:20px; text-align:justify;">
+               <strong> 26.</strong><span style="padding-left: 30px"><strong><u>FURTHER ASSURANCES:
+</u></strong></span>
+            </p>
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                       Both Parties agree that they shall execute, acknowledge and deliver to the other such instruments and take such other actions, in additions to the instruments and actions specifically provided for herein, as may be reasonably required in order to effectuate the provisions of this Agreement or of  any transaction  contemplated  herein  or  to  confirm or  perfect any right  to be  created  or transferred hereunder or pursuant to any such transaction.
+ 
+                    </td>
+                </tr>
+             <p style="padding-top:20px; text-align:justify;">
+               <strong> 27.</strong><span style="padding-left: 30px"><strong><u>PLACE OF EXECUTION:
+</u></strong></span>
+            </p>
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                    The execution of this Agreement shall be complete only upon its execution by the Vendor/Promoter through its authorized signatory at the Vendor/Promoter’s Office, or at some other place, which may be mutually  agreed  between  the  Vendor/Promoter  and  the  Allottee, /Purchaser  in writing  after  the Agreement  is  duly  executed  by  the  Allottee/Purchaser  and  the  Vendor/Promoter  or  simultaneously  with  the execution the said Agreement shall be registered at the office of the Sub-Registrar. Hence this Agreement shall be deemed to have been executed at Vendor/Promoter’s office.
+    
+                    </td>
+                </tr>
+             <p style="padding-top:20px; text-align:justify;">
+               <strong> 28.</strong><span style="padding-left: 30px"><strong><u>NOTICES:
+</u></strong></span>
+            </p>
+            <table>
+                
+            
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                      That all notices to be served on the Allottee/Purchaser and the Vendor/Promoter as contemplated by this Agreement shall be deemed to have been duly served if sent to the Allottee/Purchaser or the Vendor/Promoter by Registered Post/ e-mail/ courier at their respective addresses specified below: 
+  
+                    </td>
+                </tr>
+                </table>
+            <div style="padding-left:80px; text-align:left">
+               <p>{!Booking__c.First_Applicant_Name__c} &nbsp;(Allottee/Purchaser Name)<br/></p>
+                <p>{!Booking__c.Communication_address1__c} &nbsp;(Allottee/Purchaser Address)<br/></p>
+               <p> {!Booking__c.Email2__c} &nbsp;(Allottee/Purchaser E-mail)<br/></p>
+               <p> {!Booking__c.Mobile__c} &nbsp;(Allottee/Purchaser Phone No.)<br/></p>
+                <br/>
+                <p>JAIN HOUSING &nbsp;(Vendor/Promoter Name)<br/></p>
+               <p>  &nbsp;(VENDOR/PROMOTER ADDRESS)<br/></p>
+                
+            </div>
+            
+            <table>
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                      It shall be the duty of the Allottee/Purchaser and the Vendor/promoter to inform each other of any change in address 
+                        subsequent to the execution of this Agreement in the above address by Registered Post failing which all communications 
+                        and letters posted at the above address shall be deemed to have been received by the Vendor/Promoter or the
+                        Allottee/Purchaser, as the case may be. It is also clarified that any communication except through Registered /Speed 
+                        Post/Courier and/or Email (to the registered mail address of the Vendor/Promoter or Allottee/Purchaser as the case may
+                        be) alone shall constitute valid and binding mode of communication. 
+  
+                    </td>
+                </tr>
+ </table>
+            <p style="padding-top:20px; text-align:justify;">
+               <strong> 29.</strong><span style="padding-left: 30px"><strong><u>JOINT ALLOTTEES:</u></strong></span>
+            </p>
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                      That in case there are Joint Allottees/Purchaser all communications shall be sent by the Vendor/Promoter to the Allottee/Purchaser whose name appears first and at the address given by him/her which shall for all intents and purposes to consider as properly served on all the Allottees/Purchaser. Likewise, delivery of possession to and also communications and acknowledgements, including cancellation, by the Allottee/Purchaser whose name appears first shall be considered due and sufficient in so far as the Vendor/Promoter is concerned.
+  
+                    </td>
+                </tr>
+
+            
+            
+            <p style="padding-top:20px; text-align:justify;">
+               <strong> 30.</strong><span style="padding-left: 30px"><strong><u>GOVERNING LAW:</u></strong></span>
+            </p>
+<tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                      That the rights and obligations of the parties under or arising out of this Agreement shall be construed and enforced in accordance with the laws of India for the time being in force.
+  
+                    </td>
+                </tr>
+            <p style="padding-top:20px; text-align:justify;">
+               <strong> 31.</strong><span style="padding-left: 30px"><strong><u>OTHER MATTERS:</u></strong></span>
+            </p>
+
+<tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">a)</td>
+                    <td width="95%" style="text-align:justify;">
+                        THE VENDOR/PROMOTER shall pass on the warranty and guarantee offered by the manufacturers of all the equipment’s and machinery used in the project. On expiry of the warranty period, the association should get into maintenance contract with the manufactures at their own cost. No extension of warranty shall be provided by the VENDOR/PROMOTER unless the association gets into a separate contract with the VENDOR/PROMOTER for the same.
+
+                    </td>
+                </tr>
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">b)</td>
+                    <td width="95%" style="text-align:justify;">
+                      The Vendor/Promoter shall be entitled to allot Open/Covered/Stack Car Parking as the case may be for the use of the 
+                        Allottee/Purchaser agreed that, as the Allottees/Purchasers requires the car park for his / her exclusive use.
+                        The Vendor/Promoter is allotting the same by assigning a number or by earmarking the area in the site without collecting
+                        any cost/charges towards the same.  It is further agreed that the rights to use the exclusive car park would run
+                        co-terminus with the rights of ownership of the relevant apartment.  It is further agreed that depending on the 
+                        availability of such spaces, the Vendor/Promoter would be entitled to allot car parking slots on "first cum first 
+                        serve" basis.  The Allottee/Purchaser further covenants and undertakes that he/she shall use the car parking space,
+                        if any allotted  to him/her as car parking space only and shall not convert it to any other use nor shall put up or 
+                        construct any wall or structure thereon. Further, the approving authorities viz. CMDA/DTCP/MLPA/CLPA or local body
+                        shall have charge over such parking spaces and at any point of time if there are any unauthorized conversion into other
+                        uses, the building is liable for enforcement action by the Local Planning Authority or the Regional Deputy Director of
+                        DTCP or designated agency as provisions of the Tamil Nadu Town Country Planning Act. Accordingly, the  Allottee/Purchaser
+                        shall be eligible to park their cars in the space exclusively earmarked and more clearly described in the schedule ‘C’ 
+                        hereunder. The parking of vehicles in the common area other than the areas marked as reserved car parks is also
+                        prohibited.   The Allottee/Purchaser understands that the Open/stack Reserved Car Parking spaces are allocated in the 
+                        setback area owing to the fact that the provision of car parking in covered spaces for all the apartment is not 
+                        practically possible.  It is further understood by the Allottee(s), apart from covered parking, the stack/open reserved
+                        parking are provided/earmarked in the setback area only for their convenience and to ensure that maximum flat owners 
+                        are provided with the parking facility so as to maintain the harmony amongst all residents.  All the decision relating
+                        car parking allotment shall solely be vested with the Developer and the same shall not be questioned/disputed either by the
+                        Allottee(s) /Purchaser individually or by the resident welfare association, collectively.  The Allottee(s) /Purchaser(s) unequivocally
+                        agree and undertake not to object the allotment of such open reserved /stack parking under any circumstances.  Despite the elaborate 
+                        clarification/condition, in case of any objection/dispute from any resident/Allottee/buyer, the Allottee/Purchaser agrees resolve such 
+                        dispute/objection through the resident welfare association without referring such disputes/objections to the Builder/Vendor/Promoter.  
+
+  
+                    </td>
+                </tr>
+
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">c)</td>
+                    <td width="95%" style="text-align:justify;">
+                      The ALLOTTEE/PURCHASER understands that the VENDOR/PROMOTER shall be entitled to allot private open terrace/private
+                        garden/service area as the case may be for the use of the other Allottee[s] /Purchaser for their exclusive use. It
+                        is further agreed that the rights to use such space would run co-terminus with the rights of ownership of the relevant
+                        apartment. It is further agreed that the respective Allottee[s/Purchaser] to whom such private terrace/private 
+                        garden/service area are allotted shall have exclusive usage right over the same the other Allottee[s] /Purchaser shall
+                        have no right/jurisdiction to object the same. However, the 
+                        Allottee[s] undertakes not to put up any permanent /temporary structure to cover such Pvt. Terrace/Garden. In the event of the Allottee[s] /Purchaser doing so, the
+                        VENDOR/PROMOTER shall be entitled to remove the same by itself or through any third party agency at the cost of the
+                        Allottee/Purchaser.
+                    </td>
+                </tr>
+
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">d)</td>
+                    <td width="95%" style="text-align:justify;">
+That Allottee/Purchaser has been fully appraised of the fact that an extent of   432.09 sq.m. In S.No. 130/2 part and 138.72 Sq.m. in S.No.
+                        130/2 parts, totally measuring an extent of 570.81 sq.m. )14.11 cents), to the President, Muttukadu Panchayat,
+                        Thiruporur  has been handed over to the towards Open Space Reservation as per the prescribed norms, it is further 
+                        aware that the landscape garden, Children’s Play area and other common amenities have been contemplated to be provided
+                        in the said area. The Allottee/Purchaser understands and agrees that Vendor/Promoter shall not be in a position to
+                        establish the landscape garden, Children’s play area and other common amenities in the event of government taking over
+                        the said OSR area and put the said area into different purpose. The Vendor/Promoter takes no responsibility for the 
+                        same and Allottee/Purchaser has booked an apartment and agreed to purchase the same in the schedule “C” mentioned 
+                        apartment in this project after fully understanding the same.   
+                    </td>
+                </tr>
+
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">e)</td>
+                    <td width="95%" style="text-align:justify;">
+                       The Vendor/Promoter shall provide the recreational facilities such as Club house with Gym, aerobics etc., at their own cost in the as earmarked in the Approved plan. The Vendor/Promoter shall maintain the same by leasing the same or under their supervision having full control and authority till the entire project is completed and sold.  The decision of the Vendor/Promoter shall be final and binding in maintaining such recreational facilities. 
+ 
+                    </td>
+                </tr>
+
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">f)</td>
+                    <td width="95%" style="text-align:justify;">
+                       The Allottee/Purchaser shall automatically become a member of all the recreational facilities provided in the building complex.  The Allottee shall pay the maintenance charges and recurring expenses for using such recreational facilities as may be fixed by the Vendor/Promoter or its authorized agency from time to time.
+ 
+                    </td>
+                </tr>
+
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">g)</td>
+                    <td width="95%" style="text-align:justify;">
+                     The Vendor/Promoter shall be undisputedly entitled to lease/rent the unsold apartments owned by them in the project for
+                        the purpose of co-living spaces to bachelors/families/MNCs &amp; Corporate Companies for Guest House / any for other 
+                        purposes which are legally permitted for residential use.  It is clarified that such co-living spaces can be managed
+                        either by the builder or through any third party duly authorized by the builder/ Vendor/promoter under any terms and conditions as deem fit by the Vendor/Promoter or
+                        its authorized agent. In such an event, the maintenance charges
+                        pertaining to those apartments shall be paid to the Resident Welfare Association which shall be on par with the charges 
+                        collected from the other residents.  Save and except the maintenance charges, no other amount shall become payable to 
+                        the Resident Welfare Association on any account whatsoever.  It is further clarified that the tenants/occupants of such
+                        apartments, which are demarcated/rented out for co-living purposes shall be entitled to use all the common 
+                        areas/amenities.  The Association shall be entitled to collect separate charges as applicable for usage of
+                        club house / gym or any other facility which are running in the project on chargeable basis. However, such charges 
+                        shall not exceed the charges applicable to the other flat owners.
+   
+                    </td>
+                </tr>
+
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">h)</td>
+                    <td width="95%" style="text-align:justify;">
+                      The Allottee[s] /Purchaser should pay a caution deposit of Rs.50,000/- if they need to do the interior work on their own in the flat such as (Tiling, painting, grill work, false ceiling, Modular work, etc.,). Once they complete the work the engineer appointed by the Vendor/Promoter will visit the common area if any damages has been done then corresponding amount will be deducted from the caution deposit and balance shall be refunded within 3 working days.
+  
+                    </td>
+                </tr>
+
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">i)</td>
+                    <td width="95%" style="text-align:justify;">
+                     The Allottee(s) agrees that the positioning of the transformer (if any), the Water sump/s, STP sump/s and units, generators (if any), cylinder storage room (if any) and drivers/watchman toilets shall be as specified by the concerned consultant/authority or the Vendor/Promoter. The Allottee(s/Purchaser(s) shall not be entitled to interfere in this matter. 
+   
+                    </td>
+                </tr>
+
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">j)</td>
+                    <td width="95%" style="text-align:justify;">
+                     The Allottee/Purchaser acknowledges that the Vendor/Promoter will not provide or establish any water sources, such as wells or borewells within the project, as the groundwater at the site is not fit for domestic use and treating it for safe use is not feasible, as the cost of maintaining a water treatment/RO plant would be high.  The Purchaser, along with other co-owners or the Flat Owners’ Association, agrees to independently arrange for water supply by either creating a water source or purchasing water through tanker services at their own expenses.  Further, these costs are not included in the project’s maintenance scope set out in Annexure 2 hereof. Further, the Purchaser understands that the price of the Schedule 'C' apartment has been determined with this situation taken into consideration and proceeds with the purchase of the Schedule 'C' property with full knowledge of these facts.
+   
+                    </td>
+                </tr>
+
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">k)</td>
+                    <td width="95%" style="text-align:justify;">
+                      The Allottee/Purchaser understands that the cost agreed to be paid herein as per clause 2(a) Supra shall not include CMWSSB/Metro/Corporation Water/Drainage deposits &amp; charges. In the event of service connection being provided for this project at any time during the Construction, the Developer shall facilitate the connection subject to Allottee making necessary payment in this regard.
+  
+                    </td>
+                </tr>
+
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">l)</td>
+                    <td width="95%" style="text-align:justify;">
+                     The Vendor/Promoter clearly states that on account of usage of Mivan technology, no alterations will be permitted to the structure or any part of the building. Additionally, the positions of the toilets and kitchen cannot be changed.
+   
+                    </td>
+                </tr>
+
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">m)</td>
+                    <td width="95%" style="text-align:justify;">
+                       The Vendor/Promoter can use the terrace area or in the building complex to erect hoardings, Publicity boards and display advertisements for their own purpose in such area without any claim from the Allottee[s] /Purchaser, or their Association who hereby consents and has no objection for the same. 
+ 
+                    </td>
+                </tr>
+
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">n)</td>
+                    <td width="95%" style="text-align:justify;">
+                       The Allottee[s] /Purchaser shall individually or jointly apply for the Property Tax, Name Transfer of Electricity, those relevant to the flat individually and those relating to the entire complex collectively with the owners of the rest of the flats.
+ 
+                    </td>
+                </tr>
+
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">0)</td>
+                    <td width="95%" style="text-align:justify;">
+                       The Allottee/Purchaser hereby gives his/her express consent to the VENDOR/PROMOTER that the VENDOR/PROMOTER shall be entitled to vary the approved plan and change the location/size of the common amenities/facilities from one size/location to another as they deem fit. 
+                    </td>
+                </tr>
+
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;">p)</td>
+                    <td width="95%" style="text-align:justify;">
+                     The Allottee/Purchaser simultaneous to this Agreement have also executed the Power of Attorney, No objection Letter &amp; Indemnity Bond authorizing / in favour of the VENDOR/PROMOTER in order to achieve / complete various covenants/assurances/undertakings given/accepted herein by the Allottee/Purchaser.   
+   
+                    </td>
+                </tr>
+
+          <p style="padding-top:20px; text-align:justify;">
+               <strong> 32.</strong><span style="padding-left: 30px"><strong><u> DISPUTE RESOLUTION:</u></strong></span>
+            </p>
+            <tr >
+                    <td width="5%" style="text-align:justify; vertical-align:top;"></td>
+                    <td width="95%" style="text-align:justify;">
+                     All or any disputes arising out or touching upon or in relation to the terms and conditions of this Agreement, including the interpretation and validity of the terms thereof and the respective rights and obligations of the Parties, shall be settled amicably by mutual discussion, failing which the same shall be settled through the adjudicating officer appointed under the Act. 
+   
+                    </td>
+                </tr>
+            <div style="page-break-after:always"></div>
+                
+            
+            <p style="text-align:center">
+               <span><strong><u>SCHEDULE –A</u></strong></span> <br/>
+                (Description of the Total Land)
+            </p>
+            <p style="text-align:justify; font-size:14px">
+All that piece and parcel of land measuring an extent 70 cents in S.No. 130/2 and 70 cents in S.No. 113/2A totaling in all to 1 Acre 40 Cents, (60,984 sq.ft. at No. 34, situated at Egattur Village, Thiruporur Taluk, Chengalpattu District, and bounded on the ;
+
+            </p>
+            <div style="padding-left:80px; text-align:left; line-height:1.2">
+                <p>North By   :12 meters wide Road. </p>
+                <p>South by ;  Natham Link Road (20 meters wide Road)</p>
+                <p>East by   ;   Land in S.No. 113/2 part.</p>
+                <p>West by  ;   Land in S.No. 113/1</p>
+
+            </div>
+            <p style="text-align:justify; font-size:14px">
+Within the Registration District of Chengalpattu and the Sub- Registration District of Thiruporur.            </p>
+           
+              <p style="text-align:justify; font-size:14px">
+                    The market value of the property is Rs.______________
+            </p><p style="text-align:center">
+              
+               <span><strong><u>SCHEDULE –B</u></strong></span> <br/>
+(Description of Total land in the hands of the vendor after deducting OSR I and OSR II)
+            </p>
+            <p style="text-align:justify; font-size:14px">
+All the Piece and Parcel of vacant land measuring an extent of 125.89 cents, comprising of 70 cents in S.No. 113/2A and 55.89 cents in S.No. 130/2 part, situated at Egattur Village, Thiurporur Taluk, Chengalpattu District, and bounded on the ;
+            </p>
+             <div style="padding-left:80px; text-align:left; line-height:1.2">
+                <p>North By   :  12 meters wide Road. </p>
+                <p>South By  :  Natham Link Road (20 meters wide Road)</p>
+                <p>East By    :  Land in S.No. 113/2 part.</p>
+                <p>West By   :  Land in S.No. 113/1</p>
+            </div>
+             <p style="text-align:justify; font-size:14px">
+Within the Registration District of Chengalpattu and the Sub- Registration District of Thiruporur.            </p>
+<p style="text-align:center">
+               <span><strong><u>SCHEDULE –C</u></strong></span> <br/>
+                (Description of Apartment hereby agreed to be sold)
+            </p>
+            <p style="text-align:justify; font-size:14px">
+            Flat/Apartment bearing No. {!Booking__c.Unit_NumberFor__c}
+                , having carpet area of {!Booking__c.Carpet_Area__c}
+                square feet 
+                Total Area of {!Booking__c.Super_Built_up_area_NE__c} Sq.ft
+                ( comprising of
+                carpet area + wall thickness &amp; balcony + proportionate share in common areas) in 
+                the {!Booking__c.FloorNo__c} Floor of Block No. {!Booking__c.Block1__c}
+                , of the residential apartment
+                project known as JAINS ANUSHREE together with {!Booking__c.UDS_Area__c}
+                Sq.ft. of undivided share of land out of Schedule A Property along with
+                No. of Covered/Open/Combined Covered Car parking Slot.
+            </p>
+            <p style="text-align:center">
+               <span><strong><u>SCHEDULE –D</u></strong></span> <br/>
+               (Schedule of Payment)
+            </p>
+            <p style="text-align:justify; font-size:14px">
+                Schedule of payments to be paid by the Allottee to the Vendor/Promoter for construction and delivery of the SCHEDULE “B” PROPERTY:
+            </p>
+            
+            
+            <table width="50%" style="border-collapse:collapse; border: 1px solid #000; margin: 0 auto;">
+                
+                <tr style="">
+                    <td width="25%" style="border:1px solid #000; padding-bottom:10px; vertical-align:-top">   Total Sale<br/> Consideration</td>
+                <td width="25%" style="border:1px solid #000">{!totalCostInString}</td>
+                </tr>
+                 <tr>
+                    <td width="25%" style="border:1px solid #000; padding-bottom:10px; vertical-align:-top">Advance paid</td>
+                <td width="25%" style="border:1px solid #000">{!totlreceivedinIndian}</td>
+                </tr>
+                 <tr>
+                    <td width="25%" style="border:1px solid #000; padding-bottom:10px; vertical-align:-top">Balance Consideration</td>
+                <td width="25%" style="border:1px solid #000">{!totalPendingInIndia}</td>
+                </tr>
+            </table>
+            <p style="text-align:justify; font-size:14px">
+                 The Balance Amount will be paid in the following manner:
+            </p>
+            <table width="80%" style="border-collapse:collapse; border: 1px solid #000; margin: 0 auto;">
+               
+                <tr>
+                <td style="border:1px solid #000"><strong>Sl.No.</strong></td>
+                    <td style="border:1px solid #000"><strong>Amount</strong></td>
+                    <td style="border:1px solid #000"><strong>Due Date / Stage</strong></td>
+                </tr>
+                <apex:repeat value="{!payList}" var="pay">
+                <tr>
+                    <td  style="border:1px solid #000">{!pay.S_No}</td>
+                    <td  style="border:1px solid #000">{!pay.amount}</td>
+                    <td  style="border:1px solid #000">{!pay.Name}</td> </tr>
+                </apex:repeat>
+               
+
+            </table>
+            <p style="text-align:justify; font-size:14px">
+                All delayed payments will attract 18% p.a.
+            </p>
+           <p style="text-align:center">
+               <span><strong><u>ANNEURE – 1</u></strong></span> <br/>
+               <b>(SPECIFICATIONS)</b>
+            </p>
+        <div style="padding-top:20px"> </div>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u>Structure </u></strong>   
+            </p>   
+            <ul style="text-align:left;">
+                <li>Mivan /RCC Framed structure.</li>
+                <li>Floor to floor height will be maintained at <strong>2975 mm.</strong></li>
+                <li>Anti-Termite treatment will be done.   </li>
+            </ul>
+              <div style="padding-top:20px"> </div>
+             <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u>Wall Finish </u></strong>   
+            </p>   
+            <ul style="text-align:left;">
+                <li>Internal wall in the living, dining, bedrooms, kitchen and utility will be finished with 1 coat of primer, 2 coats of putty and emulsion. </li>
+                <li>Ceiling will be finished with 1 coat of primer, 2 coats of putty and OBD. </li>
+                <li>Exterior faces of the building will be finished with 1 coat of primer and 2 coats of Weather proof exterior emulsion.  </li>
+           <li>Toilet walls below the false ceiling will be finished with 2 coat putty,1 coat of primer &amp; 2 coats of Emulsion.</li>
+                <li>Toilet walls will be finished with glazed ceramic tiles up to 2375 mm height.</li>
+                <li>Utility walls will be finished with glazed ceramic tiles as per the architect’s design.</li>
+                
+ </ul>
+            <div style="padding-top:20px"> </div>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u>Flooring </u></strong>   
+            </p>
+            <ul style="text-align:left;">
+                <li>Foyer, living, dining &amp; kitchen will have 1200 x 600 mm vitrified tile flooring &amp; 100mm ht skirting.</li>
+                <li>All the Bedrooms will have 600 x 600 mm vitrified tile flooring &amp; 100mm ht skirting. </li>
+                <li>Toilet, utility, and balcony will have Anti-Skid ceramic tiles.</li>
+           <li>Terrace floor will have weathering proof with cement flooring.</li>
+                <li>Common areas and staircases will have <strong> Granite /Marble/ Natural Stone/Tile flooring.</strong></li>
+               
+                
+ </ul>
+            <div style="padding-top:20px"> </div>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u> Kitchen </u></strong>   
+            </p>
+            <ul style="text-align:left;">
+                <li>Granite slab for about<b> 12-15 SQ.FT </b>will be done with 600 mm wide, at a height of 800 mm from the floor level, and will be provided with stainless steel sink (Nirali / Diamond or equivalent). </li>
+                <li>Dado tiles up to 600 mm from granite slab.  </li>
+                <li>Provision for chimney and water purifier.</li>
+                <li>CP fittings will be Parry ware/Hind ware/Jaguar or equivalent.</li>
+               
+
+        </ul>
+            <div style="padding-top:20px"> </div>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u>  CP and sanitary</u></strong>   
+            </p>
+            <ul style="text-align:left;">
+                <li>Wall mounted basin, Parry ware/Hind ware /Jaguar or equivalent, in master bed room. </li>
+                <li> Wall mounted closet with health faucet, Jaguar / Cera or equivalent, in all bathrooms.</li>
+                <li>CP and sanitary fittings, Parry ware/Hind ware /Jaguar or equivalent, will be provided. </li>
+                <li>Wall mixer, Parry ware/Hind ware /Jaguar or equivalent will be provided. </li>
+                <li>Geyser and exhaust fan points in all bathrooms</li>
+                <li>Wash basin in dining if applicable </li>
+                <li>False ceiling in toilets.</li>
+                <li>Rain shower will be provided  in Master toilet</li>
+              
+
+        </ul>
+
+            <div style="padding-top:20px"> </div>
+            <p style="text-align:justify; font-size:15px; margin:0; padding:0; line-height:1">
+             <strong><u> JOINERY</u></strong>   
+            </p>
+            <br/><br/><br/>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u>Entrance Door </u></strong>   
+            </p>
+            <ul style="text-align:left;">
+                <li>Main door – Prehung engineered wooden door with Veneer finish of 2175 mm height/skin panel door with teak wood frames, having Digital lock , tower bolts, door viewer, safety latch door stopper etc.</li>
+                <li> </li>
+                <li></li>
+                <li></li>
+                <li></li>
+
+        </ul>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u>Bedroom Door</u></strong>   
+            </p>
+            <ul style="text-align:left;">
+<li>Teak wood or country wood frame with flush shutters 2175 mm height, with Godrej or equivalent locks, thumb turn with keys, etc
+</li> 
+            
+        </ul>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u>Bathroom Door</u></strong>   
+            </p>
+            <ul style="text-align:left;">
+                <li>Teak wood or country wood frame with flush shutter 2175 mm height, thumb turn with keys</li>
+            
+        </ul>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u>Window</u></strong>   
+            </p>
+            <ul style="text-align:left;">
+<li>Teak wood or country wood frame with flush shutters 2175 mm height, with Godrej or equivalent locks, thumb turn with keys, etc</li> 
+<li>Windows made of UPVC  with see-through plain glass,<b> with MS grills wherever applicable.</b></li>
+<li>Balconies with UPVC  French doors will be provided without MS grills.</li> 
+<li>For veBalconies ntilators UPVC  with suitable louvered glass panes.</li>                
+            
+        </ul>
+
+            <div style="padding-top:20px"> </div>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u> Balcony and Common Area</u></strong>   
+            </p>
+            <ul style="text-align:left;">
+                <li>MS hand railing in balconies as per the architect’s design</li>
+                <li>MS railings will be provided for the common staircase</li>
+        </ul>
+            <div style="padding-top:20px"> </div>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u>  Electrical Fittings</u></strong>   
+            </p>
+            <ul style="text-align:left;">
+                <li>Cables and wiring will be Polycab / Finolex / Havells or equivalent </li>
+                <li>Switches and sockets will be Schneider / Anchor wood / Litaski / Crabtree or equivalent </li>
+                <li>Split air conditioner points will be provided in all bedrooms and living</li>
+                <li>Modular plate switches, MCB and ELCB (Earth leakage circuit breaker) system will be provided.</li>
+                <li>Internet and TV points will be provided in living and master bedroom.</li>
+                <li>3 Phase Power Supply with concealed wiring will be provided based on TNEB rules and regulation.</li>
+                <li>3(three) nos. 15A plug points will be provided in kitchen &amp; 1(one) no. 15 A point will be provided
+                    in Service area for washing machine.1(one) no. 15A point in each toilet for Geyser</li>
+                <li>Night lamps will be provided in all bedrooms.</li>
+                <li>2-way control in all bedrooms with 5amps point near bed headboard.</li>
+ </ul>
+             <div style="padding-top:20px"> </div>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u>Others/ Common amenities</u></strong>   
+            </p>
+            <ul style="text-align:left;">
+                <li>STP of required capacity will be provided.</li>
+                <li>Rain water harvesting will be provided.</li>
+                <li>Over Head water tank of required capacity will be provided.</li>
+                <li>Firefighting system will be provided as per norms.</li>
+                <li>Water tap for gardening will be provided at required points</li>
+                <li>Underground Sump of required capacity will be provided.</li>
+                <li>4 feet height compound wall all around the building with landscape and lighting.</li>
+                <li>CCTV will be provided in required areas.</li>
+                <li>Water proofing/Anti termite treatment provided.</li>
+                <li>Generator backup for all apartments (2BHK – 400 watts / 3BHK – 500 watts)</li>
+                <li><b>Power backup for minimum essential points will be provided in all apartments &amp; common areas.</b></li>
+                <li>Name board display will be provided in Stilt floor.</li>
+                <li>Flat no will be provided in Main Door.</li>
+                <li>Floor identification will be provided in each floor.</li>
+ </ul>
+             <div style="padding-top:20px"> </div>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u>External Features</u></strong>   
+            </p>
+            <ul style="text-align:left;">
+                <li>Elevator: 10-13 passengers (one no.) and 6-8 passenger (one no.) automatic lift will be provided.</li>
+                <li>Power Supply: 3-phase power supply will be provided for all apartments.</li>
+                <li>Suitable landscaping will be done at required areas.</li>
+                <li><b>External driveway will be provided with concrete pavers.</b></li>
+                <li><b>Basement &amp; Stilt floor car parking area will be provided with grano flooring.</b></li>
+            </ul>
+<p style="text-align:center">
+               <span><strong><u>ANNEXURE - 2</u></strong></span> <br/>
+               <b>SCOPE OF FACILITY MANAGEMENT SERVICES</b>
+            </p>
+            <div style="padding-top:20px"> </div>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u>SCOPE OF WORK </u></strong>   
+            </p>
+            <ul style="text-align:left;">
+                <li><b>The scope of services restricted to:</b></li>
+                <li>1.Housekeeping (accessible area) </li>
+                <li>2.Technician cum supervisor.</li>
+                <li>3.Electrical/Plumbing (common area )</li>
+                <li>4.Maintain the Gardening</li>
+                <li>5.Security</li>
+                <li>Note:</li>
+                <li>Maintenance is only for common areas and not the flat inner areas.</li>
+                <li>The working hour for all the manpower is limited to 8 hrs to 12 hrs.</li>
+                <li>Weekly off is eligible for all staff no replacement will not give on off duty  \</li>
+
+        </ul>
+
+            <div style="padding-top:20px"> </div>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u>DETAILED SCOPE </u></strong>   
+            </p>
+            <ul style="text-align:left;">
+                <li><u>SCOPE OF HOUSE KEEPING:</u></li>
+                <li>Sweeping of entire premises.</li>
+                <li>Cleaning of Lifts.</li>
+                <li>Staircase, corridors – Sweeping &amp; Mopping.</li>
+                <li>Cleaning of Security cabins.</li>
+                <li>Cleaning of all common toilets.</li>
+                <li>Sweeping of entire car parking area.</li>
+                <li>Cleaning of the recreation Room</li>
+                <li>Removing stains from floors etc.</li>
+                <li>Removing ceiling cobwebs in corridors, staircase, carparking area and clubhouse.</li>
+                <li>Terrace cleaning.</li>
+                <li>Lift machine room cleaning.</li>
+                <li>Common corridors scrubbing &amp; deep cleaning.</li>
+                <li>OHT cleaning – once in 6 months</li>
+                <li>Sump cleaning – 6 months once</li>
+                <li> Note: - All cleaning mentioned above is applicable for accessible areas only.</li>
+
+        </ul>
+
+            <div style="padding-top:20px"> </div>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u>SCOPE OF TECHNICIANS: </u></strong>   
+            </p>
+            <ul style="text-align:left;">
+                <li><b>Plumbing</b></li>
+                <li>Raw water sump, pumps maintenance.</li>
+                <li>Filling water in all OHT and Sump.</li>
+                <li>Common area water supply line checking.</li>
+                <li>Motor On / Off.</li>
+                <li>Shift report maintenance.</li>
+                <li>Attending the common area complaints.</li>
+        </ul>
+
+            <div style="padding-top:20px"> </div>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong>Electrician</strong>   
+            </p>
+            <ul style="text-align:left;">
+                <li>Checking common area lightings</li>
+                <li>Lightings switch off and on schedules.</li>
+                <li>Checking panel board</li>
+                <li>Coordinating with EB during breakdown</li>
+                <li>D.G checking &amp; Lift checking</li>
+                <li>Motor condition checking</li>
+
+        </ul>
+
+            <div style="padding-top:20px"> </div>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u>SCOPE OF GARDENING:</u></strong>   
+            </p>
+            <ul style="text-align:left;">
+                <li>Watering of all plants.</li>
+                <li>Cares for all plants, flowers, grass, and trees on the site.</li>
+                <li>Plants trimming</li>
+                <li>loosening the soil.</li>
+                <li>Maintaining the potted plants and flowers.</li>
+                <li>Performs transplanting of shrubs, trees, flowering plants inside the premises.</li>
+                <li>Manuring and adding Fertilizers as and when necessary.</li>
+                <li>Periodical pesticide sprays treatment.</li>
+
+        </ul>
+
+            <div style="padding-top:20px"> </div>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u>SECURITY POINTS:</u></strong>   
+            </p>
+            <ul style="text-align:left;">
+                <li>Responsible for arranging all checks relating to security matters including material movements within the premises.</li>
+                <li> Preparing handing over reports for every shift.</li>
+                <li>Monitoring safety standards and reporting hazards;</li>
+                <li>In charge of issuing various types of passes like visitors pass &amp; vehicle stickers.</li>
+                <li>Monitoring drivers &amp; house maids.</li>
+                <li>Providing weekly training to all security guards.</li>
+                <li>They ensure that employees and visitors display proper passes or identification before entering the facility.</li>
+                <li>Monitoring Vehicle Movements.</li>
+
+        </ul>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong><u>GENERAL TERMS:</u></strong>   
+            </p>
+            <ul style="text-align:left;">
+<li>1.Civil related complaints like leakage, electrical low voltage, wire loose connections and other inner flat works will not be the scope of the maintenance agency.</li>
+<li>2.Awarding / Renewal of AMC Contracts for motors, Gensets, STP, Water level indicator &amp; lifts will not be the Scope of the Maintenance Agency 
+    and which shall be in the scope of Residents / Association. However, necessary remainders and follow-ups will be initiated by the Party of the
+    First Part.</li>
+  <li>3.Power backup to the common areas including lift can be given only during emergency and unexpected power shutdown. Providing power backup
+      during scheduled power cuts does not comes under the scope of the maintenance agency.  Diesel consumption charges maximum upto 
+      Rs 10,000 / month will be in the scope of the Maintenance Agency  &amp; beyond which shall be in the scope of Residents / Association</li>
+            <li>4.Purchase of Water will not come under the scope of the maintenance agency.</li>
+            <li>5.Common Electricity bill amount will be paid up to the limit of Rs.40,000 /month by the Maintenance Agency,
+                beyond which the cost incurred towards the same shall be that of the Residents/Association.</li>
+            <li>6.The cost incurred in bailing out Sewage water shall be that of the Association. However, all necessary assistance shall be 
+                provided by the maintenance agency.</li>
+            <li>7.The maintenance agency shall not be held responsible for any Sewage blockage inside the flats.</li>
+            <li>8.Electrical/ Plumbing fittings/Street light post /lamp will not be replaced by the maintenance agency.
+                Any asset replacement or implementation has to be carried out by the Association.</li>
+            <li>9.Internal complaints (inside the flat) will not be under the scope of the maintenance agency.</li>
+            <li>10.Any seepage / leakage in the common area or the inner flat area will not be under the scope of the maintenance agency </li>
+            <li>11.This Agreement is limited only inside the complex and not outside the compound area.</li>
+            <li>12.Replacement of dead plants or fixing new plants will not be under the scope of the maintenance agency</li>
+            <li>13.Bitumen road maintenance shall not be the scope of the maintenance agency</li>
+                </ul>
+             <div style="padding-top:20px"> </div>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1">
+             <strong>Following are the areas which will be Excluded from the scope of facility management services:-</strong>   
+            </p>
+            <ul style="text-align:left;">
+                <li>Lift maintenance ( including AMC)</li>
+                <li>Fuel supply for genset &amp; oil service etc.</li>
+                <li>Replacement, Repairs and AMC of all asset types, like lift, Motor Pumps etc.</li>
+                <li>Fused Bulb  and dome fitting replacements</li>
+                <li>Motor service &amp; rendering</li>
+                <li>Taxes</li>
+                <li>Tank water supply (or) Metro water charges</li>
+                <li>STP operation and maintenance </li>
+                <li>Bailout of sewage water (or) treated water (or) sewage charge to corporation</li>
+                <li>Maintenance inside the flats</li>
+                <li>Internal &amp; External painting of complex</li>
+                <li>Garbage removal from project to dump yard of corporation/ local body</li>
+                <li>Metro water payment for common and flat</li>
+                <li>Club house &amp; Gym equipment maintenance Civil works</li>
+            </ul>
+            <p style="text-align:justify; font-size:14px; margin:0; padding:0; line-height:1.5">
+                <strong>IN WITNESS WHEREOF THE PARTIES HERETO HAVE SET THEIR HANDS AND SIGNED ON THIS CONSTRUCTION AGREEMENT ON THE DAY MONTH AND YEAR FIRST ABOVE WRITTEN IN THE PRESENCE OF</strong>
+
+            </p>
+            <div style="padding-top:80px"></div>
+            
+           
+                <p style="text-align:left">
+  <strong style="display:inline-block; width: 350px;">VENDOR/PROMOTER</strong>
+  <strong>ALLOTTEE[S]</strong>
+</p>
+            <br/><br/><br/><br/><p style="text-align:left;">
+               <strong><u>WITNESSES:</u></strong> 
+            </p>
+            <p style="text-align:left;">1.</p>
+            
+            <div style="padding-top:30px"></div>
+             <p style="text-align:left;">2.</p>
+        
+ 
+        </div>
+    </body>
+    
+</apex:page>

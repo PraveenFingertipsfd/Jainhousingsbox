@@ -1,0 +1,104 @@
+<aura:component controller="JointInspectionController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionwithoutheader" access="global">
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="showModal" type="Boolean" default="false" />
+    <aura:attribute name="isProcessing" type="Boolean" default="false" />
+    <aura:attribute name="errorMessage" type="String" default="" />
+    <aura:attribute name="unitName" type="String" default="" />
+    <aura:attribute name="selectedEmail" type="String" default="" />
+    <aura:attribute name="customEmail" type="String" default="" />
+    <aura:attribute name="emailOptions" type="List" default="[]" />
+    
+    <!--aura:attribute name="bookingId" type="String" /-->
+    <aura:attribute name="inspectionId" type="String" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:html tag="style">
+        .slds-modal__container {
+            width:75% !important;
+        } 
+        .cuf-content {
+            padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+            padding: 0rem !important;
+        }
+        .slds-modal__content {
+            height:unset !important;
+            max-height:unset !important;
+        }
+        .closeIcon {
+            display:none;
+        }
+        .email-field {
+            margin-top: 12px;
+        }
+    </aura:html>
+    
+    <lightning:messages />
+
+    <!-- Modal Dialog -->
+    <div class="slds-modal slds-fade-in-open" role="dialog" aria-hidden="false" aura:if="{!v.showModal}">
+        <div class="slds-modal__container">
+            <!-- Modal Header -->
+            <div class="slds-modal__header">
+                <h2 class="slds-text-heading_medium slds-hyphenate"><b>Invite Customer for Joint Inspection</b></h2>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="slds-modal__content slds-p-around_medium" >
+                <div class="slds-form-element" style="text-align:center">
+                    <label class="slds-form-element__label"><b>Unit - {!v.unitName}</b></label>
+                </div>
+                
+              
+                <!-- Email Selection Dropdown -->
+                <div class="slds-form-element email-field" style="text-align:left">
+                    <div class="slds-form-element__control">
+                        <lightning:select label="Select Email" name="emailSelect" value="{!v.selectedEmail}" onchange="{!c.handleEmailChange}" required="true">
+                            <option value="">-- Select Email --</option>
+                            <aura:iteration items="{!v.emailOptions}" var="email">
+                                <option value="{!email}">{!email}</option>
+                            </aura:iteration>
+                            <option value="other">Other</option>
+                        </lightning:select>
+                    </div>
+                </div>
+                
+                <!-- Customer Email Address Field -->
+                <div class="slds-form-element email-field" style="text-align:left">
+                    <div class="slds-form-element__control">
+                        <aura:if isTrue="{!v.selectedEmail == 'other'}">
+                            <!-- Editable field when "Other" is selected -->
+                            <lightning:input  type="email" label="Customer's Email Address" name="customEmail" value="{!v.customEmail}" required="true"/>
+                            <aura:set attribute="else">
+                                <!-- Non-editable display when an email is selected -->
+                                <lightning:input type="email" label="Customer's Email Address" name="displayEmail" value="{!v.selectedEmail}" disabled="true"/>
+                            </aura:set>
+                           </aura:if>
+                        </div>
+                    </div>
+             
+                <p class="slds-text-color_error slds-m-top_small" aura:if="{!not(empty(v.errorMessage))}">
+                    {!v.errorMessage}
+                </p>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="slds-modal__footer" style="text-align:center">
+                <button class="slds-button slds-button_neutral" onclick="{!c.handleCancel}" disabled="{!v.isProcessing}">
+                    Cancel
+                </button>
+                <button class="slds-button slds-button_brand" onclick="{!c.handleSendEmail}" disabled="{!v.isProcessing}">
+                    <aura:if isTrue="{!v.isProcessing}">
+                        <lightning:spinner variant="brand" size="small" class="slds-m-right_x-small" />
+                        Sending...
+                    <aura:set attribute="else">
+                        Send Email
+                    </aura:set>
+                    </aura:if>
+                </button>
+            </div>
+        </div>
+    </div>
+</aura:component>

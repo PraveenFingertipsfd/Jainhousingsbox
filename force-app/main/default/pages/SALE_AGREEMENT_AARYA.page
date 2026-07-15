@@ -1,0 +1,1941 @@
+<apex:page standardController="Booking__c" extensions="SaleAgreementController" showHeader="false" sidebar="false"
+           applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false" renderAs="PDF">
+    <html>
+        
+        <head>
+            <style type="text/css" media="print">
+                @page {
+                @top-center {
+                content: element(header);
+                }
+                
+                @bottom-left {
+                content: element(footer);
+                }
+                }
+                
+                div.header {
+                padding: 10px;
+                position: running(header);
+                }
+                
+                div.footer {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+                }
+                
+                .pagenumber:before {
+                content: counter(page);
+                }
+                
+                .pagecount:before {
+                content: counter(pages);
+                }
+                
+                div.header {
+                padding: 20px;
+                position: running(header);
+                margin-left: -200px;
+                }
+                
+                div.footer {
+                padding: 10px;
+                position: running(footer);
+                font-size: 9px;
+                text-align: left;
+                
+                }
+                
+                div.footer :first-child {
+                text-align: right;
+                }
+                
+                div.content,
+                div.content p {
+                padding: 0 20px;
+                line-height: 1.5;
+                font-size: 12px;
+                font-family: 'Times New Roman', Times, serif;
+                }
+                div{
+                font-family: 'Times New Roman', Times, serif;
+                padding-top: 10px;
+                }
+                th,
+                td {
+                padding: 5px;
+                }
+                
+                p {
+                line-height: 1;
+                padding: 1px;
+                }
+                
+                table,
+                tr {
+                border: 1px solid black;
+                border-collapse: collapse;
+                }
+                div{
+                font-size:12px;
+                line-height:1.3;
+                font-family: 'Times New Roman', Times, serif;
+                }
+                div.watermark {
+                position: fixed;
+                top: 30%;
+                left: 15%;
+                bottom: 50%;
+                right: 50%;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 150px !important;
+                color: #e5e5e5 !important;
+                transform: rotate(-30deg);
+                white-space: nowrap;
+                pointer-events: none;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: cover;
+                }
+                 li {
+                padding-bottom:5px;
+                padding-top:5px;
+                }
+            </style>
+        </head>
+        
+        <body>
+            <apex:outputPanel rendered="{!Booking__c.Stage__c == 'Reservation'}">
+                <div class="watermark">DRAFT</div>
+            </apex:outputPanel>
+            <div class="footer">
+                ; <div style="font-size: 12px;padding:5px;margin-top:-30px">
+                <span style="text-align:right">Page <span class="pagenumber" /> | <span class="pagecount" /></span>
+                </div>
+                <!--<div>
+                    <u>{!Booking__c.salutation_Applicant1__c} {!Booking__c.First_Applicant_Name__c} 
+                        <apex:outputPanel rendered="{!NOT(ISBLANK(Booking__c.Second_Applicant_Name__c))}">
+                            &amp; {!Booking__c.salutation_Applicant2__c} {!Booking__c.Second_Applicant_Name__c}
+                        </apex:outputPanel></u>
+                </div>-->
+            </div>
+            <div class="content">
+                <apex:outputPanel >
+                    <div style="margin-top:750px">
+                        <p style="text-align:center"><strong style="text-transform: uppercase;">//Shree// MAHENDRA <br />AARYA<br />AGREEMENT FOR SALE</strong>
+                        </p>
+                        <p style="text-align:center"><strong style="text-transform: uppercase;">Flat No.- {!Booking__c.Plot__r.Name}, {!FloorNumber} Floor,
+                            {!Booking__c.Block__r.Name},</strong><br />
+                            THIS AGREEMENT TO SELL is made and entered into at Bangalore<apex:outputPanel rendered="{!NOT(ISBLANK(Date_of_SaleAgreement))}"> on this the {!Date_of_SaleAgreement}</apex:outputPanel>
+                            .</p>
+                        <p style="text-align:center"><strong style="text-transform: uppercase;">BY AND BETWEEN</strong> </p>
+                    </div>
+                    
+                    <div style="Page-break-before:always;">
+                        <strong style="text-transform: uppercase;">PART-I</strong>
+                        <div style="text-align:justify;">
+                            <strong style="text-transform: uppercase;">1. <span style="padding-left:5px;"></span>Smt. GOWRAMMA</strong>, aged about 71 years, D/o Sri. Late Munishami Reddy &amp; W/o Sri. Krishna Reddy,
+                        </div>
+                        <div style="padding-top:15px;text-align:justify;">
+                            <strong style="text-transform: uppercase;">2a. <span style="padding-left:5px;"></span>Sri. VENKATESH</strong>, aged about 46 years, S/o Smt. Gowramma, <strong style="text-transform: uppercase;">2b.Ms. RASHMI</strong>, aged about 25
+                            years, <strong style="text-transform: uppercase;">2c. Ms. BRUNDA</strong>, aged about 21 years, <strong style="text-transform: uppercase;">2d. Ms. SWATHI</strong>, aged about 19 years.
+                        </div>
+                        <div style="padding-top:15px;text-align:justify;">
+                            <strong style="text-transform: uppercase;">3. <span style="padding-left:5px;"></span>Smt. KANAKAMMA</strong>, aged about 48 years, D/o Smt. Gowramma, <strong style="text-transform: uppercase;">3a. Sri. DEEPU</strong>, aged about 28
+                            years, son of Smt. Kanakamma.
+                        </div>
+                        <div style="padding-top:15px;text-align:justify;">
+                            All are residing at Heelalige, Attibele Hobli, Anekal Taluk, Bangalore.
+                        </div>
+                        <div style="padding-top:15px;text-align:justify;">
+                            <strong style="text-transform: uppercase;">PART-II</strong>
+                        </div>
+                        <div style="text-align:justify;">
+                            <strong style="text-transform: uppercase;">4.<span style="padding-left:5px;"></span>Sri. B T Nagaraj Reddy</strong>, aged about 54 years, S/o Late B N Thimma Reddy, residing at No. 207/2,
+                            Ranjitha Farm, Bommasandra, Anekal Taluk, Bangalore-560 099.
+                        </div>
+                        <div style="padding-top:15px;text-align:justify;">
+                            Sl No. 1 to 4 are represented by their GPA Holder <strong style="text-transform: uppercase;">M/s Mahendra Homes Pvt Ltd</strong> (a Company
+                            incorporated under the Companies Act, 1956) having its registered office at No 51, 12th Main, 17th
+                            Cross, H S R 6th Sector, H S R Layout, Bangalore - 560102, being represented by its Managing
+                            Director, <strong style="text-transform: uppercase;">Mr. B.T. Nagaraj Reddy</strong>.
+                        </div>
+                        
+                        <div style="padding-top:15px;text-align:justify;">
+                            <strong style="text-transform: uppercase;">PART-III</strong>
+                        </div>
+                        <strong style="text-transform: uppercase;">5.<span style="padding-left:20px;"></span> M/s. MAHENDRA HOMES PVT
+                                LTD</strong><br />
+                        <div style="text-align:justify;">
+                            
+                                The Company registered under companies Act 1956, and with its registered office at 51,12th Main,
+                            17th Cross 6th Sector, HSR Layout Bangalore - 560 102. Represented by its Managing Director: <strong style="text-transform: uppercase;text-align:justify;">Sri.
+                                B.T. NAGARAJ REDDY</strong>, aged about 54years, S/o Late. B N Thimma Reddy.
+                        </div>
+                        <div style="padding-top:15px;text-align:justify;">
+                            Part I, II and III Hereinafter together referred to as the <strong style="text-transform: uppercase;">"OWNERS"</strong>, which expression wherever the
+                            context so admits or permits shall mean and include theirs heirs, executors, legal representatives,
+                            administrators, assignees etc., on the <strong style="text-transform: uppercase;">FIRST PART</strong>.
+                        </div>
+                        <div style="padding-top:15px;text-align:justify;">
+                            <strong style="text-transform: uppercase;">AND</strong>
+                        </div>
+                        <div style="padding-top:15px;text-align:justify;">
+                            
+                            <strong style="text-transform: uppercase;">M/s Mahendra Homes Pvt Ltd</strong> (a Company incorporated under the Companies Act, 1956)
+                            having its registered office at No 51, 12th Main, 17th Cross, H S R 6th Sector, H S R Layout,
+                            Bangalore – 560102. <strong style="text-transform: uppercase;">PAN: AAHCM5688C</strong>. Represented by its Managing Director, <strong style="text-transform: uppercase;">Mr. B.T. Nagaraj Reddy</strong>. </div>
+                    </div>
+                    <div style="padding-top:15px;text-align:justify;">
+                        Hereinafter referred to as the <strong style="text-transform: uppercase;">"DEVELOPER/CONFIRMING PARTY"</strong>, which expression wherever the context so
+                        admits or permits shall mean and include its Board of Directors, Administrators, successors-in-business,
+                        Liquidators etc., on the <strong style="text-transform: uppercase;">SECOND PART</strong>.
+                    </div>
+                    
+                    <div style="padding-top:15px;text-align:justify;">
+                        <strong style="text-transform: uppercase;">AND</strong>
+                    </div>
+                    <div><strong style="text-transform: uppercase;text-align:justify;">1) {!Booking__c.salutation_Applicant1__c}
+                            {!Booking__c.First_Applicant_Name__c},</strong> aged about &nbsp;
+                        <apex:outputText value="{!YEAR(TODAY()) - YEAR(Booking__c.Date_of_Birth1__c)}" /> years,
+                        {!Booking__c.Relation_Details_Applicant1__c} {!Booking__c.Son_Daughter_Wife_of__c},
+                    </div>
+                    <div style="padding-top:15px;text-align:justify;">
+                        <apex:outputPanel rendered="{!NOT(ISBLANK(Booking__c.Second_Applicant_Name__c))}">
+                            <strong style="text-transform: uppercase;"> 2) {!Booking__c.salutation_Applicant2__c}
+                                {!Booking__c.Second_Applicant_Name__c},</strong> aged about &nbsp;
+                            <apex:outputText value="{!YEAR(TODAY()) - YEAR(Booking__c.Date_of_birth_Applicant2__c)}" />
+                            years, {!Booking__c.Relation_Details_Applicant2__c} {!Booking__c.Son_Daughter_Wife_of1__c},
+                        </apex:outputPanel>
+                        
+                    </div>
+                    
+                    <div style="padding-top:15px;text-align:justify;">
+                        residing at {!Booking__c.Address__c}
+                    </div>
+                    <div style="padding-top:15px;text-align:justify;">
+                        Hereinafter referred to as the "<strong style="text-transform: uppercase;">PURCHASER/S</strong>", which term wherever the context so admits or permits
+                        shall mean and include his/her/their heirs, assignees, legal representatives, administrators,
+                        nominees, executors on the OTHER PART.
+                    </div>
+                    <div style="padding-top:15px;text-align:justify;">
+                        (In these presents, contextual to any fact and/or circumstance, any word, term, and expression shall
+                        mean and include plural for singular or vice versa and feminine or neuter gender or masculine or
+                        vice versa as the case may be.)
+                    </div>
+                    
+                    
+                    
+                    <div style="padding-top:15px;">
+                        <strong style="text-transform: uppercase;">WITNESSETH:</strong>
+                        <br /><br />
+                        <strong style="text-transform: uppercase;">WHEREAS</strong> the Owners above named are the sole and absolute owners of all that piece and parcel of
+                        <ol style="list-style-type: upper-roman;">
+                            <li style="text-align:justify;">
+                                Sl No. 1 to 3 of the Part-I are the owners of residentially converted land bearing Sy No. 9/2 vide
+                                order No.ALN(A)(A)SR/129/12-13, dated 05.10.2012 &amp; ALN(A)(A)SR/45/13-14, dated 23.11.2013
+                                by D C, Bangalore, an extent of 2 acres 37 guntas, acquired by Sl No.1 through inheritance as she is
+                                the only legal heir to her parents.
+                            </li>
+                            <li style="text-align:justify;">Sl No.4 of the Part-II is the owner of residentially converted Sy No. 8/4, 12/1, vide order No.
+                                ALN(A)(A)SR/53/13-14, dated 22.11.2013, Sl No. 4 has purchased Sy No. 8/4, an extent of 37 guntas
+                                and 12 /1 an extent of 1 acre 15 guntas under a registered sale deed, registered vide document No.
+                                4362/2012-13, dated 19.10.2012, in the office of the Sub-Registrar, Attibele, Bangalore. <strong style="text-transform: uppercase;">WHEREAS</strong> Sl
+                                No.4 is also owner for Sy No. 6/1 an extent of 06 guntas converted vide order No.
+                                ALN(A)(A)SR/246/12-13, dated 07.12.2012, by D C, Bangalore, has been purchased under registered sale
+                                deed No. 7305/2012-13, dated 27.02.2013, in the office of the Sub- Registrar, Attibele, Bangalore.
+                            </li>
+                            <li style="text-align:justify;">
+                               <div>
+                                 Sl No. 5 of the Part –III is the owner for residentially converted Sy No. 10/1, vide order No.
+                                ALN(A)(A)SR/45/13-14, dated 23.11.2013 by D C, Bangalore , purchased under a registered sale deed
+                                Document No. 01186/2018-19 , dated 31.05.2018, in the office of the Sub-Registrar, Attibele,
+                                Bangalore. And he is also owner of residentially converted land bearing Sy.No.13, vide order No.
+                                ALN(A)(A)SR/131/12-13, dated 05.10.2012 &amp; ALN(A)(A)SR/49/13-14, dated 23.11.2013
+                                by D C, Bangalore, an extent of 3 acres 18 guntas. The same has been acquired through Sale deed
+                                Registered on 01.03.2021, vide document No. 7230/2020-21.
+                                   </div>
+                                <div>
+                                   All the above mentioned Sy Numbers which is more fully referred and described as the <strong style="text-transform: uppercase;">Schedule "A"</strong>
+                                Property written hereunder.    
+                                </div>
+                             
+                            </li>
+                        </ol>
+                        <strong style="text-transform: uppercase;">The total extent of the project is 9 acres 17 guntas.</strong>
+                        <div style="padding-top:10px;text-align:justify;">
+                            <strong style="text-transform: uppercase;">WHEREAS</strong> the Owner of Part I have entered into a Joint Development Agreement on 27.07.2015, registered as
+                            Document No.ABL-1-02413/2015-16, stored in CD No.ABLD242, in pursuance of the JDA, a GPA has been
+                            executed by the owners on the same day for the development of the residential apartment project ( Sy No.
+                            9/2 item No.1 of schedule A Property) and the same has been registered as document No. 203/2015-16 in
+                            the office of the Sub-Registrar, Attibele, Anekal Taluk, Bangalore with the Developer for the development
+                            of the Item No. 1 of Schedule `A" Property. With regard to the Sy No. 9/2 a Supplementary Agreement to
+                            JDA dated 27.07.2015 has been executed and registered as document No. 1187/2018-19, dated 31.05.2018 and
+                            addendum to the GPA dated 27.07.2015 has been executed and registered as document No. 43/2018-19, dated
+                            31.05.2018 in the office of the Sub-Registrar, Attibele.
+                        </div>
+                        <div style="padding-top:10px;text-align:justify;">
+                            <strong style="text-transform: uppercase;">WHEREAS</strong> under the said Development Agreement, the Owner have agreed to transfer 69% undivided interest
+                            comprised in of the <strong style="text-transform: uppercase;">Schedule "A"</strong> Property in favour of the said Developer or in favour of its nominee or
+                            nominees in consideration of the said Developer constructing and delivering 31% of the total built up
+                            areas of the Apartments constructed on the Schedule `A" Property along with proportionate car parking,
+                            terrace and garden rights and proportionate right in common areas to the Owner.
+                        </div>
+                        <div style="padding-top:5px;text-align:justify;">
+                            <strong style="text-transform: uppercase;">WHEREAS</strong> the Owners of Part II have entered into a Joint Development Agreement with <strong style="text-transform: uppercase;">M/s Mahendra
+                            Homes Pvt Ltd</strong> on 28.12.2020 registered as Document No. 5430/2020-21, in the office of the
+                            Sub-Registrar, Attibele, Anekal Taluk, Bangalore, in pursuance of the JDA, the Owner of Part II has
+                            executed a GPA, the same has been registered as document No. 166/2020-21, dated 28.12.2020, with the
+                            Developer for the development of Item No. 2,3 &amp; 4 of the Schedule `A" Property, where under the
+                            Owners have authorised the said Developer to develop the Property by putting up a residential Apartment
+                            Building thereon.
+                        </div>
+                        <div style="padding-top:10px;text-align:justify;">
+                            <strong style="text-transform: uppercase;">WHEREAS</strong> under the said Development Agreement, the Owner have agreed to transfer 95% undivided interest
+                            comprised in of the <strong style="text-transform: uppercase;">Schedule "A"</strong> Property in favour of the said Developer or in favour of its nominee or
+                            nominees in consideration of the said Developer constructing and delivering 05% of the total built up
+                            areas of the Apartments constructed on the Schedule `A" Property along with proportionate car parking,
+                            terrace and garden rights and proportionate right in common areas to the Owner .
+                        </div>
+                        <div style="padding-top:10px;text-align:justify;">
+                            <strong style="text-transform: uppercase;">WHEREAS</strong> the Owner of Part III have purchased an extent of 24 guntas in Sy No. 10/1 under a registered
+                            sale deed, dated 31.05.2018 registered as Document No.ABL-1-01186/2018-19 in CD No.ABLD318 in the office
+                            of the Sub-Registrar, Attibele, Anekal Taluk, Bangalore and an extent of 3 acres 18 guntas in Sy No. 13,
+                            under a registered sale deed, registered vide document No. 7230/2020- 21, registered on 01.03.2021, in
+                            the office of the Sub-Registrar, Attibele, Bangalore and the same are part of the development of Item No.5
+                            &amp; 6 of the Schedule `A" Property to develop the Property by setting up a residential Apartment
+                            Building thereon.
+                        </div>
+                        <div style="padding-top:10px;text-align:justify;">AND <strong style="text-transform: uppercase;">WHEREAS</strong> the Owners covenant that Item  No.1, Item  No.2,
+                            Item  No.3, Item No.4, Item No.5 and Item No.6 of the <strong style="text-transform: uppercase;">Schedule "A"</strong> Property are adjacent and adjoining
+                            properties and the Owners through their GPA Holder have made necessary representation before the TMC,
+                            Chandapura and assigned one single composite Khatha, vide No.1829/6/1,8/4,9/2,10/1,12/1,13.</div>
+                        
+                        <div style="padding-top:10px;text-align:justify;"><strong style="text-transform: uppercase;">WHEREAS</strong> the said Developer has decided to develop the
+                            <strong style="text-transform: uppercase;">Schedule "A"</strong> Property as 4 towers (Tower A, Tower B, Tower C &amp; Tower D). The Tower A is consisting
+                            of 101 units, Tower B is consisting of 301 units, Tower C is consisting of 260 units (totally 662 units)
+                            and Tower D is for Indoor games/amenities otherwise known as club house comprising of 2 Basements,
+                            Ground floor plus 14 upper floors, of 662 units with common entrances, swimming pool, children's play
+                            area, open spaces, club house, and with all other internal and external services such as electricity and
+                            water supply system, sewerage disposal system, Sewage Treatment plant, rain water harvesting etc in the
+                            name and style of  <strong style="text-transform: uppercase;">"MAHENDRA AARYA"</strong>. Accordingly the Developer have obtained sanction plan vide <strong style="text-transform: uppercase;">LP No.
+                            TPA/CC/278/2020-21</strong>, dated 18.02.2021 for constructing residential apartment on the <strong style="text-transform: uppercase;">Schedule "A"</strong> Property
+                            and the sanction is accorded by the Joint Director, Anekal Planning Authority, BMRDA, Bangalore;</div>
+                        
+                        <div style="padding-top:10px;text-align:justify;">AND <strong style="text-transform: uppercase;">WHEREAS</strong> the DEVELOPER have applied for the
+                            registration of  <strong style="text-transform: uppercase;">"MAHENDRA AARYA"</strong> project with Real Estate Regulatory Authority, Karnataka. The
+                            registration was granted under section 5 of the Real Estate(Regulation &amp; Development) Act, 2016 and
+                            Karnataka Real Estate (Regulation and Development) Rules, 2017 with permanent <strong style="text-transform: uppercase;">RERA no: PRM/KA/RERA/1251/308/PR/210408/004106</strong>. (<strong style="text-transform: uppercase;">WHEREAS</strong> THE DEVELOPER IS PROPOSED TO EXTEND THE PROJECT WITH
+                            PHASE II)</div>
+                        
+                        <div style="padding-top:10px;text-align:justify;"><strong style="text-transform: uppercase;">WHEREAS</strong> the Owners and Developer entered into sharing
+                            agreement on <strong style="text-transform: uppercase;">08.03.2021</strong> with regard to allocation of the Flats and as per the sharing agreement Flat
+                            bearing No. <strong style="text-transform: uppercase;">{!Booking__c.Plot__r.Name}</strong> to be constructed on the <strong style="text-transform: uppercase;">{!FloorNumber}</strong> Floor in <strong style="text-transform: uppercase;">{!Booking__c.Block__r.Name}</strong> (More fully described in Schedule
+                            <strong style="text-transform: uppercase;"> "C"</strong> hereunder and hereinafter referred to as <strong style="text-transform: uppercase;">Schedule  "C"</strong> PROPERTY) allotted to the share of <strong style="text-transform: uppercase;">DEVELOPER</strong>.
+                            <strong style="text-transform: uppercase;">Hence the Developer hereinafter referred to us as Vendor also.</strong></div>
+                        
+                        <div style="padding-top:10px;text-align:justify;"><strong style="text-transform: uppercase;">WHEREAS</strong> the Developer have propounded to construct
+                            Apartment as aforementioned (hereinafter referred to as the said scheme) where under a person
+                            interested in acquiring an Apartment in the project,  <strong style="text-transform: uppercase;">"MAHENDRA AARYA"</strong> to be constructed on the Schedule
+                            A Property (hereinafter referred to as the said Project) will be permitted to acquire an undivided
+                            share, right, title and interest (including in the common areas) in the Schedule A Property by virtue
+                            whereof such person/s shall be granted the right to construct, own and enjoy a specific Apartment in the
+                            said Project with all matters of common concern, share the amenities, facilities, liabilities etc.,
+                            being looked after, in terms of an overall scheme and upon the completion of the said Scheme, the land
+                            covered under the Schedule A Property will be owned by all such persons owning Apartments therein as
+                            Co-owners;</div>
+                        
+                        <div style="padding-top:10px;text-align:justify;"><strong style="text-transform: uppercase;">WHEREAS</strong> the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> have prior to this day
+                            provided the deeds and documents of title pertaining to Schedule A property to the <strong style="text-transform: uppercase;">PURCHASER/S</strong> to enable
+                            the latter to carry out legal due diligence to their satisfaction about the title of its
+                            <strong style="text-transform: uppercase;">DEVELOPER/VENDOR/S</strong>. The <strong style="text-transform: uppercase;">PURCHASER/S</strong> has/have understood, evaluated, and satisfied about the sanctions
+                            obtained by <strong style="text-transform: uppercase;">DEVELOPER/VENDOR/S</strong>, building plans, designs, Specifications, quality of construction,
+                            concepts, title etc., of  <strong style="text-transform: uppercase;">"MAHENDRA AARYA"</strong> as well as the suitability of the Flat for the permitted use
+                            and the conditions mentioned herein. The <strong style="text-transform: uppercase;">PURCHASER/S</strong> has/have further confirmed that <strong style="text-transform: uppercase;">PURCHASER/S</strong> has/have
+                            carefully read the conditions of the Agreement and have understood his/her/ their obligations and
+                            liabilities and limitations as set forth herein. Upon being satisfied as aforesaid and relying upon their
+                            own judgment and investigation(s) and on the advice of competent legal counsel/advocate engaged by
+                            <strong style="text-transform: uppercase;">PURCHASER/S</strong>, they have approached and offered to purchase the <strong style="text-transform: uppercase;">Schedule "B"</strong> Property.</div>
+                        
+                        <div style="padding-top:10px;text-align:justify;"><strong style="text-transform: uppercase;">WHEREAS</strong> pursuant to the above scheme, the <strong style="text-transform: uppercase;">PURCHASER/S</strong>
+                            being interested in acquiring a residential Flat has/have gone through (1) the title deeds of the
+                            <strong style="text-transform: uppercase;">DEVELOPER/VENDOR/S</strong> in respect of the Schedule A Property, (2) the construction particulars as detailed
+                            in the Sale Agreement, (3) the plan sanctioned by the BMRDA alike and other details and after having
+                            been fully satisfied with the title of the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR/S</strong> and all the necessary consents, clearances,
+                            sanctions, permissions and no-objection certificates obtained from respective authorities in respect of
+                            the Flats to be constructed on the <strong style="text-transform: uppercase;">Schedule "A"</strong> Property and all the relevant documents connected
+                            therewith, has/ have offered to join the said Scheme and has agreed to purchase from the
+                            <strong style="text-transform: uppercase;">DEVELOPER/VENDOR/S</strong> proportionate undivided share of land, right, title and interest in <strong style="text-transform: uppercase;">Schedule "A"</strong>
+                            Property which is morefully described in the <strong style="text-transform: uppercase;">Schedule "B"</strong> <strong style="text-transform: uppercase;">Schedule "A"</strong> hereunder and hereinafter
+                            referred to as the <strong style="text-transform: uppercase;">Schedule "B"</strong> Property.</div>
+                        
+                        <div style="text-align:justify;"><strong style="text-transform: uppercase;">WHEREAS</strong> the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong>, has offered to sell undivided share of land in <strong style="text-transform: uppercase;">Schedule "A"</strong> Property to
+                            persons who are desirous of owning the Flats in the Project with a condition that such persons should
+                            shall also make the payment towards the cost of construction to the Vendor-cum- Developer for
+                            construction of Flats corresponding to their undivided share in the <strong style="text-transform: uppercase;">Schedule "A"</strong> Property as stated
+                            hereunder.</div>
+                        
+                        <div style="padding-top:10px;text-align:justify;"><strong style="text-transform: uppercase;">WHEREAS</strong> having regard to the number of Apartments to be
+                            constructed in the  <strong style="text-transform: uppercase;">"MAHENDRA AARYA"</strong> and the amenities and facilities to be provided by the
+                            Vendor-cum-Developer has agreed to sell to the Purchaser <strong style="text-transform: uppercase;">Schedule "B"</strong> Property corresponding to the
+                            Schedule <strong style="text-transform: uppercase;"> "C"</strong> PROPERTY, subject to the terms and conditions herein contained.</div>
+                        
+                        <div style="padding-top:10px;text-align:justify;"><strong style="text-transform: uppercase;">WHEREAS</strong> the Parties hereinafter mutual discussions have
+                            agreed to be bound by the following terms and conditions</div>
+                        <div style="padding-top:10px;text-align:justify;">
+                            <strong style="text-transform: uppercase;">NOW THIS AGREEMENT TO SELL WITNESSETH AS FOLLOWS:</strong>
+                            <ol>
+                                <li>
+                                    <strong style="text-transform: uppercase;">DEFINITIONS</strong> Unless the context otherwise requires, the phrases, words, definitions and the
+                                    interpretation shall have the meaning set forth in the Real Estate (Regulation and Development)
+                                    Act, 2016 (Central Act of 2016) hereinafter referred to as `Act" and the corresponding Rules.
+                                    The capitalized terms defined below shall apply throughout this Deed.
+                                    <ol style="list-style-type: lower-roman;">
+                                        <li>
+                                            <strong style="text-transform: uppercase;">"Allottee/s"</strong> shall mean the <strong style="text-transform: uppercase;">PURCHASER/S</strong> of Residential Flats in the project to whom a
+                                            Residential Apartment has been allotted sold (whether as freehold or leasehold) or
+                                            otherwise transferred by the Developer and includes the person who subsequently acquires
+                                            the said allotment through sale, transfer or otherwise but does not include a person to
+                                            whom such Residential Flat as the case may be, is given on rent.
+                                        </li>
+                                        <li>
+                                            <strong style="text-transform: uppercase;">"Applicable Laws" </strong>shall mean all applicable laws, bye-laws, rules, regulations, orders,
+                                            ordinances, notifications, protocols, codes, guidelines, policies, notices, directions,
+                                            judgments, decrees or other requirements or official directive of any Governmental
+                                            Authority or person acting under the authority of any Governmental Authority and/ or of
+                                            any other statutory authority in India, whether in existence on the Effective Date or
+                                            thereafter;
+                                        </li>
+                                        <li>
+                                            <strong style="text-transform: uppercase;">"Approvals"</strong> shall mean and refer to all such permissions, permits, sanctions,
+                                            exemptions, licenses, no objection certificates from relevant authorities and approvals
+                                            as may be required for the Project including but not limited to Project Approvals,
+                                            approvals from Town and Country Planning authority, fire scheme approval, clearances from
+                                            Airport Authority of India, Central / State Pollution Control Board, consent to
+                                            establish and operate, approval from electrical/ sewerage/ water connection authority
+                                            for construction and development of
+                                            
+                                            the Project and shall include all approvals relating to or pursuant to sanction of
+                                            building plans, commencement certificates, issued by concerned statutory &amp;
+                                            Governmental Authority and such other concerned authorities as may be required under law
+                                            for the construction.
+                                            
+                                        </li>
+                                        <li>
+                                            <strong style="text-transform: uppercase;">"Architect/s"</strong> shall mean an individual, group of persons, firm, LLP or company appointed
+                                            by the Owner and the Developer for planning, designing and carrying out supervisory
+                                            activities in respect of the Project and any other Architect/s appointed by the
+                                            Developer in due course.
+                                        </li>
+                                        <li>
+                                            <strong style="text-transform: uppercase;">"Association of flat Owners/Allottees"</strong> shall mean the association to be formed by the
+                                            <strong style="text-transform: uppercase;">PURCHASER/S</strong> of Residential Apartments in the project under the local law in force,
+                                            acting as a group to serve the cause of its members and shall include the authorised
+                                            representatives of the allottee/s.
+                                        </li>
+                                        <li>
+                                            <strong style="text-transform: uppercase;">"Carpet Area"</strong> shall mean the net usable floor area of an apartment as defined under
+                                            Section 2(k) of the Real Estate Regulation and Development Act 2016.
+                                        </li>
+                                        <li>
+                                            <strong style="text-transform: uppercase;">"Force Majeure"</strong> shall mean any event in the nature of war, flood, drought, fire, cyclone,
+                                            earthquake and any other calamity caused by nature, or any event beyond the control of
+                                            the Developer, any change in law or enactment of any new legislation affecting the
+                                            regular development of the project;
+                                        </li>
+                                        <li>
+                                            <strong style="text-transform: uppercase;">"Government Authority"</strong> shall mean any government authority, statutory authority,
+                                            government department, agency, commission, board, tribunal or court or any other law,
+                                            rule or regulation making entity having or purporting to have jurisdiction on behalf of
+                                            the Republic of India or any state or other subdivision thereof or any municipality,
+                                            district or other subdivision thereof, including any municipal/ local authority having
+                                            jurisdiction over any matter pertaining to the construction and development of the
+                                            Project;
+                                        </li>
+                                        <li>
+                                            <strong style="text-transform: uppercase;">"Occupancy Certificate"</strong> shall mean the Occupancy Certificate or partial Occupancy
+                                            Certificate as defined under Section 2(zf) of The Real Estate (Regulation and Development)
+                                            Act, 2016 or such other certificate by whatever name called, issued by the competent
+                                            authority permitting occupation of the residential building in the project as provided
+                                            under the Local Laws.</li>
+                                        <li>
+                                            <strong style="text-transform: uppercase;">"Project"</strong> shall mean the development of the Schedule Property by the construction and
+                                            development of a residential building comprising of 2 Basements, Ground floor and 14
+                                            Upper floors containing residential apartments of different dimensions with common areas,
+                                            amenities and facilities attached thereto including the provision for car parking.</li>
+                                        <li>
+                                            <strong style="text-transform: uppercase;">"Project Approval"</strong> shall mean all the necessary approvals, consents and/or sanctions as
+                                            may be necessary and/or required for the purpose of the project to be obtained /obtained
+                                            from the various Statutory Authorities and Government Agencies.</li>
+                                        <li>
+                                            <strong style="text-transform: uppercase;">"PURCHASER/S"</strong> shall mean the Allottee/s of residential apartments in the Project and
+                                            shall include any buyers, purchasers, prospective purchasers, transferees, including a
+                                            purchaser in default, assignors, applicants, whether an individual, corporate or
+                                            otherwise, for any residential apartment forming or a part of the Project;</li>
+                                        <li><strong style="text-transform: uppercase;">"RERA"</strong> shall mean Real Estate Regulation and Development Act 2016 and Karnataka Real
+                                            Estate (Regulation and Development) Rules, 2017, and their amendments made from time to
+                                            time, where the context so requires.</li>
+                                        
+                                    </ol>
+                                </li>
+                                <li>
+                                    <div style="text-align:left;">
+                                        <strong style="text-transform: uppercase;">AGREEMENT TO SELL AND CONSTRUCT</strong>
+                                    </div>
+                                    <div style="text-align:justify;">That in pursuance of the foregoing and in consideration of the
+                                        Purchaser joining the scheme of development and paying a) the Sale Consideration and the
+                                        Cost of Construction b) the Other Cost charges and Expenses (c) The Statutory payments and
+                                        complying with the Purchase Covenants and the obligations herein, the Vendor-Cum–Developer,
+                                        agrees to sell to the Purchaser and the Purchaser agrees to purchase the <strong style="text-transform: uppercase;">Schedule "B"</strong>
+                                        Undivided share and the Vendor-Cum- Developer agrees to construct the Schedule <strong style="text-transform: uppercase;"> "C"</strong> Unit/flat
+                                        under the Scheme in the terms of the Agreement.</div>
+                                    <div style="padding-top:10px;text-align:justify;">
+                                        The purchaser agrees to pay to the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR/S</strong> consideration for sale of <strong style="text-transform: uppercase;">Schedule "B"</strong>
+                                        &amp; <strong style="text-transform: uppercase;"> "C"</strong> property as detailed in <strong style="text-transform: uppercase;">Schedule "G"</strong>. The amounts shall be paid by the Purchaser
+                                        to the Developer as per the payment schedule detailed in <strong style="text-transform: uppercase;">Schedule "G"</strong>. The Promoter and the
+                                        <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> assure and undertake that the sale in favour of the <strong style="text-transform: uppercase;">PURCHASER/S</strong> shall be
+                                        free from all encumbrances.
+                                    </div>
+                                    
+                                </li>
+                                <li>
+                                    <div style="text-align:left;">
+                                        <strong style="text-transform: uppercase;">SALE CONSIDERATION FOR THE SCHEDULE "B" &amp; <strong style="text-transform: uppercase;"> "C"</strong>:</strong>
+                                    </div>
+                                    <div style="text-align:justify;">
+                                        The Sale Consideration to be paid by the Purchaser to the Vendor-cum-Developer has been
+                                        detailed in <strong style="text-transform: uppercase;">Schedule "G"</strong>. The Sale Consideration shall include charges towards, the sale of
+                                        the <strong style="text-transform: uppercase;">Schedule "B"</strong> Undivided share and Construction the schedule <strong style="text-transform: uppercase;"> "C"</strong> Unit/Flat. The
+                                        <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> and the Promoter hereby assure that there shall not be any escalation in
+                                        the sale consideration and that the sale consideration shall include charges towards cost of
+                                        the apartment, car parking and all amenities and facilities including Club House with
+                                        swimming pool and Gym. All statutory charges and deposits towards BESCOM/BWSSB or any
+                                        Government or civic body related charges shall be paid as mandated by the concerned
+                                        authority.
+                                    </div>
+                                    <div style="padding-top:10px;text-align:justify;">
+                                        The Purchaser has assured the Vendor-Cum-Developer that the Purchaser shall pay the Balance
+                                        of Sale Consideration, the Balance of the Cost of Construction and the Statutory Payments,
+                                        Other Costs, Charges and Expenses if any without any delay or default as per the Payment
+                                        Plan and in the event of any acceleration in payment of any stages of construction due to
+                                        the Vendor-cum- Developer having completed the stage of construction in advance, the
+                                        Purchaser shall make such payment which is due to on the completion of that stage of
+                                        construction as per the payment Plan. The Purchaser is fully aware and has agreed that the
+                                        time of payment of the amounts in terms of payment Plan and each installment is the essence
+                                        of the contract in view of the scheme. The Purchaser has assured the Vendor-cum-Developer
+                                        that the Balance of the Sale Consideration and the Balance of the Cost of construction,
+                                        Statutory Payments, the Other Costs, Charges and Expenses if any others shall be paid by the
+                                        Purchaser within 15 (Fifteen) days of the Vendor-cum-Developer having raised a demand for
+                                        payment of such installment.
+                                    </div>
+                                    <div style="padding-top:10px;text-align:justify;">
+                                        In case there is any change /modification in the Statutory Payments, the subsequent Statutory
+                                        Payments shall be increased/reduced based on such change/modifications based on the
+                                        Applicable Law. </div>
+                                    <div style="padding-top:10px;text-align:justify;">
+                                        The GST/Other Statutory payments made towards the flat shall not be refunded in case of
+                                        cancellation of this Agreement. The Purchaser shall be at liberty to recover the same from
+                                        the respective department.
+                                    </div>
+                                    <div style="padding-top:10px;text-align:justify;">
+                                        The Vendor-cum-Developer has further informed the Purchaser and the Purchaser is fully aware
+                                        that the default in payment of the installments set out in the Payment Plan would affect the
+                                        entire  <strong style="text-transform: uppercase;">"MAHENDRA AARYA"</strong> development.
+                                    </div>
+                                    <div style="padding-top:10px;text-align:justify;">
+                                        The Purchaser has been made aware and the Purchaser is fully aware that there are other
+                                        purchasers who would be joining the scheme and would rely upon the assurance given by the
+                                        Purchaser herein.
+                                    </div>
+                                    <div style="padding-top:10px;text-align:justify;">
+                                        If a <strong style="text-transform: uppercase;">PURCHASER/S</strong> is/are residing outside India, it shall solely be the responsibility of
+                                        such <strong style="text-transform: uppercase;">PURCHASER/S</strong> to comply with the necessary formalities as laid down in Foreign Exchange
+                                        Management Act, 1999, ( "FEMA") Reserve Bank of India Act, 1934 and Rules made there under
+                                        or any statutory amendment(s), made thereof and all other applicable laws including that of
+                                        remittance of payment, acquisition/sale/transfer of immovable properties in India etc., and
+                                        provide the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> with such permissions, approvals which would enable the
+                                        <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> to fulfil their obligations under this Agreement. Any refund, transfer of
+                                        security, if provided in terms of this Agreement shall be made in accordance with the
+                                        provisions of FEMA or statutory enactments or amendments thereof and the Rules and
+                                        Regulations of the
+                                    </div>
+                                    <div style="padding-top:10px;text-align:justify;">
+                                        Reserve Bank of India or any other applicable law. The <strong style="text-transform: uppercase;">PURCHASER/S</strong> understand/s and agree/s
+                                        that in the event of any failure on his part to comply with the applicable guidelines issued
+                                        by the Reserve Bank of India, he shall be liable for any action under FEMA as amended from
+                                        time to time. The <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> accept no responsibility in this regard. The <strong style="text-transform: uppercase;">PURCHASER/S</strong>
+                                        shall keep the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> fully indemnified and harmless in this regard. Whenever there
+                                        is any change in the residential status of the <strong style="text-transform: uppercase;">PURCHASER/S</strong> subsequent to the signing of this
+                                        Agreement, it shall be the sole responsibility of the <strong style="text-transform: uppercase;">PURCHASER/S</strong> to intimate the same in
+                                        writing to the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> immediately and to comply with necessary formalities if any
+                                        under the applicable laws. The VENDOR shall not be responsible towards any third party
+                                        making payment/remittances on behalf of any <strong style="text-transform: uppercase;">PURCHASER/S</strong> and such third party shall not have
+                                        any right in the application/conveyance of the <strong style="text-transform: uppercase;">Schedule "B"</strong> Property applied for herein in
+                                        any way. Also, the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> shall issue the payment receipts for the Sale
+                                        Consideration in favour of the <strong style="text-transform: uppercase;">PURCHASER/S</strong> only.
+                                    </div>
+                                    <div style="padding-top:10px;text-align:justify;">
+                                        1. Tax Deduction at Source ("TDS") shall be paid by the Purchaser as per the provision of
+                                        section 194 IA.
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">PAYMENT SCHEDULE, DELAY/ DEFAULT:</strong>
+                                    <ol style="list-style-type: lower-alpha;">
+                                        <li>The Purchaser has paid to the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong>, on or before execution of this
+                                            Agreement, the amounts detailed in <strong style="text-transform: uppercase;">Schedule "G"</strong> towards the part payment of Sale
+                                            consideration and the Purchaser agrees to pay the balance amount promptly and timely as
+                                            per the payment schedule detailed in <strong style="text-transform: uppercase;">Schedule "G"</strong>.</li>
+                                        <li>The payment by the Purchaser to the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> as per the agreed schedule being
+                                            the essence of this contract. It is clarified that the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> is required to
+                                            raise any demand note/bills on the Purchaser to pay the amount as per the aforesaid
+                                            agreed payment schedule. And the Purchaser shall pay the amount as per the agreed
+                                            schedule.</li>
+                                        <li>In the event there being any delay/default by the Purchaser to pay the balance cost of
+                                            construction as per the payment schedule agreed above, the Purchaser shall be liable to
+                                            pay the same with interest of @ 12% per annum for the delay in making the payment.</li>
+                                        <li>The <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong>, at its option, shall also be entitled to terminate this Agreement
+                                            by issuing a notice calling upon the Purchaser to pay the arrears of amounts due with
+                                            interest for the delayed payment within 21 days from the date of such notice and the
+                                            Purchaser fails to pay the arrears even after receipt of such notice.</li>
+                                        <li>In the event of such termination due to the default committed by the Purchaser, the
+                                            <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> shall be entitled to recover from the Purchaser 10 % according to RERA
+                                            which is standard across the industry. of the total cost of Sale consideration reserved
+                                            above as liquidated damages by adjusting the same against the amounts already paid by
+                                            the Purchaser till the date of termination and refund the balance if any, within ninety
+                                            (90) days from the date of termination &amp; the same shall not carry any interest.</li>
+                                        <li>Upon such termination and realization of the amounts from the Promoter/Vendors, the
+                                            Purchaser shall not have any claims over the Apartment and/or the <strong style="text-transform: uppercase;">Schedule "B"</strong> Property
+                                            and the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> shall be entitled to deal with the same as it may deem fit. If
+                                            however, the Purchaser pays up the arrears with the agreed rate of interest for delay in
+                                            making the payment within the time stipulated in the notice of termination, the right to
+                                            terminate the Agreement would lapse for such default alone and this Agreement continues
+                                            to be valid.</li>
+                                        <li>The Purchaser shall not be entitled to question the rates at which the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong>
+                                            constructs other apartments in  <strong style="text-transform: uppercase;">"MAHENDRA AARYA"</strong> for the other purchasers and the
+                                            <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> shall be free to determine and agree upon any cost of construction for
+                                            other purchasers.</li>
+                                        <li>The purchaser shall complete the registration of their flat within 30 days from the date
+                                            of intimation sent by the developer or as extended time by developer else a penalty of
+                                            Rs. 7/sqft per months shall be levied as penalty for delay in registration. Free
+                                            maintenance period will start from the date of such intimation made by developer.</li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">ELECTRICITY, WATER SUPPLY, SANITARY CONNECTIONS &amp; BACK UP POWER:</strong>
+                                    <div>
+                                        The payment detailed in Schedule"G" is inclusive of proportionate cost/charges for securing
+                                        permanent power, water and sanitary connections charges which include deposits, pro-rata
+                                        charges, supervision charges, service charges, meter deposits and charges payable to
+                                        BESCOM/KPTCL, BWSSB, external cable costs of transformer and other incidental expenses for
+                                        providing permanent connection of electricity, water and sanitary and other utilities and
+                                        facilities of <strong style="text-transform: uppercase;">Schedule "A"</strong> Property/Schedule <strong style="text-transform: uppercase;"> "C"</strong> Apartment.
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">SPECIFICATIONS AND AMENITIES:</strong>
+                                    <div>
+                                        The specifications of the construction of the Apartment agreed between the Purchaser and the
+                                        <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> is detailed in <strong style="text-transform: uppercase;">Annexure I</strong> to this agreement and the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> agrees
+                                        to construct the Apartment in accordance with the said specifications or equivalents,
+                                        Amenities the builder providing is detailed in <strong style="text-transform: uppercase;">Annexure II</strong>.
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">OBLIGATIONS OF THE <strong style="text-transform: uppercase;">PURCHASER/S</strong></strong>
+                                    <ol style="list-style-type: lower-roman;">
+                                        <li>That except for absolute title to the Schedule <strong style="text-transform: uppercase;"> "C"</strong> Property, the <strong style="text-transform: uppercase;">PURCHASER/S</strong> will enjoy
+                                            the undivided share of land described in <strong style="text-transform: uppercase;">Schedule "B"</strong> herein in common with the other
+                                            <strong style="text-transform: uppercase;">PURCHASER/S</strong> of the other Apartments to be built on the <strong style="text-transform: uppercase;">Schedule "A"</strong> Property and to use
+                                            all common amenities such as common lighting, sewers, drains, pipes etc now in or upon
+                                            or hereafter to be erected and installed on the <strong style="text-transform: uppercase;">Schedule "B"</strong> Property agreed to be sold
+                                            and conveyed or any part thereof in common with other owners and other persons and to
+                                            permit freely to run and pass water, and soil through and along with some or any of
+                                            them.</li>
+                                        <li>That the <strong style="text-transform: uppercase;">PURCHASER/S</strong> shall become members of the Association of Apartment Owners to be
+                                            formed under the Karnataka Apartments Ownership Act 1972 or any other Act in force as
+                                            and when called upon by the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> and shall observe and perform the terms,
+                                            conditions bye-laws rules and regulations of the association.</li>
+                                        <li>That the <strong style="text-transform: uppercase;">PURCHASER/S</strong> covenant to abide by all the terms of this Agreement including
+                                            Schedule "D" and Schedule <strong style="text-transform: uppercase;"> "E"</strong>, which constitute integral part of this agreement.</li>
+                                        <li>That the <strong style="text-transform: uppercase;">PURCHASER/S</strong>, shall not be entitled to transfer / assign the rights under this
+                                            Agreement for a period of two years from the date of this Agreement or until payment of
+                                            75% of the Sale Consideration and Cost of Construction. The assignment shall be only by
+                                            way of written agreement between the Sellers and the Purchaser and the
+                                            transferee/assignee subject to payment of transfer fee of Rs. 300 /- per sq.ft of super
+                                            built up area of Apartment and the taxes arising thereon. The transfer fee under this
+                                            clause shall not apply in case of transfer made to and between the immediate family
+                                            member i.e., father, mother, brother, sister, son, daughter, husband and wife.</li>
+                                        <li>That the <strong style="text-transform: uppercase;">PURCHASER/S</strong> shall abide by the rules and regulations of the Club House,
+                                            Swimming pool and other common amenities and facilities of which the <strong style="text-transform: uppercase;">PURCHASER/S</strong> are
+                                            entitled to become members by virtue of purchasing the Schedule <strong style="text-transform: uppercase;"> "C"</strong> Property. The club
+                                            membership shall be shared to others also.</li>
+                                        <li>That the <strong style="text-transform: uppercase;">PURCHASER/S</strong> shall not at any time carry on or suffer to be carried on the
+                                            property hereby agreed to be sold, assigned or conveyed any offensive or dangerous trade
+                                            or pursuit which may be or shall become in any way a source of nuisance, annoyance or
+                                            danger to the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> or to the other <strong style="text-transform: uppercase;">PURCHASER/S</strong> of their respective undivided
+                                            share, right, title and interest in the Schedule B Property. Further, the <strong style="text-transform: uppercase;">PURCHASER/S</strong>
+                                            shall not place any obstructions or store or keep any articles in the common areas.</li>
+                                        <li>That the undivided share and carpet area/ super built up area to be sold under this
+                                            Agreement may vary marginally in accordance with the saleable area of the <strong style="text-transform: uppercase;">Schedule "A"</strong>
+                                            development and can be ascertained only upon the completion of the entire <strong style="text-transform: uppercase;">Schedule "A"</strong>
+                                            development. The Sale Deed will be executed in respect of the correct undivided area to
+                                            be ascertained upon completion of the <strong style="text-transform: uppercase;">Schedule "A" development</strong>  and the Parties shall
+                                            bear the difference in consideration, if any, thereto.</li>
+                                        <li>
+                                            The <strong style="text-transform: uppercase;">PURCHASER/S</strong> shall be entitled to sub-let, assign, transfer or convey the rights
+                                            under this agreement and/or to the <strong style="text-transform: uppercase;">Schedule "B"</strong> and <strong style="text-transform: uppercase;"> "C"</strong> Property herein, to any person
+                                            or persons ONLY AFTER:
+                                            <ol style="list-style-type: lower-alpha;">
+                                                <li>Payment of all the monies and deposits due under this agreement and other dues
+                                                    of whatsoever nature to the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> Payment of such transfer fee as
+                                                    mentioned herein above. Without prejudice, the <strong style="text-transform: uppercase;">PURCHASER/S</strong> shall ensure that the
+                                                    assignee, transferee, licensee, lessee, tenant as the case may be, observe the
+                                                    terms of this Agreement, especially those contained in<strong style="text-transform: uppercase;"> Schedules "D"</strong> and <strong style="text-transform: uppercase;"> "E"</strong> and
+                                                    also the rights of the other Apartment owners including their rights, if any, to
+                                                    open terraces, gardens, etc. Without prejudice, to the foregoing and in addition
+                                                    thereto, subsequent to formation of the said Association, the <strong style="text-transform: uppercase;">PURCHASER/S</strong> shall
+                                                    be bound by its bye-laws, etc.</li>
+                                            </ol>
+                                        </li>
+                                        <li>
+                                            The <strong style="text-transform: uppercase;">PURCHASER/S</strong> are also under obligation to pay:-
+                                            <ol>
+                                                <li>The Stamp Duty and Registration Fees payable on this Agreement as well as on the
+                                                    Sale Deed (as defined hereunder to be executed in favor of the PURCHASER/S);</li>
+                                                <li>Legal fees and incidental charges in regard to this Agreement as also the Sale
+                                                    Deed as prescribed at the time of registration;</li>
+                                            </ol>
+                                        </li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">COMMON MAINTENANCE :</strong>
+                                    <ol style="list-style-type: lower-alpha;">
+                                        <li>The Purchaser from the date the Apartment is handed over or deemed to have been handed
+                                            over shall be liable to proportionately share and pay for the common maintenance
+                                            expenses incurred by the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> or the Agency/Maintenance of all the common
+                                            areas, Club house and facilities in  <strong style="text-transform: uppercase;">"MAHENDRA AARYA"</strong>.</li>
+                                        <li>The Purchaser, in addition to the cost of Sale &amp; construction, shall pay to the
+                                            <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> a sum calculated @ Rs.3/- (Rupees three Only) per sq ft per Month shall
+                                            be Varied based on the change in maintenance cost of the Apartment as "Common Area
+                                            Maintenance Charges". The Common Area Maintenance Charges is payable on possession of
+                                            the Apartment/or on the date of execution of the sale deed conveying the Schedule 'B'
+                                            Property in favour of purchaser or his/her/their nominees, whichever is earlier. The
+                                            Developer either by itself or through the Maintenance Company/Agency shall maintain the
+                                            common areas and the facilities in  <strong style="text-transform: uppercase;">"MAHENDRA AARYA"</strong> for a period of 24 months from the
+                                            date of completion of 30 days of intimation for registration of Apartment. The Purchaser
+                                            shall pay the common maintenance charges to an entity authorised by the developer/vendor
+                                            who shall have complete rights to decide all the matters pertaining to the maintenance
+                                            of  <strong style="text-transform: uppercase;">"MAHENDRA AARYA"</strong>.</li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">NO RIGHT TO OBSTRUCT DEVELOPMENT:</strong>
+                                    <div>
+                                        The <strong style="text-transform: uppercase;">PURCHASER/S</strong> shall have no right at any time whatsoever to obstruct or hinder the
+                                        progress of the construction of the buildings and other developments or any part thereof in
+                                        the Schedule B Property and/or in  <strong style="text-transform: uppercase;">"MAHENDRA AARYA"</strong>.
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">LIMITED RIGHT OF <strong style="text-transform: uppercase;">PURCHASER/S</strong>:</strong>
+                                    <div>
+                                        Nothing contained in these presents shall be construed to confer upon the <strong style="text-transform: uppercase;">PURCHASER/S</strong> any
+                                        right, title or interest of any kind whatsoever into or over the <strong style="text-transform: uppercase;">Schedule "B"</strong> Property
+                                        and/or Schedule <strong style="text-transform: uppercase;"> "C"</strong> Property or any part thereof and the <strong style="text-transform: uppercase;">PURCHASER/S</strong> will acquire right only
+                                        upon
+                                        
+                                        the execution of the sale deed duly alienating, conveying and transferring the <strong style="text-transform: uppercase;">Schedule "B"</strong>
+                                        and <strong style="text-transform: uppercase;"> "C"</strong> Properties.
+                                        
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">NOT TO ALTER NAME:</strong>
+                                    <div>
+                                        The <strong style="text-transform: uppercase;">PURCHASER/S</strong> shall not alter or subscribe to the alteration of the name of "MAHENDRA
+                                        AARYA" in <strong style="text-transform: uppercase;">Schedule "A"</strong> Property and/or alter the names assigned to the Towers therein.
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">ASSIGNMENT:</strong>
+                                    <div>
+                                        That during the execution of this agreement or till the execution of the Sale Deed whichever
+                                        is earlier, the <strong style="text-transform: uppercase;">PURCHASER/S</strong> shall not have power or authority to transfer or assign
+                                        his/her/their right under this agreement to anyone. It is Specifically agreed by the
+                                        <strong style="text-transform: uppercase;">PURCHASER/S</strong> that the <strong style="text-transform: uppercase;">PURCHASER/S</strong> during this period cannot part with possession of the said
+                                        Apartment or sell/ transfer/ assign his/her/their interest in the said Apartment without the
+                                        prior written sanction and consent (to be granted at the option) of the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong>
+                                        until the contract contemplated under this Agreement and all other writings executed along
+                                        with this Agreement is duly and properly fulfilled. It is Specifically understood that during
+                                        this period the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> shall at their option permit assignment on charging an
+                                        assignment/transfer fee of Rs.300/- per sq.ft super built-up area of Apartment and taxes.
+                                        The <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> may grant such sanction, provided at the time of such assignment the
+                                        <strong style="text-transform: uppercase;">PURCHASER/S</strong> has/have paid all amounts mentioned in this Agreement (and all other writings
+                                        and Deeds that may be executed here with), in respect of the said Apartment. Further in the
+                                        event of such assignment, the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> shall not be liable to pay any compensation/
+                                        damages payable by the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> under any of the terms and/or conditions of this
+                                        Agreement. It is also made clear that the <strong style="text-transform: uppercase;">PURCHASER/S</strong> will not be able to assign his/
+                                        her/their rights in portions i.e., the <strong style="text-transform: uppercase;">PURCHASER/S</strong> will have to either assign all
+                                        his/her/their rights under this Agreement or otherwise shall not be entitled to assign
+                                        his/her/their rights at all.
+                                    </div>
+                                    <div style="padding-top:10px;text-align:justify;">
+                                        In addition to above, during the execution of this agreement or till the execution of the
+                                        Sale Deed whichever is earlier, the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> consent (if granted) to dispose,
+                                        transfer or sale by way of assignment of the said Apartment to a third party shall be inter
+                                        alia subject to the <strong style="text-transform: uppercase;">PURCHASER/S</strong>:-
+                                    </div>
+                                    <ol style="list-style-type: lower-roman;">
+                                        <li>Settling all charges outstanding and payable to the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> including Service
+                                            Charges, all other payments mentioned in this Agreement and other overdue interest (if
+                                            any);</li>
+                                        <li>Causing the new buyer(s) to execute fresh Sale Agreement/Deeds with the
+                                            <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> (as per the format of the VENDOR/S).</li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">INDEMNITY:</strong>
+                                    <div>
+                                        The VENDOR assures and undertakes to indemnify the <strong style="text-transform: uppercase;">PURCHASER/S</strong> against any losses, damages,
+                                        and defect in title, in respect of the Schedule B &amp; C Property.
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">POSSESSION:</strong>
+                                    <ol style="list-style-type: lower-alpha;">
+                                        <li>The Developer has registered the project with RERA and completion date updated/approved
+                                            by RERA is 31.12.2025. The possession shall be given by Tower wise, as mentioned below:
+                                            <ol style="list-style-type: lower-roman;">
+                                                <apex:outputText rendered="{!Booking__c.Block__r.Name=='Tower A'}">
+                                                    <li><strong style="text-transform: uppercase;">Schedule C Flat shall be handed over by the developer to the purchaser before 31.12.2025 with 
+                                                        a grace period of 6 months ie., by 30.06.2026</strong></li>
+                                                    <li><strong style="text-transform: uppercase;">The completion date of 31.12.2025 shall be in compliance with the Real Estate Regulatory Authority,
+                                                        Karnataka. The DEVELOPER/VENDOR shall make effort to obtain electrical, water and sanitary connections (as applicable) within the stipulated
+                                                        time, however the Developer shall not be responsible for any delays" in obtaining such connections, clearances, certificates from the statutory 
+                                                        
+                                                        bodies/authorities. However, the developer will be having 6 months grace period for the same and Purchaser shall not be entitled to claim any damage/losses/interest against the Developer on the grounds of such delay, provided there is no delay on the part of the Developer in applying for the above and the DEVELOPER/VENDOR has complied with all the legal requirement for securing the same.</strong></li>
+                                                </apex:outputText>
+                                                 <apex:outputText rendered="{!Booking__c.Block__r.Name=='Tower B'}">
+                                                    <li><strong style="text-transform: uppercase;">Schedule C Flat shall be handed over by the developer to the purchaser before 31.12.2025</strong></li>
+                                                    <li><strong style="text-transform: uppercase;">The completion date of 31.12.2025 shall be in compliance with the Real Estate 
+                                                        Regulatory Authority, Karnataka. The DEVELOPER/VENDOR shall make effort to obtain electrical, water and sanitary connections
+                                                        (as applicable) within the stipulated time, however the Developer shall not be responsible for any delays" in obtaining such 
+                                                        connections, clearances, certificates from the statutory bodies/authorities and Purchaser shall not be entitled to claim any
+                                                        damage/losses/interest against the Developer on the grounds of such delay, provided there is no delay on the part of the Developer
+                                                        in applying for the above and the DEVELOPER/VENDOR has complied with all the legal requirement for securing the same.</strong></li>
+                                                </apex:outputText>
+                                            </ol>
+                                        </li>
+                                        <li>The completion date of 31.12.2025 shall be in compliance with the Real Estate Regulatory
+                                            Authority, Karnataka. The <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> shall make effort to obtain electrical, water
+                                            and sanitary connections (as applicable) within the stipulated time, however the
+                                            Developer shall not be responsible for any delays" in obtaining such connections,
+                                            clearances, certificates from the statutory bodies/authorities and Purchaser shall not be
+                                            entitled to claim any damage/losses/interest against the Developer on the grounds of
+                                            such delay, provided there is no delay on the part of the Developer in applying for the
+                                            above and the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> has complied with all the legal requirement for securing
+                                            the same.</li>
+                                        <li>The <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> shall not be liable if they are unable to complete the construction
+                                            of the Apartment and deliver possession by the aforesaid date by reason of civil and
+                                            military commotion, strikes, bundh, lock outs or any Acts of God or if the delay is as a
+                                            result of any Rule, Notification of the Government, Municipal Authority, any Court and/or
+                                            any other Public or Competent Authority prohibiting construction activities and/or
+                                            general non- availability of construction materials and/or any for reasons beyond the
+                                            control of the Developer. In any of the aforesaid events, the Developer shall be
+                                            entitled to reasonable extension of time for delivery of possession of the Apartment and
+                                            the Purchaser shall not be entitled to terminate this Agreement and claim refund of
+                                            amounts paid.
+                                        </li>
+                                        <li>The <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> hereby agrees that they are liable to pay to the Purchaser a
+                                            monthly rent of Rs. 7 per sqft/month on the super built up area under this Agreement and
+                                            the Agreement to Sell for any delay in delivery of possession of the Apartment, not
+                                            attributable to any of the reasons stated above, after the lapse of the grace time,
+                                            provided the Purchaser has paid all the amount payable as per the payment schedule
+                                            agreed above and there has been no default by the Purchaser. The amount shall be paid
+                                            until the apartment is handed over for possession.</li>
+                                        <li>Possession of the Apartment shall be delivered to the Purchaser by the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong>
+                                            after the same is ready for use and occupation, subject to receipt of all the amounts
+                                            due and payable by the Purchaser under and there has been no default by the Purchaser.
+                                        </li>
+                                        <li>The Purchaser shall take possession of the Apartment hereinafter paying in fulfil all the
+                                            dues including deposits and charges mentioned in this Agreement and overdue interest, if
+                                            any, within 15 days from the date of receipt of a notice in writing from the Developer,
+                                            intimating that the Apartment is ready for use and occupation.
+                                        </li>
+                                        <li>The Purchaser shall be liable to bear and pay to the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> the following
+                                            expenses commencing from 15 days after notice is given by the Developer to the
+                                            Purchasers to the effect that the Apartment is ready for use and occupation by the
+                                            Purchaser, irrespective of whether the Purchaser takes possession or not:
+                                            <ol style="list-style-type: lower-roman;">
+                                                <li>Property taxes in respect of the Apartment and other outgoing such as
+                                                    electricity charges and expenses incurred by the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> for
+                                                    maintenance of the Apartment;</li>
+                                                <li>Purchaser"s share of common maintenance expenses i.e. proportionate share of
+                                                    insurance, wages for the persons appointed by the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> to manage and
+                                                    look after the common areas and facilities in  <strong style="text-transform: uppercase;">"MAHENDRA AARYA"</strong> such as property
+                                                    manager, security guards, gardeners, plumbers, electricians, generator
+                                                    operators, sweepers etc., expenses incurred by the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> for
+                                                    maintaining all the common areas and facilities such electricity charges, water
+                                                    charges, house-keeping consumables etc.</li>
+                                            </ol>
+                                        </li>
+                                        <li>The Purchaser upon taking possession of the Apartment, shall deemed to have accepted
+                                            that the Apartment is fully complete in all respects and Purchaser shall not have any
+                                            claim against the Developer for any items of work in the Apartment which may be alleged
+                                            as not carried out or completed by the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong>. This shall however not apply to
+                                            any snags and/or incomplete work reported at the time of hand over, which shall be
+                                            promptly attended to by the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong>.</li>
+                                        <li>The <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> would intimate the <strong style="text-transform: uppercase;">PURCHASER/S</strong> the date for delivering possession
+                                            of the Schedule <strong style="text-transform: uppercase;"> "C"</strong> Apartment to the <strong style="text-transform: uppercase;">PURCHASER/S</strong> and the <strong style="text-transform: uppercase;">PURCHASER/S</strong> shall complete the
+                                            purchase of Schedule <strong style="text-transform: uppercase;"> "C"</strong> Property and receive possession as stated above within fifteen
+                                            days from the date of such notice and the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> would deliver possession of
+                                            the Schedule <strong style="text-transform: uppercase;"> "C"</strong> Apartment provided the <strong style="text-transform: uppercase;">PURCHASER/S</strong> has/have not defaulted any of the
+                                            terms and conditions of this agreement and has/have complied with its obligations and
+                                            paid the agreed sums.</li>
+                                        <li>The <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> shall deliver and put the <strong style="text-transform: uppercase;">PURCHASER/S</strong> in constructive possession of
+                                            Schedule B Property and actual, physical, vacant possession of Schedule <strong style="text-transform: uppercase;"> "C"</strong> Apartment on
+                                            execution of Sale Deed against payment of balance sale price and all other amounts due
+                                            under this Agreement and compliance of all the terms in this Agreement. The <strong style="text-transform: uppercase;">PURCHASER/S</strong>
+                                            agrees that on sale of <strong style="text-transform: uppercase;">Schedule "B"</strong> Property, the <strong style="text-transform: uppercase;">PURCHASER/S</strong> shall have no further
+                                            claim whatsoever against <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong>.</li>
+                                        <li>The <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> hereby undertakes to obtain "Occupancy Certificate/Partial
+                                            Occupancy Certificate" from the concerned authority and make available to the Purchaser
+                                            Likewise, Vendor/s shall co-ordinate with the Purchasers of flat and assists the
+                                            Purchaser in obtaining Katha lawfully.</li>
+                                        <li>The <strong style="text-transform: uppercase;">PURCHASER/S</strong> shall receive possession of the <strong style="text-transform: uppercase;">Schedule "B"</strong> Property and Schedule <strong style="text-transform: uppercase;"> "C"</strong>
+                                            Property on or before the dates stipulated by the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> in writing by
+                                            executing the Sale Deed and getting the same registered. In case the <strong style="text-transform: uppercase;">PURCHASER/S</strong>
+                                            default/s in receiving possession as aforesaid and/or complete the purchase, the
+                                            <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> are entitled to and PURCHASERS liable to pay Rs. 7 per sft per month as
+                                            holding charges which the <strong style="text-transform: uppercase;">PURCHASER/S</strong> agree to pay the same before receiving possession
+                                            of Schedule <strong style="text-transform: uppercase;"> "C"</strong> Apartment.</li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">DEFECT LIABILITY</strong>
+                                    <ol>
+                                        <li>
+                                            <div style="padding-top:10px;">
+                                                In the event of any structural defects, being informed by the purchaser in writing
+                                                within the period of 5 (five) years from the date of the occupancy certificate
+                                                (full/partial) having been issued. The Vendor-cum-Developer will attend to the same
+                                                at their own cost within 30 days of such notice or such other time period as may be
+                                                reasonably required to rectify the defect at its cost. Such defects shall not mean
+                                                and include Defect/s caused by normal wear and tear and/or by the negligent use of
+                                                the unit/s by the respective purchaser/Occupants, vagaries of nature, superficial
+                                                cracks, etc.
+                                            </div>
+                                            <div>
+                                                Provided however notwithstanding anything stated herein, it is agreed between the
+                                                parties that:
+                                            </div>
+                                            <ol>
+                                                <li>The Purchaser of the units in the building/wing shall not carry out any
+                                                    alterations of whatsoever nature in the said unit/wing/building and in Specific
+                                                    and the structure of the said unit/wing/building of the said property/Scheme
+                                                    which shall include but not be limited to columns, beams etc. or in the fittings
+                                                    therein, particularly if it is hereby agreed that the purchaser shall not make
+                                                    any alteration in any of the fittings, pipes, water supply connections or any
+                                                    erection or alteration in the bathroom , toilet and kitchen, which may result in
+                                                    seepage of water. If any of such works are carried out the defect liability on
+                                                    the part of the Vendor-cum-Developer shall automatically become void and stand
+                                                    extinguished.</li>
+                                                <li>That it shall be incumbent upon the purchase to maintain his/her/their unit in a
+                                                    diligent manner and take all due care necessary for the same including but not
+                                                    limited to the regularly ensuring taking care of the unit to prevent water
+                                                    seepage etc.</li>
+                                                <li>Where the manufacture warranty as shown by the Vendor-cum-Developer to the
+                                                    purchaser expires the same have to be renewed from time to time under AMC for
+                                                    such facilities &amp; amenities at all time during defect liability period and
+                                                    should the annual maintenance contracts not be renewed by the purchaser/or
+                                                    association of purchaser the Vendor-cum- Developer shall not be responsible for
+                                                    any repairs /defects occurring due to the same.</li>
+                                                <li>In case of use of inappropriate cleaning materials or any other materials, the
+                                                    Vendor-cum- Developer will not be responsible for any deterioration of the
+                                                    materials in the units/common areas.</li>
+                                                <li>If any defect or damage is found to have been caused due to the negligence of
+                                                    the purchaser or any other <strong style="text-transform: uppercase;">PURCHASER/S</strong> or the <strong style="text-transform: uppercase;">PURCHASER/S</strong> agents or structural
+                                                    defects caused or attributable to the purchaser including by carrying out
+                                                    structural or architectural changes from the original design attributes ,
+                                                    demolition, dismantling , making openings , removing or resizing the original
+                                                    structural framework putting excess or heavy load or using the schedule <strong style="text-transform: uppercase;"> "C"</strong>
+                                                    apartment other than for its intended purpose or such other reasons attributable
+                                                    to the purchaser , then the Vendor-cum-Developer shall not be liable for the
+                                                    same.</li>
+                                                <li>
+                                                    Normal wear and tear of materials due to whether effect or usage or
+                                                    non-occupation of the unit for long duration, the Vendor-cum-Developer will not
+                                                    be responsible. In Carrying out the repairs of any structural defects:
+                                                    <ol style="list-style-type: lower-roman;">
+                                                        <li>The Vendor-cum-Developer reserves the right to replace unavailable
+                                                            material with suitable alternatives without any compromise on the
+                                                            quality of the material, quality of workmanship and the aesthetics of
+                                                            the unit.</li>
+                                                        <li>The Vendor-cum-Developer state that many of the materials procured from
+                                                            the factories/vendors are subject to variation in tone, grain, texture,
+                                                            colour and other aesthetic features which are beyond the control of the
+                                                            Vendor-cum-Developer, they may not be the same as shown in the model
+                                                            unit or sample. This is mostly due to items being manufactured in
+                                                            different lots. Every effort will be made to minimize the variation to the
+                                                            specifications. Purchasers are informed to expect the variations with in
+                                                            natural / permissible limits.</li>
+                                                        <li>The Vendor-cum-Developer will ensure that the workmanship of all the
+                                                            works shall be in accordance with general and detailed Specification as
+                                                            mentioned in the agreement and as per the sanction plan.</li>
+                                                        <li>That the project as a whole has been conceived, designed and constructed
+                                                            based on the commitment and warranties given by the
+                                                            vendor/manufacturers, where ever applicable, that all equipment and
+                                                            fixtures and fittings shall be maintained and covered by
+                                                            maintenance/warranty contracts so as it to be sustainable and proper
+                                                            working condition to continue warranty in both the units and the common
+                                                            amenities and facilities of the project wherever applicable.</li>
+                                                        <li>That the Purchaser has/have been made aware that the Purchaser expressly
+                                                            agrees that the regular wear and tear of the unit/wing/building
+                                                            <strong style="text-transform: uppercase;">"MAHENDRA AARYA"</strong> includes minor hairline cracks on the external and
+                                                            internal walls excluding the RCC structure which happens due to
+                                                            variation in temperature of more than 20 degrees Celsius and which do
+                                                            not amount to structural defects and hence cannot be attributed to
+                                                            faulty workmanship or structural defect.</li>
+                                                        <li>Notwithstanding anything to the contrary, it shall be the responsibility
+                                                            of the PURCHASER to maintain his Items/ Goods/ Systems such as Lifts,
+                                                            Fire-Fighting Equipment, Solar Heating System, Sewage Treatment Plant,
+                                                            Organic Waste Converter, Sanitary Fittings and C.P. Fittings to be
+                                                            provided by the Vendor-cum-Developer in the said Project and/or in the
+                                                            said Apartment. The Vendor-cum-Developer"s liability for any
+                                                            manufacturing defects therein shall be concurrent with and be limited to
+                                                            the period of Warranty given by the Manufacturers of such Items/ Goods/
+                                                            Systems and shall not extend beyond such periods. Further, such
+                                                            warranties pertaining to such Items/ Goods/ Systems which require
+                                                            periodic maintenance shall become null and void if such periodic
+                                                            maintenance as prescribed by the Manufacturer is not attended by the
+                                                            "Association of flat Owners " formed by the <strong style="text-transform: uppercase;">PURCHASER/S</strong> of Apartments in
+                                                            the said Project.</li>
+                                                    </ol>
+                                                </li>
+                                            </ol>
+                                        </li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">NOTICE:</strong>
+                                    <div>
+                                        All letters, receipts or notices issued by the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> dispatched under Registered
+                                        Post Acknowledgement Due/Under certificate of Posting/Local Courier Service to the address of
+                                        the <strong style="text-transform: uppercase;">PURCHASER/S</strong> given in this agreement or email address available in the records of the
+                                        <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> will be sufficient proof of service thereof on the <strong style="text-transform: uppercase;">PURCHASER/S</strong> and shall
+                                        effectually discharge the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> from its obligation to issue any further notice.
+                                        The party sending notice/correspondence is not responsible for non-delivery due to change in
+                                        the address if the party changing the address has not intimated in writing the change in the
+                                        address.Intimation by e-mail or fax shall also be deemed as due intimation.
+                                    </div>
+                                    <div style="padding-top:10px;">
+                                        In case there are joint <strong style="text-transform: uppercase;">PURCHASER/S</strong> all communications shall be sent by the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong>
+                                        to the <strong style="text-transform: uppercase;">PURCHASER/S</strong> whose name appears first and at the address given by the <strong style="text-transform: uppercase;">PURCHASER/S</strong> which
+                                        shall for all intents and purposes be considered as properly served on all the <strong style="text-transform: uppercase;">PURCHASER/S</strong>.
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">FORCE MAJEURE:</strong>
+                                    <div style="padding-bottom:10px;padding-top:10px;">
+                                        The <strong style="text-transform: uppercase;">PURCHASER/S</strong> agrees that in case the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> are unable to deliver the said Flat
+                                        to the <strong style="text-transform: uppercase;">PURCHASER/S</strong> for his/her/ its occupation and use due to
+                                    </div>
+                                    <ol style="list-style-type: lower-roman;">
+                                        <li>any legislation, order or rule or regulation made or issued by the Government or any
+                                            other authority; or</li>
+                                        <li>If any competent authority(ies) refuses, delays, withholds, denies the grant of
+                                            necessary approvals for any reason whatsoever, or</li>
+                                        <li>If any matters, issues relating to such approvals, permissions, notices, notifications by
+                                            the competent authority(ies) become subject of any suit/ writ before a competent court,
+                                            or</li>
+                                        <li>due to flood, other natural disasters, war, insurrection, epidemic, revolution, riot,
+                                            terrorist attack, governmental restrictions or so forth which are beyond the reasonable
+                                            control of the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong>, or</li>
+                                        <li>Any other circumstances beyond the control of the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> or its officials, then
+                                            the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> may cancel the allotment of the said Apartment /Flat in which case
+                                            the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> shall only be obliged to refund the amounts received from the
+                                            <strong style="text-transform: uppercase;">PURCHASER/S</strong> without any interest.</li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">SPECIFIC PERFORMANCE &amp; ARBITRATION &amp; JURISDICTION:</strong>
+                                    <div>
+                                        Any disputes arising between the parties relating to this agreement or any matter relating
+                                        to, incidental or concerning the clauses in this agreement shall be referred to a Sole
+                                        Arbitrator to be mutually agreed upon by the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> and the prospective Clients
+                                        and settled in accordance with provisions of the Arbitration and Conciliation Act, 1996 or
+                                        any re-enactment or statutory modifications thereof. The Sole Arbitrator shall conduct the
+                                        proceedings in a summary manner and pronounce his Award within two months of entering
+                                        reference. The venue of the arbitration shall be Bangalore and the proceedings will be
+                                        conducted in English. Without prejudice, Courts at Bangalore alone shall have jurisdiction.
+                                    </div>
+                                    <div style="padding-top:10px;">
+                                        In the event of default by the FIRST PARTY, the SECOND PARTY is entitled to enforce Specific
+                                        performance of this contract. Similarly in the event of default by the SECOND PARTY, the
+                                        FIRST PARTY shall be entitled to enforce Specific performance of this agreement or take
+                                        action as per this Agreement.
+                                    </div>
+                                    <div style="padding-top:10px;">
+                                        The courts at Bangalore alone shall have jurisdiction in all matters relating to this
+                                        Agreement.
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">SEVERABILITY:</strong>
+                                    <div>
+                                        In the event that any provision of this Agreement is declared by any judicial or other
+                                        competent authority to be void, voidable, illegal or otherwise unenforceable or indications
+                                        of the same are received by either of the parties from any, relevant competent authority,
+                                        the parties will:
+                                    </div>
+                                    <ol style="list-style-type: lower-alpha;">
+                                        <li>Amend that provision in such reasonable manner as to achieve the intention of the
+                                            parties without illegality, or</li>
+                                        <li>At the discretion of the parties, such provision may be severed from this Agreement.
+                                        </li>
+                                        <li>The remaining provisions of this Agreement will remain in full force and effect unless
+                                            the parties decide that the effect of such declaration is to defeat the original
+                                            intention of the parties.</li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">INDULGENCE:</strong>
+                                    <div>
+                                        Any delay or indulgence by the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> in enforcing the terms of this Agreement or
+                                        any forbearance for giving time to the <strong style="text-transform: uppercase;">PURCHASER/S</strong> shall not be construed as waiver of the
+                                        right of theDEVELOPER/VENDOR to enforce the compliance of this agreement and shall not in
+                                        any way prejudice the rights of the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong>. Similarly, any delay or indulgence by
+                                        the <strong style="text-transform: uppercase;">PURCHASER/S</strong> in enforcing the terms of this agreement or any forbearance for giving time
+                                        to the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> shall not be construed as waiver of the right of the <strong style="text-transform: uppercase;">PURCHASER/S</strong> to
+                                        enforce compliance of this Agreement and shall not in any way prejudice the rights of the
+                                        <strong style="text-transform: uppercase;">PURCHASER/S</strong>.
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">COMPLETE AGREEMENT:</strong>
+                                    <div>
+                                        The parties acknowledge that this Agreement is the complete Agreement. This Agreement
+                                        supersedes, any prior agreements and representations between the parties, whether written or
+                                        oral. Any such prior arrangements are cancelled as on this Date.
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">RULES OF INTERPRETATION:</strong>
+                                    <div>
+                                        This Agreement will be interpreted in accordance with the settled canons of interpretation
+                                        of contracts subject to the following:-
+                                    </div>
+                                    <ol style="list-style-type: lower-roman;">
+                                        <li>Words importing one gender will be construed as importing any other gender.</li>
+                                        <li>Words importing the singular include the plural and vice versa.</li>
+                                        <li>References to persons mean and include natural and artificial persons like bodies
+                                            corporate and vice versa.</li>
+                                        <li>Save where the context otherwise requires, all obligations given or undertaken by more
+                                            than one person in the same capacity are given or undertaken by them jointly or
+                                            severally.</li>
+                                        <li>The division of this Agreement into Clauses and Schedules and insertion of headings in
+                                            this Agreement are only for ease of reference and convenience and will not impact the
+                                            construction or interpretation of any provision of this Agreement.</li>
+                                    </ol>
+                                    <div>
+                                        This Agreement shall be binding upon the permitted assigns and successors in title of the
+                                        <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong> and the permitted assigns and successors in title of the <strong style="text-transform: uppercase;">PURCHASER/S</strong>.
+                                    </div>
+                                    <div style="padding-top:10px;">
+                                        Both parties to this Agreement shall have the right to enforce Specific performance of this
+                                        contract at the cost of the defaulting party.
+                                    </div>
+                                    <div style="padding-top:10px;">
+                                        Knowledge or acquiescence by either Party hereto of any breach of any of the terms,
+                                        conditions or covenants contained herein shall not operate as or be deemed as a waiver of
+                                        such terms, conditions or covenants and notwithstanding such knowledge or acquiescence, each
+                                        Party hereto shall be entitled to (a) exercise their respective rights under this Agreement
+                                        and to (b) require strict performance by the other Party of the terms, conditions and
+                                        covenants contained herein.
+                                    </div>
+                                    <div style="padding-top:10px;">
+                                        The Parties acknowledge that this Agreement contains the whole agreement between the Parties
+                                        and none of the Parties have relied upon any oral or written representation made by either
+                                        party in favour of the other Party.
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">CUSTODY:</strong>
+                                    <div>
+                                        This agreement is drawn up in a single set; the original set will be given to the
+                                        <strong style="text-transform: uppercase;">PURCHASER/S</strong>
+                                        and the photocopy of the same will be retained by the <strong style="text-transform: uppercase;">DEVELOPER/VENDOR</strong>
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">REPRESENTATIONS AND WARRANTIES:</strong>
+                                    <div>
+                                        The Vendor-cum-Developer acknowledges that the Purchaser has entered into this Agreement and
+                                        has agreed to purchase the <strong style="text-transform: uppercase;">Schedule "B"</strong> Undivided Share and get constructed the Schedule <strong style="text-transform: uppercase;"> "C"</strong>
+                                        Unit/Apartment from the Vendor-cum-Developer, taking into consideration the Disclosures made
+                                        by the Vendor-cum Developer and based on the representations and warranties set out below.
+                                    </div>
+                                    <div style="padding-top:10px;">
+                                        The Vendor-cum-Developer is the absolute owner of the Schedule <strong style="text-transform: uppercase;"> "C"</strong> Undivided share with
+                                        exclusive possession of the <strong style="text-transform: uppercase;">Schedule "A"</strong> Property and no Person other than the Vendor-cum-
+                                        Developer has any right (legal or beneficial), claim, interest or demand in any manner
+                                        whatsoever to or its respect of the Schedule <strong style="text-transform: uppercase;"> "C"</strong> Undivided Share;
+                                    </div>
+                                    <div style="padding-top:10px;">
+                                        The <strong style="text-transform: uppercase;">Schedule "A"</strong> Property is not a subject matter of any HUF(Hindu Undivided Family) and
+                                        that no part thereof is owned by any minor or no minor has any right, title and claim over
+                                        the <strong style="text-transform: uppercase;">Schedule "A"</strong> Property.
+                                    </div>
+                                    <div style="padding-top:10px;">
+                                        The Vendor-cum-Developer has the power to enter into and perform this agreement and upon
+                                        execution this Agreement would constitute legal, valid and binding obligations on the
+                                        Purchaser, vendor-cum-Developer;
+                                    </div>
+                                    <div style="padding-top:10px;">
+                                        The Vendor-cum-Developer has the absolute and unconditional right to sell, transfer or
+                                        otherwise alienate the <strong style="text-transform: uppercase;">Schedule "B"</strong> Undivided share.
+                                    </div>
+                                    <div style="padding-top:10px;">
+                                        To the knowledge of the Vendor-cum Developer, the Schedule "C Property is not subject to any
+                                        pending litigation, third party claim, demand, attachment or a process issued by any court
+                                        or Authority.
+                                    </div>
+                                    <div style="padding-top:10px;">
+                                        To the knowledge of the Vendor-cum-Developer, the Schedule "A Property is not the subject
+                                        matter of any acquisition proceeding or any notice for acquisition or any other notice which
+                                        may adversely affect the marketability of title of the <strong style="text-transform: uppercase;">Schedule "B"</strong> Undivided Share Property.
+                                    </div>
+                                    <div style="padding-top:10px;">
+                                        All approvals licences and permits issued by the Authorities with respect to "MAHENDRA
+                                        AARYA" are valid and subsisting and have been obtained by following due process of law.
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">DISCLOSURES:</strong>
+                                    <div>
+                                        The Purchaser acknowledges and confirms that the Vendors-cum-Developer has fully disclosed to
+                                        the Purchaser and the Purchaser has reviewed all of them and after having understood the
+                                        implication thereof has entered into this Agreement and the Purchaser has agreed to all of
+                                        the Disclosures and the Purchaser, expressly grants its consent and no objection to the
+                                        Vendor-cum- Developer to undertake every action as per Disclosures.
+                                    </div>
+                                    <div style="padding-top:10px;">
+                                        That the Vendor-cum Developer has utilized an FAR(Floor Area Ratio) basing on the actual
+                                        area available for development and the undivided share that would be conveyed to the
+                                        Purchaser at the time of the execution of the Sale Deed would be based on the calculation of
+                                        the utilisation and consumption of the FAR.
+                                    </div>
+                                    <div style="padding-top:10px;">
+                                        2. That, the sale of the <strong style="text-transform: uppercase;">Schedule "B"</strong> Property is only for enabling the Purchaser to
+                                        construct and own the Schedule <strong style="text-transform: uppercase;"> "C"</strong> Apartment and not for any other purpose. Purchaser has
+                                        agreed that, on the Sellers being permitted under the provisions of the Act, for any change
+                                        in FAR or utilisation of TDR, the undivided share would stand varied and will be
+                                        corresponding to the overall built up area that is being constructed under the Scheme.
+                                    </div>
+                                </li>
+                                <li>
+                                    <strong style="text-transform: uppercase;">PERMANENT ACCOUNT NUMBER &amp; AADHAAR CARD NUMBER:</strong>
+                                    <div>
+                                        The Permanent Account number and Aadhaar Card Number are as follows:
+                                    </div>
+                                    <table width="80%">
+                                        <tr>
+                                            <td width="40%" valign="top"><strong style="text-transform: uppercase;">Developer :</strong></td>
+                                            <td width="60%"><strong style="text-transform: uppercase;">AAHCM5688C</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top"><strong style="text-transform: uppercase;">Purchasers :</strong></td>
+                                            <td>
+                                                <strong style="text-transform: uppercase;">
+                                                    <span style="padding-right:5px;">{!Booking__c.salutation_Applicant1__c} {!Booking__c.First_Applicant_Name__c}  / {!Booking__c.PAN_Number1__c} / {!Booking__c.Aadhaar_Number__c}</span>
+                                                    <apex:outputPanel rendered="{!NOT(ISBLANK(Booking__c.Second_Applicant_Name__c))}">
+                                                        <span style="padding-right:5px;"><strong style="text-transform: uppercase;">{!Booking__c.salutation_Applicant2__c} {!Booking__c.Second_Applicant_Name__c} </strong> / {!Booking__c.Pan_Number_Applicant2__c} / {!Booking__c.Aadhaar_Number1__c}</span>
+                                                    </apex:outputPanel>
+                                                    <apex:repeat value="{!Booking__c.Co_Applicant__r}" var="co">
+                                                        <span style="padding-right:5px;"><strong style="text-transform: uppercase;">{!co.Salutation__c} {!co.Name}</strong> / {!co.PAN_Number__c} / {!co.Aadhar_Number__c}</span>
+                                                    </apex:repeat>
+                                                </strong>
+                                            </td>
+                                        </tr>                                        
+                                    </table>
+                                </li>
+                            </ol>
+                        </div>
+                        <div style="padding-top:10px; text-align:center">
+                            <strong style="text-transform: uppercase;"><strong style="text-transform: uppercase;">Schedule "A"</strong> PROPERTY</strong>
+                        </div>
+                        <div>
+                            <div style="padding-top:10px;">
+                                <strong style="text-transform: uppercase;">ITEM NO.1</strong>
+                            </div>
+                            <div style="text-align:justify;">
+                                All that piece and parcel of the property bearing converted Sy No. 9/2, measuring 2 acres 37 guntas,
+                                bearing No. ALN(A)(A)SR/129/12-13, dated 05.10.2012 &amp; ALN(A)(A)SR/45/13-14, dated 23.11.2013 by
+                                D C, Bangalore, situated at Andapura, Attibele Hobli, Anekal Taluk, Bangalore Urban District,
+                                bounded as follows:-
+                                
+                            </div>
+                            <table width="100%" style="line-height:1">
+                                <tr>
+                                    <td valign="top" width="20%">East by</td>
+                                    <td valign="top" width="80%">Lands in Sy No.6</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">West by</td>
+                                    <td valign="top">Lands in Sy No. 12</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">North by</td>
+                                    <td valign="top">Lands in Sy No. 9/1</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">South by</td>
+                                    <td valign="top">Lands in Sy No. 10 &amp; 11</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            <div style="padding-top:10px;">
+                                <strong style="text-transform: uppercase;">ITEM NO.2</strong>
+                            </div>
+                            <div style="text-align:justify;">
+                                All that piece and parcel of the immovable property bearing residential converted Sy No. 8/4 an
+                                extent of 37 guntas converted vide order No. ALN(A)(A)SR/53/2013-14, dated 22.11.2013 by D C,
+                                Bangalore, situated at Andapura, Attibele Hobli, Anekal Taluk, Bangalore Urban District, having
+                                common boundaries and bounded on:-
+                            </div>
+                            <table width="100%" style="line-height:1">
+                                <tr>
+                                    <td valign="top" width="20%">East by</td>
+                                    <td valign="top" width="80%">Lands in Sy No.9</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">West by</td>
+                                    <td valign="top">Lands in Sy No. 8/3</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">North by</td>
+                                    <td valign="top">Lands in Sy No. 8/1</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">South by</td>
+                                    <td valign="top">Lands in Sy No. 12 &amp; 13</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            <div style="padding-top:10px;">
+                                <strong style="text-transform: uppercase;">ITEM NO.3</strong>
+                            </div>
+                            <div style="text-align:justify;">
+                                All that piece and parcel of the immovable property bearing residential converted Sy No. 12/1 an
+                                extent of 1 acre 15 guntas, converted vide order No. ALN(A)(A)SR/53/2013-14, dated 22.11.2013 by D
+                                C, Bangalore, situated at Andapura, Attibele Hobli, Anekal Taluk, Bangalore Urban District, having
+                                common boundaries and bounded on:-
+                            </div>
+                            <table width="100%" style="line-height:1">
+                                <tr>
+                                    <td valign="top" width="20%">East by</td>
+                                    <td valign="top" width="80%">Lands in Sy No. 9,10 &amp; 11</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">West by</td>
+                                    <td valign="top">Lands in Sy No. 13</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">North by</td>
+                                    <td valign="top">Lands in Sy No. 8</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">South by</td>
+                                    <td valign="top">Lands in Sy No. 12/2</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            <div style="padding-top:10px;">
+                                <strong style="text-transform: uppercase;">ITEM NO.4</strong>
+                            </div>
+                            <div style="text-align:justify;">
+                                All that piece and parcel of the immovable property bearing residential converted Sy No. 6/1,
+                                converted vide order No. ALA(A)(A)SR246/2012-13, dated 07.12.2012 by D C, Bangalore, an extent of 06
+                                guntas, situated at Andapura, Attibele Hobli, Anekal Taluk, Bangalore Urban District, bounded on:-
+                            </div>
+                            <table width="100%" style="line-height:1">
+                                <tr>
+                                    <td valign="top" width="20%">East by</td>
+                                    <td valign="top" width="80%">Road</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">West by</td>
+                                    <td valign="top">Lands in Sy No.9/2 </td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">North by</td>
+                                    <td valign="top">Remaining portion in same Sy No.6/1</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">South by</td>
+                                    <td valign="top">Remaining portion in same Sy No.6/1</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            <div style="padding-top:10px;">
+                                <strong style="text-transform: uppercase;">ITEM NO.5</strong>
+                            </div>
+                            <div style="text-align:justify;"> 
+                                All that piece and parcel of the property bearing converted Sy.No.10/1, situated at Andapura,
+                                Attibele Hobli, Anekal Taluk, Bangalore District, measuring an extent of 24 guntas, converted vide
+                                order No. ALN(A)(A)SR45/2013-14, dated 23.11.2013, by D C, Bangalore for non-agricultural
+                                residential purpose and bounded on:
+                            </div>
+                            <table width="100%" style="line-height:1">
+                                <tr>
+                                    <td valign="top" width="20%">East by</td>
+                                    <td valign="top" width="80%">Lands in Sy No. 6</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">West by</td>
+                                    <td valign="top"> Lands in Sy No. 11</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">North by</td>
+                                    <td valign="top">Lands in Sy No. 9</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">South by</td>
+                                    <td valign="top">Lands in Sy No. 10/2</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            <div style="padding-top:10px;">
+                                <strong style="text-transform: uppercase;">ITEM NO.6</strong>
+                            </div>
+                            <div style="text-align:justify;">
+                                All that piece and parcel of the immovable property bearing undeveloped converted Sy No. 13, totally
+                                measuring 3 acres 18 guntas, converted vide order No. ALN(A)(A)SR/131/12-13, dated 05.10.2012 &amp;
+                                ALN(A)(A)SR/49/13-14, dated 23.11.2013 by D C, Bangalore, situated at Andapura, Attibele Hobli,
+                                Anekal Taluk, Bangalore Urban District, bounded on:-
+                            </div>
+                            <table width="100%" style="line-height:1">
+                                <tr>
+                                    <td valign="top" width="20%">East by</td>
+                                    <td valign="top" width="80%">: lands in Sy No. 8/4 &amp; 12 /1 belongs to Developer herein &amp;
+                                        Lands belongs to Sri. Srirama Shetty</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">West by</td>
+                                    <td valign="top">Lands in Sy No. 14</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">North by</td>
+                                    <td valign="top">Remaining lands in same Sy No. 6/1</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">South by</td>
+                                    <td valign="top">Remaining lands in same Sy No. 6/1</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            <div style="padding-top:10px;text-align:center;">
+                                <strong style="text-transform: uppercase;">COMPOSITE SCHEDULE PROPERTY</strong>
+                            </div>
+                            <div style="padding-top:10px;text-align:justify;">
+                                All that piece and parcel of vacant residentially converted land property bearing Sy No. 9/2,
+                                measuring 2 acres 37 guntas, bearing No. ALN(A)(A)SR/129/12-13, dated 05.10.2012 &amp; ALN(A)
+                                (A)SR/45/13-14, dated 23.11.2013, Sy No. 8/4 an extent of 37 guntas converted vide order No.
+                                ALN(A)(A)SR/53/2013-14, dated 22.11.2013, Sy No. 12/1 an extent of 1 acre 15 guntas, Sy No. 6/1 an
+                                extent of 06 guntas converted vide order No. ALA(A)(A)SR246/2012-13, dated 07.12.2012converted vide
+                                order No. ALN(A)(A)SR/53/2013-14, dated 22.11.2013 and Sy No. 10/1 24 guntas, converted vide order
+                                No. ALN(A)(A)SR45/2013-14, dated 23.11.2013, Sy.No.13, <strong style="text-transform: uppercase;">measuring 3 Acres 18 guntas</strong>, ALN(A)
+                                (A)SR/131/12-13, dated 05.10.2012 &amp; ALN(A)(A)SR/49/13-14, dated 23.11.2013, totally measuring 9
+                                Acre 17 guntas, situated at Andapura, Attibele Hobli, Anekal Taluk, Bangalore which is bounded on:
+                            </div>
+                            <table width="100%" style="line-height:1">
+                                <tr>
+                                    <td valign="top" width="20%">East by</td>
+                                    <td valign="top" width="80%">Road &amp; Lands in Sy No. 6/2</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">West by</td>
+                                    <td valign="top">Lands in Sy No. 14</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">North by</td>
+                                    <td valign="top">Lands in Sy No. 9/1 &amp; 8/19</td>
+                                </tr>
+                                <tr>
+                                    <td valign="top">South by</td>
+                                    <td valign="top">Lands in Sy No. 10/2, 11 &amp; 12/2</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            <div style="padding-top:10px;text-align:center;">
+                                <strong style="text-transform: uppercase;">SCEHDULE "B" PROPERTY</strong>
+                            </div>
+                            <div style="padding-top:10px;text-align:center;">
+                                <strong style="text-transform: uppercase;">(Description of the undivided share agreed to be sold)</strong>
+                            </div>
+                            <div>
+                                An Undivided share, right, title and interest in the <strong style="text-transform: uppercase;">Schedule "A"</strong> Property measuring
+                                {!Booking__c.Plot__r.UDS__c} Sq. Ft.
+                            </div>
+                        </div>
+                        <div>
+                            <div style="padding-top:10px;text-align:center;">
+                                <strong style="text-transform: uppercase;">
+                                    SCHEDULE <strong style="text-transform: uppercase;"> "C"</strong> PROPERTY
+                                </strong>
+                            </div>
+                            <div style="padding-top:10px;text-align:center;">
+                                <strong style="text-transform: uppercase;">
+                                    (Description of the apartment agreed to be constructed)
+                                </strong>
+                            </div>
+                            <div style="text-align:justify;">
+                                Flat <strong style="text-transform: uppercase;">bearing Apt No. {!Booking__c.Plot__r.Name}, unit type {!Booking__c.Plot__r.BHK_Type__c}</strong> on the
+                                <strong style="text-transform: uppercase;">{!FloorNumber} Floor, {!Booking__c.Block__r.Name}</strong> in the building <strong style="text-transform: uppercase;">"MAHENDRA AARYA"</strong>, to be
+                                constructed in the <strong style="text-transform: uppercase;">Schedule "A"</strong> Property having super built up area measuring
+                                <strong style="text-transform: uppercase;">{!Booking__c.Plot__r.Super_built_up_area__c} Sq. Ft</strong>. Carpet Area measuring
+                                <strong style="text-transform: uppercase;">{!Booking__c.Plot__r.Carpet_Area__c} Sq. Ft</strong>. Balcony &amp; Utility Area measuring
+                                <strong style="text-transform: uppercase;">{!Booking__c.Plot__r.Balcony_Area__c} Sq. Ft and</strong>. 
+                                
+                                <!-- Conditional logic for parking slots -->
+                                <strong style="text-transform: uppercase;">
+                                    {!IF(OR(ISNULL(Booking__c.Extra_covered_Parking_Slots__c), Booking__c.Extra_covered_Parking_Slots__c = 0), 
+                                    '1 Car Parking space', 
+                                    TEXT(Booking__c.Extra_covered_Parking_Slots__c + 1) + ' Covered Car Parking (back to back) spaces'
+                                    )}
+                                </strong> 
+                                in the Basement of the building along with the right to use the common areas of the building along with other owners of
+                                different Flats in the building.
+                            </div>
+                            
+                        </div>
+                        <div>
+                            <div style="padding-top:10px;text-align:center;">
+                                <strong style="text-transform: uppercase;">SCHEDULE - 'D'</strong>
+                            </div>
+                            <div style="padding-top:10px;text-align:center;">
+                                <strong style="text-transform: uppercase;">
+                                    RESTRICTIONS ON THE RIGHTS OF THE PURCHASER:
+                                </strong>
+                            </div>
+                            <div style="text-align:justify;">
+                                The Purchaser so as to bind himself, his successors-in-interest, heirs, representatives and assigns
+                                with the consideration of promoting and protecting his rights, interest as the owner of the
+                                construction described in the Schedule 'C' above and in consideration of the other undivided
+                                interest in the property described in Schedule 'A' and the construction thereon hereby agrees to be
+                                bound by the following restrictions:
+                            </div>
+                            <ol style="list-style-type: lower-alpha;">
+                                <li style="text-align:justify;">Not to raise or cause to be raised in addition to that mentioned in the Schedule 'C' above.</li>
+                                <li style="text-align:justify;">Not to use or permit the use of the construction referred to in Schedule 'C' above in a manner
+                                    as would diminish the value of the utility of the property described in the Schedule 'A' above
+                                    or any construction made thereon.</li>
+                                <li style="text-align:justify;">Not to use the space in the land described in Schedule 'A' above left open after the
+                                    construction referred to in Schedule 'C' above for parking any heavy vehicles or to use the same
+                                    in any manner which might cause hindrance for the free ingress.</li>
+                                <li style="text-align:justify;">Not to use make default in the payment of any taxes, levies or common expenses to be shared with
+                                    other flat owners in the buildings proposed to be constructed in the Schedule 'A' Property.</li>
+                                <li style="text-align:justify;">Not to decorate the exterior of the buildings proposed to be constructed in the Schedule 'A'
+                                    Property such as Metal grills in the Balconies or Utility area or outside Main Doors etc.</li>
+                                <li style="text-align:justify;">Not to make any arrangements for maintaining of the buildings proposed to be constructed in the
+                                    Schedule 'A' Property other than that agreed to by the majority of the owners of the Flats in the
+                                    said buildings or the Association of Flat Owners after it is formed.</li>
+                                <li style="text-align:justify;">Not to do anything which shall cause nuisance or annoyance or danger to the owners of other Flats
+                                    in the proposed buildings or neighbouring properties.</li>
+                                <li style="text-align:justify;">Not to use the Schedule 'C' Property for any purpose prohibited by law.</li>
+                                <li style="text-align:justify;">Not to bring in or store any harmful, hazardous, inflammable materials in the Schedule 'C'
+                                    Property or common areas of the building.</li>
+                                <li style="text-align:justify;">Not to carry or cause to be carried any heavy package to the upper floors of the buildings which
+                                    is likely to cause damage to the stair cases, lifts, ladders, common passages or any structure
+                                    of the proposed buildings.</li>
+                                <li style="text-align:justify;">Not to use or permit the use of the common passages, corridors or staircases of the buildings
+                                    for storage of goods.</li>
+                                <li style="text-align:justify;">Not to use or permit the use of the Schedule 'C' Property in a manner which would diminish the
+                                    value, utility of the pipes and other common amenities in the buildings.</li>
+                                <li style="text-align:justify;">Not to deny or defy any regulations and by-laws amended by the Association from time to time.
+                                </li>
+                                <li style="text-align:justify;">Not to object to the location/installation or setting up of Transformer/s and other equipment/s
+                                    for supply of electricity, water and sanitary facilities, Gas bank, security cabins,
+                                    surveillance system, STP and DG Set Exhausts, Humps for reduction of speed of vehicles, water
+                                    tank filling facility, diesel tank filling facility, signage boards, fire extinguishers,
+                                    wet-risers, sprinklers, boom gates/barriers, Antennas and equipments for data and communication
+                                    facilities. It is Specifically agreed between the parties that spaces below Ramps and niches
+                                    below building foot prints shall belong to the Sellers/Builder and the Purchasers shall have no
+                                    objection whatsoever to the way the Sellers/Builder uses the spaces or deals with it in <strong style="text-transform: uppercase;">building
+                                    /Tower/BLOCK.</strong></li>
+                            </ol>
+                        </div>
+                        <div>
+                            <div style="padding-top:10px;text-align:center;">
+                                <strong style="text-transform: uppercase;">SCHEDULE - 'E'</strong>
+                            </div>
+                            <div style="padding-top:10px;text-align:left;">
+                                <strong style="text-transform: uppercase;">
+                                    RIGHTS OF THE PURCHASER:
+                                </strong>
+                            </div>
+                            <div style="text-align:justify;">
+                                The Purchaser shall have the following rights in respect of the Schedule 'A' Property and the
+                                buildings to be constructed thereon.
+                            </div>
+                            <ol style="list-style-type: lower-alpha;">
+                                <li style="text-align:justify;">Full right and liberty for the Purchaser in common with all other persons entitled, permitted or
+                                    authorised to the like rights at all times of the day or night and for all purposes to go, pass
+                                    and repass all open spaces, staircases and passages inside and outside the proposed buildings.
+                                </li>
+                                <li style="text-align:justify;">Full right and liberty to the Purchaser in common with all other persons with or without motor
+                                    cars or other permitted vehicles at all times, day and night and for all purposes to go and pass
+                                    over the land appurtenant to the buildings proposed to be constructed in the Schedule -'A'
+                                    Property.</li>
+                                <li style="text-align:justify;">The right to subjacent and lateral support and shelter and protection from the other parts of
+                                    the said buildings and from the side and roof thereof.</li>
+                                <li style="text-align:justify;">Right to free and uninterrupted passage of running water, soil, gas and electricity and water
+                                    courses, cables, pipes and wires, which are now or may at any time hereafter be in under or
+                                    passing through the proposed buildings or any part thereof.</li>
+                                <li style="text-align:justify;">Right of passage for the Purchaser or Purchaser's men, agents or workmen to other parts of the
+                                    buildings at all reasonable times for purposes of repairing, cleaning, maintaining and/or
+                                    renewing sewers/drains, water tanks/course, cables, pipes and wires causing as little
+                                    disturbance as possible and making good any damages caused.</li>
+                                <li style="text-align:justify;">Right to lay cables, wires etc., through common walls or passages for radio, telephone,
+                                    television and other such installations, however, having due regard to the similar rights of the
+                                    other members.</li>
+                                <li style="text-align:justify;">Subject to payment for common facilities and services, the right to enjoy the common services
+                                    and facilities provided in the proposed buildings.</li>
+                            </ol>
+                        </div>
+                        <div>
+                            <div style="padding-top:10px;text-align:center;">
+                                <strong style="text-transform: uppercase;">SCHEDULE - 'F'</strong>
+                            </div>
+                            <div style="text-align:justify;">
+                                The Purchaser in proportion to his/her share along with purchasers in proportion of their shares
+                                shall be deemed to have accepted the following conditions and to have contracted to bear the
+                                following expenses:
+                            </div>
+                            <div style="padding-top:10px;text-align:justify;">
+                                All rates and outgoings, if any, in respect of the Schedule 'A' Property and the buildings thereon.
+                                
+                            </div>
+                            <div style="padding-top:10px;text-align:justify;">
+                                The expenses of routine maintenance including painting, white washing, cleaning etc., and provision
+                                of the common services to the buildings as set out below:
+                            </div>
+                            <ol style="list-style-type: lower-alpha;">
+                                <li style="text-align:justify;">Maintenance and replacement of pump sets, lift, D.G. Sets and other machinery, sanitary and
+                                    electrical lines common to the buildings.</li>
+                                <li >Payment of electrical and water charges for common services.</li>
+                                <li>Replacement of bulbs in common areas.</li>
+                                <li>Maintenance of garden and potted plants in the common areas of the buildings.</li>
+                                <li style="text-align:justify;">Provision of watchmen /liftman /electrician / sweepers and other common staff should the
+                                    Purchaser default in payment due for any common expenses, benefits or amenities, the Association
+                                    to be formed by the owners of Flats in the proposed buildings shall have the right to
+                                    remove/disconnect such common benefits or amenities including electricity and water connections
+                                    from his/her enjoyment.</li>
+                            </ol>
+                        </div>
+                        <div>
+                            <div style="padding-top:10px;text-align:center;">
+                                <strong style="text-transform: uppercase;">SCHEDULE - 'G'</strong>
+                            </div>
+                            <div style="padding-top:10px;text-align:justify;">
+                                The consideration for sale of <strong style="text-transform: uppercase;">Schedule 'B'</strong> Property and construction of <strong style="text-transform: uppercase;"> Schedule  "C"</strong> Property is <strong style="text-transform: uppercase;">Rs.
+                                <apex:outputText value="{0, number, 000,000.00}">
+                                    <apex:param value="{!Booking__c.Total__c}" />
+                                </apex:outputText>/- (Rupees {!BookingTotalInWords}) </strong>inclusive of GST and Other charges
+                                includes:KPTCL,Water,STP;Reticulated Gasline/Gail, Generator, katha transfer, Club House &amp;
+                                Amenities charges, Legal Charges, Maintenance charges for 2 years. Solar power charges applicable
+                                (2BHK - Rs.30,000/- &amp; 3BHK- Rs.35,000/-) For 13th &amp; 14th Floor.
+                                The <strong style="text-transform: uppercase;">PURCHASER/S</strong> has/have paid <strong style="text-transform: uppercase;">Rs. <apex:outputText value="{0, number, 000,000.00}">
+                                <apex:param value="{!Booking__c.Net_Receipt_Amount__c}" />
+                                </apex:outputText>/- (Rupees {!totalAmountRecInWords})</strong> including GST by way of advance towards
+                                sale price. The balance amount shall be payable by the <strong style="text-transform: uppercase;">PURCHASER/S</strong> according to the below schedule.
+                            </div>
+                            <div style="padding-top:10px;padding-bottom:10px;">
+                                <strong style="text-transform: uppercase;">Payment Schedule:</strong>
+                            </div>
+                            <apex:variable var="rowNum" value="{!1}" />
+                            <table width="100%" border="1" style="line-height:1">
+                                <tr>
+                                    <th width="10%" style="text-align:center"><strong style="text-transform: uppercase;">S.No.</strong></th>
+                                    <th width="50%"><strong style="text-transform: uppercase;">Installment Name</strong></th>
+                                    <th width="20%" style="text-align:center"><strong style="text-transform: uppercase;">%</strong></th>
+                                    <th width="20%" style="text-align:right"><strong style="text-transform: uppercase;">Total Amount</strong></th>
+                                </tr>
+                                <apex:repeat value="{!paymentSchedule}" var="p">
+                                    <tr>
+                                        <td style="text-align:center">
+                                            <apex:outputText value="{!p.S_No__c}" />
+                                        </td>
+                                        <td style="text-align:left">{!p.Name}</td>
+                                        <td style="text-align:center">
+                                            <apex:outputText value="{0, Number,###,###,###}">
+                                                <apex:param value="{!p.Payment_percent__c}" />
+                                            </apex:outputText> %
+                                        </td>
+                                        <td style="text-align:right"><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!p.AmountB__c}" /></apex:outputText></td>
+                                    </tr>
+                                </apex:repeat>
+                                <tr style="font-weight:600">
+                                    <td style="text-align:right" colspan="3"><strong style="text-transform: uppercase;">Total</strong></td>
+                                    <td style="text-align:right"><apex:outputText value="{0, number, ###,###,###}">
+                                            <apex:param value="{!Booking__c.Total__c}" />
+                                            </apex:outputText></td>
+                                </tr>
+                            </table>
+                            <div style="padding-top:10px;">
+                                <strong style="text-transform: uppercase;">Note:</strong>
+                                <ol style="list-style-type: lower-alpha;">
+                                    <li>Above Sale Consideration is inclusive of<strong style="text-transform: uppercase;">
+                                        {!IF(OR(ISNULL(Booking__c.Extra_covered_Parking_Slots__c), Booking__c.Extra_covered_Parking_Slots__c = 0), 
+                                        '1 Car Parking space', 
+                                        TEXT(Booking__c.Extra_covered_Parking_Slots__c + 1) + ' Covered Car Parking (back to back) spaces'
+                                        )}
+                                        </strong>.
+                                    </li>
+                                    <li>Charges towards Agreement and Registration are additional.</li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div>
+                            <strong style="text-transform: uppercase;">IN WITNESS WHEREOF</strong>, the Vendors and the <strong style="text-transform: uppercase;">PURCHASER/S</strong> have signed this agreement at
+                            Bangalore on the day, month and year first above written in the presence of the witnesses attesting
+                            hereunder.
+                        </div>
+                        <div style="padding-top:10px;">
+                            <strong style="text-transform: uppercase;">WITNESSES</strong>
+                        </div>
+                        <table width="100%" style="font-weight:500">
+                            <tr>
+                                <td valign="top" height="170px;">1</td>
+                                <td width="20%"></td>
+                                <td style="text-align:center" width="25%" valign="bottom">VENDOR<br /> Represented by their<br />
+                                    GPA Holder</td>
+                            </tr>
+                            <tr>
+                                <td valign="top" height="150px;">2</td>
+                                <td></td>
+                                <td style="text-align:center" valign="bottom"><strong style="text-transform: uppercase;">M/s Mahendra Homes<br /> Pvt Ltd <br />CONFIRMING
+                                    PARTY </strong></td>
+                            </tr>
+                            <tr>
+                                <td height="100px;" valign="bottom" style="text-align:right" colspan="3">PURCHASER</td>
+                            </tr>
+                        </table>
+                        <div style="Page-break-before:always;"/>
+                            
+                        <div style="padding-top:10px;text-align:center;">
+                            <strong style="text-transform: uppercase;">ANNEXURE - I</strong>
+                        </div>
+                        <div style="text-align:center;">
+                            <strong style="text-transform: uppercase;">specifications:-</strong>
+                        </div>
+                        <div style="padding-top:10px;">
+                            <strong style="text-transform: uppercase;">STRUCTURE</strong>
+                            <ul>
+                                <li>Seismic Zone II compliant RCC framed structure</li>
+                                <li>All walls shall be RCC (Aluminium Formwork).</li>
+                            </ul>
+                        </div>
+                        <div style="padding-top:10px;">
+                            <strong style="text-transform: uppercase;">TILE FINISHES</strong>
+                            <ul>
+                                <li>Nano Polished Vitrified tile flooring of 600x600mm for Living, Bedroom, Kitchen and Dining </li>
+                                <li> Ceramic tiles in common passage, balcony &amp; utility.</li>
+                                <li>Anti-skid ceramic tiles in the toilet floor.</li>
+                                <li>Kitchen Dado up to 2 feet height above the counter. </li>
+                                <li>Toilets - glazed tiles for walls up to 7" height.</li>
+                            </ul>
+                            <strong style="text-transform: uppercase;">DOOR FRAMES</strong>
+                            <ul>
+                                <li>Main door shall be teak and other door frames shall be hard wood.</li>
+                            </ul>
+                            
+                            <strong style="text-transform: uppercase;">SHUTTERS</strong>
+                            <ul>
+                                <li>Main door shall be solid core flush shutter provided with natural wood veneer, Melamine polished.
+                                </li>
+                                <li>Bedroom door shutters shall be skin door with enamel paint.</li>
+                                <li>Toilet door shutters shall be flush shutter with water resistant coating on one side.</li>
+                            </ul>
+                            
+                            <strong style="text-transform: uppercase;">WINDOWS</strong>
+                            <ul>
+                                <li>Good quality aluminium sliding doors and windows with provision for mosquito mesh.</li>
+                                <li>Balcony doors shall be aluminium frame with fixed glass.</li>
+                            </ul>
+                            
+                            <strong style="text-transform: uppercase;">PAINT</strong>
+                            <ul>
+                                <li>External Paint: Texture finish with emulsion paint.</li>
+                                <li>Internal Paint: Smooth finish with oil bound distemper.</li>
+                            </ul>
+                            
+                            <strong style="text-transform: uppercase;">SANITARY, PLUMBING AND FIXTURES</strong>
+                            <ul>
+                                <li>All sanitary fittings shall be CERA or equivalent.</li>
+                                <li>All chrome fittings shall be of CERA or equivalent.</li>
+                                <li>All Water supply pipes shall be CPVC.</li>
+                                <li>All drainage and sanitary line shall be PVC.</li>
+                                <li>Granite Counter top wash basin in all toilets.</li>
+                            </ul>
+                            
+                            <strong style="text-transform: uppercase;">KITCHEN</strong>
+                            <ul>
+                                <li>Adequate electrical points for all appliances.</li>
+                                <li>Stainless steel sink shall be Franke/Futura or equivalent.</li>
+                                <li>Granite slab in the Kitchen.</li>
+                                <li>Additional Wash Basin provided.</li>
+                            </ul>
+                            
+                            <strong style="text-transform: uppercase;">ELEVATOR</strong>
+                            <ul>
+                                <li>10 Passenger Lifts and 5 Service lifts of Schindler/OTIS or equivalent brand.</li>
+                            </ul>
+                            
+                            <strong style="text-transform: uppercase;">ELECTRICAL</strong>
+                            <ul>
+                                <li>Wire: PVC insulated fire rated wire of Anchor/Havells/Finolex.</li>
+                                <li>Switches: Premium electrical switches of Anchor Roma or equivalent.</li>
+                                <li>Connected Power: 3 KVA for 2 BHK, &amp; 5 KVA for 2.5 &amp; 3 BHK.</li>
+                                <li>MCB of reputed brand shall be provided for each circuit at the Main D.B.</li>
+                            </ul>
+                            
+                            <strong style="text-transform: uppercase;">GENERATOR</strong>
+                            <ul>
+                                <li>100% DG backup in common areas.</li>
+                                <li>Backup Power: 1 KVA for all configuration of Flats.</li>
+                            </ul>
+                        </div>
+                        <div style="padding-top:10px;text-align:justify;">
+                            All the specifications/amenities mentioned above are subject to change and shall be in accordance with
+                            architectural and structural changes.
+                        </div>
+                        <div style="padding-top:10px;text-align:justify;">
+                            Disclaimer: The Promoter reserves the right to make changes in the elevation, plans &amp; Specification
+                            as deemed fit in the interest of quality and timely delivery.
+                        </div>
+                        <div style="text-align:center">
+                            <strong style="text-transform: uppercase;">ANNEXURE – II</strong>
+                        </div>
+                        <div style="text-align:center">
+                            <strong style="text-transform: uppercase;">AMENITIES</strong>
+                        </div>
+                        <div>
+                            <ol style="list-style-type: upper-alpha;list-style-position: inside;">
+                                <li>
+                                    <strong style="text-transform: uppercase;">ENTRANCE AREA</strong>
+                                    <br />A1. MAIN ENTRY/ EXIT
+                                    <br />A2. ENTRY PORTAL WITH SECURITY CABIN 
+                                    <br />A3. SIGNAGE
+                                    <br />A4. PEDESTRAIN WALK
+                                    <br />A5. ENTRY PLAZA WITH ACCENT PAVING 
+                                    <br />A6. GATE
+                                    <br />A7. BOOM BARRIER
+                                    <br />A8. COVERED WAITING PLAZA 
+                                    <br />A9. FOCAL SCULPTURE
+                                    <br />A10. FLORAL GARDEN 
+                                    <br />A11. DRIVEWAY
+                                    <br />A12. TOPIARY SCULPTURE 
+                                    <br />A13. DROP OFF AREA 
+                                    <br />A14. RAMP
+                                    <br />A15. CAR PARKING
+                                    
+                                </li>
+                                <li style="padding-top:10px;">
+                                    <strong style="text-transform: uppercase;">PASSIVE ZONE</strong>
+                                    <br />B1. SEATING AREA
+                                    <br />B2. STEPPED PLANTER
+                                    <br />B3. GAZEBO WITH SEATING
+                                    <br />B4. PET PARK
+                                    <br />B5.REFLEXOLOGY PATHWAY
+                                    <br />B6. MEDITATION LAWN 
+                                    <br />B7. MEDITATION DECK
+                                    <br />B8. COVERED YOGA/ MEDITATION DECK
+                                    <br />B9. BUTTERFLY GARDEN
+                                    <br />B10. AROMA WALK
+                                    <br />B11. SHADE DECK/ READING NOOK
+                                    <br />B12. SUN DECK
+                                    
+                                </li>
+                                <li style="padding-top:10px;">
+                                    <strong style="text-transform: uppercase;">ACTIVE ZONE</strong>
+                                    <br />C1. KIDS PLAY AREA
+                                    <br />C2. INTERACTIVE MUSICAL GARDEN
+                                    <br />C3. PLAY LAWN
+                                    <br />C4. KABADDI COURT
+                                    <br />C5. TRADITIONAL GAMES ZONE
+                                    <br />C6. SKATING RINK
+                                    <br />C7. THROWBALL COURT
+                                    <br />C8. JOGGING TRACK
+                                    <br />C9. MULTI PLAYGROUND
+                                    <br />C10. OUTDOOR GYM
+                                    <br />C11. ADVENTURE PLAY AREA
+                                    <br />C12. TREE HOUSE/ SWING
+                                    <br />C13. TENNIS COURT
+                                    <br />C14. BASKETBALL COURT
+                                    <br />C15. VOLLEYBALL COURT
+                                </li>
+                                <li style="padding-top:10px;">
+                                    <strong style="text-transform: uppercase;">CONGREGATION ZONE</strong>
+                                    <br />D1. KITTY PARTY AREA
+                                    <br />D2. ALFRESCO/ PARTY LAWN
+                                    <br />D3. BBQ AREA
+                                    <br />D4. AMPHITHEATER 
+                                    <br />D5. ORCHARD
+                                    <br />D6. COMMUNITY ORGANIC GARDENING
+                                    
+                                </li>
+                                <li style="padding-top:10px;">
+                                    <strong style="text-transform: uppercase;">STILT AREA FACILITIES</strong>
+                                    <br />E1. MARKET PLACE 
+                                    <br />E2. WAITING LOUNGE
+                                    <br />E3. GARDEN COWORKING SPACE
+                                    <br />E4. GARDEN LIBRARY
+                                    <br />E5. KIDS CLUB 
+                                    <br />E6. LADIES CLUB
+                                    <br />E7. TOT LOT
+                                    <br />E8. SENIORS CLUB
+                                    <br />E9. INDOOR GAMES ZONE
+                                </li>
+                                <li style="padding-top:10px;">
+                                    <strong style="text-transform: uppercase;">CLUB HOUSE FACILITIES</strong>
+                                    <br />F1. INFINITY POOL
+                                    <br />F2.TODDLERS POOL
+                                    <br />F3. POOL DECK
+                                    <br />F4. OUTDOOR SHOWER
+                                    <br />F5. CHANGING ROOMS
+                                    <br />F6. MULTIPURPOSE HALL
+                                    <br />F7. LOBBY WITH RECEPTION
+                                    <br />F8. MEMBERS LOUNGE/ READING ZONE
+                                    <br />F9. CAFE
+                                    <br />F10. GAMES LOBBY
+                                    <br />F11. BADMINTON COURT (2 NOS)
+                                    <br />F12. STEAM ROOM
+                                    <br />F13. INDOOR GAMES ROOM
+                                    <br />F14. AEROBICS / GYMNASIUM
+                                    <br />F15. YOGA TERRACE
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+            </div>
+        </body>
+        
+    </html>
+</apex:page>

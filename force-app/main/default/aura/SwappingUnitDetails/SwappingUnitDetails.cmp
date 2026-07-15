@@ -1,0 +1,41 @@
+<aura:component controller="BookingController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"></aura:handler>
+    <aura:attribute name="recordId" type="String"  />
+    <aura:attribute name="swapUnitStatus" type="String"  />
+    <aura:attribute name="showApprovalDetails" type="Boolean" default="false" />
+    <aura:attribute name="showFirstDetails" type="Boolean" default="false" />
+    <div class="slds-p-around_medium">
+        <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="Booking__c">
+            <lightning:messages />
+            <div class="slds-box">
+                <aura:if isTrue="{!v.swapUnitStatus == 'Approved' || v.swapUnitStatus == 'Rejected' || v.swapUnitStatus == 'Pending'}">
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning:outputField fieldName="Swap_Unit__c"/>
+                            <lightning:outputField fieldName="Swap_Tower__c" />
+                            <lightning:outputField fieldName="Swap_Floor__c" />
+                            <lightning:outputField fieldName="Swap_Super_Built_Up_Area__c" />
+                            <lightning:outputField fieldName="Swap_Other_Charges__c" />
+                            <lightning:outputField fieldName="Swap_Covered_Park_Parking__c" />
+                            <lightning:outputField fieldName="Swap_Extra_Covered_Parking_Charges__c" />
+                            <lightning:outputField fieldName="Swap_Funding_Type__c" />
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning:outputField fieldName="Swap_Unit_Status__c"/>
+                            <lightning:outputField fieldName="Swap_Block__c" />
+                            <lightning:outputField fieldName="Swap_Price_Per_Sq_Ft__c" />
+                            <lightning:outputField fieldName="Swap_Floor_Rise__c" />
+                            <lightning:outputField fieldName="Swap_TAXES__c" />
+                            <lightning:outputField fieldName="Swap_Solar_Charges__c" />
+                            <lightning:outputField fieldName="Swap_Extra_Covered_Parking_Slots__c" />
+                            <lightning:outputField fieldName="Swap_GST__c" />
+                        </div>
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{! AND(v.swapUnitStatus != 'Approved',v.swapUnitStatus != 'Rejected',v.swapUnitStatus != 'Pending')}">
+                    <p>No swapping details found.</p>
+                </aura:if>
+            </div>
+        </lightning:recordViewForm>
+    </div>
+</aura:component>

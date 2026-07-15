@@ -1,0 +1,293 @@
+<template>
+    <lightning-card>
+        <div class="slds-p-around_medium">
+            <template if:true={showSpinner}>
+                <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+            </template>
+
+            <template if:false={showSpinner}>
+                <!-- Step 1: Unit Details -->
+                <template if:true={isDetailsStep}>
+                    <h2 class="slds-text-heading_medium slds-m-bottom_medium">Create Cost Sheet</h2>
+
+                    <div class="slds-grid slds-wrap">
+                        <!-- Example conversion from lightning-input to native input -->
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <label class="slds-form-element__label" for="projectName">Project</label>
+                            <div class="slds-form-element__control">
+                                <input type="text" id="projectName" class="slds-input custom-disabled-text" value={projectName} disabled />
+                            </div>
+                        </div>
+
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <label class="slds-form-element__label" for="unitNumber">Unit Number</label>
+                            <div class="slds-form-element__control">
+                                <input type="text" id="unitNumber" class="slds-input custom-disabled-text" value={oppPlot.Name} disabled />
+                            </div>
+                        </div>
+
+                        <!-- Repeat this structure for all fields -->
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <label class="slds-form-element__label">BHK Type</label>
+                            <div class="slds-form-element__control">
+                                <input type="text" class="slds-input custom-disabled-text" value={oppPlot.BHK_Type__c} disabled />
+                            </div>
+                        </div>
+
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <label class="slds-form-element__label">Floor</label>
+                            <div class="slds-form-element__control">
+                                <input type="text" class="slds-input custom-disabled-text" value={oppPlot.Floor__c} disabled />
+                            </div>
+                        </div>
+
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <label class="slds-form-element__label">Carpet Area</label>
+                            <div class="slds-form-element__control">
+                                <input type="text" class="slds-input custom-disabled-text" value={oppPlot.Carpet_Area__c} disabled />
+                            </div>
+                        </div>
+
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <label class="slds-form-element__label">Balcony Area</label>
+                            <div class="slds-form-element__control">
+                                <input type="text" class="slds-input custom-disabled-text" value={oppPlot.Balcony_Area__c} disabled />
+                            </div>
+                        </div>
+                         <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <label class="slds-form-element__label">Open Terrace Area</label>
+                            <div class="slds-form-element__control">
+                                <input type="text" class="slds-input custom-disabled-text" value={oppPlot.Open_Terrace_Area__c} disabled />
+                            </div>
+                        </div>
+
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <label class="slds-form-element__label">Super Built Up Area</label>
+                            <div class="slds-form-element__control">
+                                <input type="text" class="slds-input custom-disabled-text" value={oppPlot.Super_Built_Up_Area__c} disabled />
+                            </div>
+                        </div>
+
+                        
+                        
+
+                        <!--<div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <label class="slds-form-element__label">Built Up Area</label>
+                            <div class="slds-form-element__control">
+                                <input type="number" class="slds-input custom-disabled-text" value={oppPlot.Built_Up_Area__c} disabled />
+                            </div>
+                        </div>
+-->
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <label class="slds-form-element__label">Corpus Fund</label>
+                            <div class="slds-form-element__control">
+                                <input type="number" class="slds-input custom-disabled-text" value={oppPlot.Corpus_Fund__c} disabled />
+                            </div>
+                        </div>
+
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <label class="slds-form-element__label">Maintenance Charge</label>
+                            <div class="slds-form-element__control">
+                                <input type="number" class="slds-input custom-disabled-text" value={oppPlot.Maintenance_Charge__c} disabled />
+                            </div>
+                        </div>
+
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <label class="slds-form-element__label">Price Per Sqft</label>
+                            <div class="slds-form-element__control">
+                                <input type="text" class="slds-input custom-disabled-text" value={oppPlot.Price_Per_Sq_Ft__c} disabled />
+                            </div>
+                        </div>
+
+                        
+
+                        <!--<div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <label class="slds-form-element__label">GST for Other</label>
+                            <div class="slds-form-element__control">
+                                <input type="number" class="slds-input custom-disabled-text" step="0.01" value={oppPlot.GST_For_Other_Charges__c} disabled />
+                            </div>
+                        </div>
+-->
+                        
+
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <label class="slds-form-element__label">Discount Amount</label>
+                            <div class="slds-form-element__control">
+                                <input type="number" class="slds-input custom-disabled-text" value={discountAmount} onchange={handleDiscountChange} disabled={isDiscountDisabled}/>
+                            </div>
+                        </div>
+
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <label class="slds-form-element__label">Final Price Per Sqft</label>
+                            <div class="slds-form-element__control">
+                                <input type="text" class="slds-input custom-disabled-text" value={finalPricePerSqft} disabled />
+                            </div>
+                        </div>
+
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <label class="slds-form-element__label">GST</label>
+                            <div class="slds-form-element__control">
+                                <input type="number" class="slds-input custom-disabled-text" step="0.01" value={oppPlot.GST__c} disabled />
+                            </div>
+                        </div>
+                        
+                        <!-- Payment Type Combobox (unchanged) -->
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning-combobox
+                                name="paymentType"
+                                label="Payment Type"
+                                value={paymentType}
+                                options={paymentTypeOptions}
+                                onchange={handlePaymentTypeChange}
+                                required>
+                            </lightning-combobox>
+                        </div>
+
+                        <!-- Car Parking Type Combobox (unchanged) -->
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning-combobox
+                                name="carParking"
+                                label="Car Parking Type"
+                                value={carParkingOption}
+                                options={carParkingOptions}
+                                onchange={handleCarParkingChange}>
+                            </lightning-combobox>
+                        </div>
+
+                        <!-- Car Parking Charges (also customized) -->
+                        <template if:true={showCarParkingValue}>
+                            <div class="slds-size_1-of-2 slds-p-around_x-small">
+                                <label class="slds-form-element__label">Car Parking Charges</label>
+                                <div class="slds-form-element__control">
+                                    <input type="number" class="slds-input custom-disabled-text" value={carParkingValue} disabled />
+                                </div>
+                            </div>
+                        </template>
+
+                        <div class="slds-size_1-of-2 slds-p-around_x-small">
+                            <lightning-combobox
+                                name="Additional Parking Required?"
+                                label="Additional Parking Required?"
+                                value={additionalParkingRequired}
+                                options={additionalParkingOptions}
+                                onchange={handleAdditionalParkingChange}
+                                required>
+                            </lightning-combobox>
+                        </div>
+                        
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="slds-m-top_medium">
+                        <lightning-button variant="neutral" label="Cancel" onclick={closeAction}></lightning-button>
+                        <lightning-button variant="brand" label="Next" onclick={handleNext} class="slds-m-left_x-small"></lightning-button>
+                    </div>
+                </template>
+
+                <!-- Step 2: Payment Schedule (unchanged) -->
+                <template if:true={isPaymentStep}>
+                    <template if:true={isStandardPayment}>
+                        <h2 class="slds-text-heading_medium slds-m-bottom_medium">Standard Payment Schedule</h2>
+
+                        <div class="slds-scrollable" style="max-height: 400px;">
+                            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th scope="col">Sl. No</th>
+                                        <th scope="col">Payment Schedule Name</th>
+                                        <th scope="col">Percent</th>
+                                        <!-- <th scope="col">Amount</th>
+                                        <th scope="col">Status</th>-->
+                                        <th scope="col">Due Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={paymentScheduleList} for:item="item">
+                                        <tr key={item.S_No__c}>
+                                            <td>{item.S_No__c}</td>
+                                            <td>{item.Name}</td>
+                                            <td>{item.Payment_percent__c}%</td>
+                                            <!-- <td>₹ {item.Amount__c}</td>
+                                            <td>{item.Status__c}</td>-->
+                                            <td>{item.Due_Date__c}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </template>
+
+                    <template if:true={isCustomPayment}>
+                        <h2 class="slds-text-heading_medium slds-m-bottom_medium">Custom Payment Schedule</h2>
+                        <div class="slds-scrollable" style="max-height: 400px;">
+                            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                <thead>
+                                    <tr>
+                                        <th>Sl. No</th>
+                                        <th>Payment Schedule Name</th>
+                                        <th>Percent</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                        <th>Add/Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={customPaymentScheduleListWithIndex} for:item="item" for:index="index">
+                                        <tr key={item.id}>
+                                            <!--td>{item.displayIndex}</td-->
+                                            <td><div class={item.serialClass} style="text-align: center;">{item.displayIndex}</div></td>
+
+                                            <td>
+                                                <lightning-input type="text" label="Description" value={item.Name}
+                                                    data-index={index} data-field="Name" onchange={handleInputChange}></lightning-input>
+                                            </td>
+                                            <td>
+                                                <lightning-input type="number" label="Percent" value={item.Payment_percent__c}
+                                                    data-index={index} data-field="Payment_percent__c" onchange={handleInputChange}></lightning-input>
+                                            </td>
+                                            <td>
+                                                <lightning-combobox
+                                                    label="Status"
+                                                    value={item.status__c}
+                                                    data-index={index}
+                                                    data-field="status__c"
+                                                    options={statusOptions}
+                                                    onchange={handlestatusChange}>
+                                                </lightning-combobox>
+                                            </td>
+                                            <td>
+                                                <template if:true={item.showDueDate}>
+                                                    <lightning-input type="date" label="Due Date" value={item.Payment_Due_Date__c}
+                                                        data-index={index} data-field="Payment_Due_Date__c" onchange={handleInputChange}></lightning-input>
+                                                </template>
+                                                <template if:true={item.showCompletedDate}>
+                                                    <lightning-input type="date" label="Completed Date" value={item.Completed_Date__c}
+                                                        data-index={index} data-field="Completed_Date__c" onchange={handleInputChange}></lightning-input>
+                                                </template>
+                                            </td>
+                                            <td class="slds-text-align_right">
+                                                <lightning-button-icon icon-name="utility:delete" variant="destructive" size="small"
+                                                    alternative-text="Delete" onclick={handleRemoveRow} data-index={index}>
+                                                </lightning-button-icon>
+                                                <lightning-button-icon icon-name="utility:add" variant="success" size="small"
+                                                    alternative-text="Add" onclick={handleAddRow}>
+                                                </lightning-button-icon>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </template>
+
+
+                    <!-- Buttons -->
+                    <div class="slds-m-top_medium">
+                        <lightning-button variant="neutral" label="Previous" onclick={handlePrevious}></lightning-button>
+                        <lightning-button variant="brand" label="Save" onclick={handleSave} class="slds-m-left_x-small"></lightning-button>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </lightning-card>
+</template>

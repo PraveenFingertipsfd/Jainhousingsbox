@@ -1,0 +1,16 @@
+<aura:component controller="ParkingController" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name="showPopup" type="boolean" default="false" /> 
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="bookingRecord" type="Booking__c" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="slds-no-flex slds-float_right">
+        <lightning:button variant="brand" label="Select Parking Slot" title="Select Parking Slot" onclick="{! c.handleClick }" />
+    </div>
+    
+    <div class="slds-clear"></div>
+    
+    <aura:if isTrue="{!v.showPopup}">
+        <c:AddParking showModal="{!v.showPopup}" recordId="{!v.recordId}"/>
+    </aura:if>
+</aura:component>

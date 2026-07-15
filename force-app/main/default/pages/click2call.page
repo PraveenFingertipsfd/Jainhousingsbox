@@ -1,0 +1,63 @@
+<apex:page >
+    <style>
+        .hasMotif {
+        margin : 0px;
+        overflow:hidden;
+        }
+        
+    </style>          
+  <apex:iframe src="https://beta2-app.doocti.com/"  height="524" width="348" scrolling="true" />
+<script src="/support/api/40.0/lightning/opencti_min.js"></script>
+<script>
+  
+    
+   function postMessage(data) {
+       console.log("PostMessage",data)
+       document.getElementsByTagName('iframe')[0].contentWindow.postMessage(data, '*');
+   }  
+   
+ 
+    sforce.opencti.enableClickToDial();
+    
+
+
+    
+   sforce.opencti.onClickToDial({
+       listener: function(result) {
+           console.log("Click-to-call-payload",result)
+           
+           var data ={
+           customer_name:result.recordName,
+           customer_number:result.number,
+           module:result.objectType,
+           customer_id: result.recordId,  
+           }	
+           postMessage({
+               type: 'C2C',
+               data: data,
+                
+           });
+           sforce.opencti.setSoftphonePanelVisibility({ visible: true });
+       }
+   });
+    
+   function receiveDataFromIframe(event) {
+        console.log("Event ListenerLog:",event.data)
+         
+     
+            // Inbound Screen Pop
+            if(event.data.type ==='Ringing'){
+                var lead_number = event.data.phone_number
+                sforce.opencti.setSoftphonePanelVisibility({
+                 visible: true
+                 });
+               }
+           
+        
+    }
+   
+window.addEventListener("message", receiveDataFromIframe, false);
+</script>
+     
+
+</apex:page>

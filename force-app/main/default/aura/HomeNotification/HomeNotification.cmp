@@ -1,0 +1,258 @@
+<aura:component controller="HomeNotificationController"
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <!-- Counts -->
+    <aura:attribute name="WelcomeCallChecklistCount" type="Integer" default="0"/>
+    <aura:attribute name="pendingWelcomeCallChecklistCount" type="Integer" default="0"/>
+    <aura:attribute name="agendaCount" type="Integer" default="0"/>
+    <aura:attribute name="pendingCount" type="Integer" default="0"/>
+
+    <!-- Lists -->
+    <aura:attribute name="followUpDetails" type="Object[]"/>
+    <aura:attribute name="todays90List" type="Object[]"/>
+    <aura:attribute name="pendingFollowUpDetails" type="Object[]"/>
+    <aura:attribute name="pending90List" type="Object[]"/>
+
+    <!-- Pagination for all sections -->
+    <aura:attribute name="FollwupcurrentPage" type="Integer" default="1"/>
+    <aura:attribute name="FollwuppageSize" type="Integer" default="10"/>
+    <aura:attribute name="isFollwupPreviousDisabled" type="Boolean" default="false"/>
+    <aura:attribute name="isFollwupNextDisabled" type="Boolean" default="false"/>
+
+    <aura:attribute name="RegCurrentPage" type="Integer" default="1"/>
+    <aura:attribute name="RegPageSize" type="Integer" default="10"/>
+    <aura:attribute name="isRegPrevDisabled" type="Boolean" default="false"/>
+    <aura:attribute name="isRegNextDisabled" type="Boolean" default="false"/>
+
+    <aura:attribute name="PendingWelcomeCurrentPage" type="Integer" default="1"/>
+    <aura:attribute name="PendingWelcomePageSize" type="Integer" default="10"/>
+    <aura:attribute name="isPendingWelcomePrevDisabled" type="Boolean" default="false"/>
+    <aura:attribute name="isPendingWelcomeNextDisabled" type="Boolean" default="false"/>
+
+    <aura:attribute name="PendingRegCurrentPage" type="Integer" default="1"/>
+    <aura:attribute name="PendingRegPageSize" type="Integer" default="10"/>
+    <aura:attribute name="isPendingRegPrevDisabled" type="Boolean" default="false"/>
+    <aura:attribute name="isPendingRegNextDisabled" type="Boolean" default="false"/>
+    
+    <aura:attribute name="totalWelcomeCallCount" type="Integer" default="0" />
+    
+    <!-- Counts -->
+    <aura:attribute name="todaysJointInspectionList" type="Object[]"/>
+    <aura:attribute name="pendingJointInspectionList" type="Object[]"/>
+    <aura:attribute name="todaysJointInspectionCount" type="Integer" default="0"/>
+    <aura:attribute name="pendingJointInspectionCount" type="Integer" default="0"/>
+
+    
+
+    <div class="slds-m-around_small">
+        <!-- Refresh -->
+        <div class="slds-m-bottom_small">
+            <lightning:buttonIcon iconName="utility:refresh" variant="border-filled" 
+                                 alternativeText="Refresh" onclick="{!c.doInit}" />
+        </div>
+ 
+        <!-- MAIN TABSET -->
+        <lightning:tabset selectedTabId="Agenda">
+            <!-- Today's Agendas -->
+          
+           
+            <lightning:tab label="{!'Today\'s Agenda (' + v.agendaCount + ')'}" aura:id="Agenda" id="Agenda">
+                <div class="slds-p-around_medium">
+                    <!-- Welcome Call Section -->
+                    <div class="slds-box slds-theme_default">
+    <!-- Header with total count -->
+    <div class="slds-text-heading_medium slds-m-bottom_medium">
+        Today's Welcome Call Checklist ({!v.totalWelcomeCallCount})
+    </div>
+    
+    <!-- Horizontal scrollable row -->
+    <div class="horizontal-scroll-container">
+        <div class="scrollable-row">
+            <aura:iteration items="{!v.followUpDetails}" var="f">
+                <div class="card-container">
+                    <lightning:card class="card-hover">
+                        <aura:set attribute="title">
+                            <a href="javascript:void(0)" onclick="{!c.navigateToRecord}" data-id="{!f.Id}">
+                                {!f.Name}
+                            </a>
+                        </aura:set>
+                        <p class="slds-p-horizontal_small slds-text-body_small">
+                            <lightning:icon iconName="utility:email" size="x-small"/>
+                            Sent on {!f.Welcome_Mail_Sent_Time__c} by<br/> 
+                            <lightning:icon iconName="utility:user" size="x-small"/>
+                            {!f.Owner.Name}
+                        </p>
+                    </lightning:card>
+                </div>
+            </aura:iteration>
+        </div>
+    </div>
+</div>
+                    
+                    <!-- Today's Joint Inspections -->
+                    <div class="slds-box slds-theme_default slds-m-top_large">
+                        <div class="slds-text-heading_medium slds-m-bottom_medium">
+                            Today's Joint Inspections ({!v.todaysJointInspectionCount})
+                        </div>
+                        <div class="horizontal-scroll-container">
+                            <div class="scrollable-row">
+                                <aura:iteration items="{!v.todaysJointInspectionList}" var="b">
+                                    <div class="card-container">
+                                        <lightning:card class="card-hover">
+                                            <aura:set attribute="title">
+                                                <a href="javascript:void(0)" onclick="{!c.navigateToRecord}" data-id="{!b.Id}">
+                                                    {!b.Name}
+                                                </a>
+                                            </aura:set>
+                                            <p class="slds-p-horizontal_small slds-text-body_small">
+                                                <lightning:icon iconName="standard:household" size="small"/> QA for Unit - {!b.Plot__r.Name} done by <lightning:icon iconName="utility:user" size="x-small"/> {!b.Owner.Name}<br/>
+                                                Project: {!b.Project1__r.Name} - {!b.Tower_Name__c}<br/>
+                                            </p>
+                                        </lightning:card>
+                                    </div>
+                                </aura:iteration>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+
+                    <!-- Registration Push Section -->
+                    <!--div class="slds-box">
+                        <div class="slds-text-heading_medium slds-m-bottom_medium">
+                            Today's Registration Push ({!v.todays90List ? v.todays90List.length : 0})
+                        </div>
+                        
+                        <div class="slds-grid slds-wrap slds-m-around_x-small">
+                            <aura:iteration items="{!v.todays90List}" var="b">
+                                <div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                                    <lightning:card>
+                                        <aura:set attribute="title">
+                                            <a href="javascript:void(0)" onclick="{!c.navigateToRecord}" data-id="{!b.Id}">
+                                                {!b.Name}
+                                            </a>
+                                            <br/>90% Payment → Move to Registration
+                                        </aura:set>
+                                    </lightning:card>
+                                </div>
+                            </aura:iteration>
+                        </div>
+                        
+                        
+                        <div class="slds-align_absolute-center slds-m-top_medium">
+                            <lightning:buttonGroup>
+                                <lightning:button label="Previous" onclick="{!c.RegPreviousPage}" 
+                                                 disabled="{!v.isRegPrevDisabled}" />
+                                <lightning:button label="{!v.RegCurrentPage}" disabled="true"/>
+                                <lightning:button label="Next" onclick="{!c.RegNextPage}" 
+                                                 disabled="{!v.isRegNextDisabled}" />
+                            </lightning:buttonGroup>
+                        </div>
+                    </div> -->
+                </div>
+            </lightning:tab>
+
+            <!-- Pending Items -->
+            <lightning:tab label="{!'Pending Items (' + v.pendingCount + ')'}" aura:id="Pending" id="Pending">
+                <div class="slds-p-around_medium">
+                    <!-- Pending Welcome Call Section -->
+                    <div class="slds-box slds-m-bottom_large">
+                        <div class="slds-text-heading_medium slds-m-bottom_medium">
+                            Pending Welcome Call Checklist ({!v.pendingFollowUpDetails ? v.pendingFollowUpDetails.length : 0})
+                        </div>
+                        
+                        <!-- Horizontal scrollable row -->
+                        <div class="horizontal-scroll-container">
+                            <div class="scrollable-row">
+                                <aura:iteration items="{!v.pendingFollowUpDetails}" var="f">
+                                    <div class="card-container">
+                                        <lightning:card class="slds-card__background card-hover">
+                                            <aura:set attribute="title">
+                                                <a href="javascript:void(0)" onclick="{!c.navigateToRecord}" data-id="{!f.Id}">
+                                                    {!f.Name}
+                                                </a>
+                                            </aura:set>
+                                            <p class="slds-p-horizontal_small slds-text-body_small">
+                                                <lightning:icon iconName="utility:email" size="x-small"/>
+                                                Sent on {!f.Welcome_Mail_Sent_Time__c} by <br/> 
+                                                <lightning:icon iconName="utility:user" size="x-small"/>
+                                                {!f.Owner.Name}
+                                            </p>
+                                        </lightning:card>
+                                    </div>
+                                </aura:iteration>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <!-- Pending Joint Inspections -->
+                    <div class="slds-box slds-theme_default slds-m-top_large">
+                        <div class="slds-text-heading_medium slds-m-bottom_medium">
+                            Pending Joint Inspections ({!v.pendingJointInspectionCount})
+                        </div>
+                        <div class="horizontal-scroll-container">
+                            <div class="scrollable-row">
+                                <aura:iteration items="{!v.pendingJointInspectionList}" var="b">
+                                    <div class="card-container">
+                                        <lightning:card class="slds-card__background card-hover">
+                                            <aura:set attribute="title">
+                                                <a href="javascript:void(0)" onclick="{!c.navigateToRecord}" data-id="{!b.Id}">
+                                                    {!b.Name}
+                                                </a>
+                                            </aura:set>
+                                            <p class="slds-p-horizontal_small slds-text-body_small">                     
+                                                <lightning:icon iconName="standard:household" size="small"/> QA for Unit - {!b.Plot__r.Name} done by <lightning:icon iconName="utility:user" size="x-small"/> {!b.Owner.Name}<br/>
+                                                Project: {!b.Project1__r.Name} - {!b.Tower_Name__c}<br/>
+                                                
+                                            </p>
+                                        </lightning:card>
+                                    </div>
+                                </aura:iteration>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Pending Registration Section -->
+                    <!--div class="slds-box">
+                        <div class="slds-text-heading_medium slds-m-bottom_medium">
+                            Pending Registration Push ({!v.pending90List ? v.pending90List.length : 0})
+                        </div>
+                        
+                        <div class="slds-grid slds-wrap slds-m-around_x-small">
+                            <aura:iteration items="{!v.pending90List}" var="b">
+                                <div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                                    <lightning:card class="slds-card__bground">
+                                        <aura:set attribute="title">
+                                            <a href="javascript:void(0)" onclick="{!c.navigateToRecord}" data-id="{!b.Id}">
+                                                {!b.Name}
+                                            </a>
+                                            <br/>90% Payment Pending → Move to Registration
+                                        </aura:set>
+                                    </lightning:card>
+                                </div>
+                            </aura:iteration>
+                        </div>
+                        
+                        
+                        <div class="slds-align_absolute-center slds-m-top_medium">
+                            <lightning:buttonGroup>
+                                <lightning:button label="Previous" onclick="{!c.PendingRegPrevious}" 
+                                                 disabled="{!v.isPendingRegPrevDisabled}" />
+                                <lightning:button label="{!v.PendingRegCurrentPage}" disabled="true"/>
+                                <lightning:button label="Next" onclick="{!c.PendingRegNext}" 
+                                                 disabled="{!v.isPendingRegNextDisabled}" />
+                            </lightning:buttonGroup>
+                        </div>
+                    </div> -->
+                </div>
+            </lightning:tab>
+            
+            
+        </lightning:tabset>
+    </div>
+</aura:component>

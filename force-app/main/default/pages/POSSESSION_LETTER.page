@@ -1,0 +1,93 @@
+<apex:page standardController="Booking__c" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false"  standardStylesheets="false" renderAs="PDF" >
+    <html>
+        <head>
+            <style type="text/css" media="print">
+                @page {
+                @top-center {
+                content: element(header);
+                }
+                @bottom-left {
+                content: element(footer);
+                }
+                }
+                div.header {
+                padding: 10px;
+                position: running(header);
+                }
+                div.footer {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+                }
+                .pagenumber:before {
+                content: counter(page);
+                }
+                .pagecount:before {
+                content: counter(pages);
+                }
+                div.header {
+                padding: 20px;
+                position: running(header);
+                margin-left: -200px;
+                }
+                div.footer {
+                padding: 10px;
+                position: running(footer);
+                font-size: 9px;
+                text-align:left;
+                
+                }
+                div.footer :first-child{
+                text-align:right;
+                }
+                
+                div.content, div.content p{
+                padding:0 20px;
+                line-height:1.5;
+                font-size:18px;
+                }
+                th, td {
+                padding: 5px;
+                }
+                p{
+                line-height:1;
+                padding:1px;
+                }
+                table, tr {
+                border: 1px solid black;
+                border-collapse: collapse;
+                }
+            </style> 
+        </head>
+        <body>
+            <div class="content" >
+                <apex:outputPanel >
+                    <div style="margin-top:25%; font-size:24px;">
+                        <span style="background:yellow"><strong>{!Booking__c.First_Applicant_Name__c}</strong></span>
+                    </div>
+                    <div style="padding-top:50px;text-align:justify">
+                        <strong>Mahendra Homes Private Limited</strong> (a company incorporated under the Companies Act 2013) with its registered office at Plot No. 51, 17th Cross, 12th Main, 6th Sector, HSR Layout, Bangalore – 560 102 do hereby confirm to have delivered the vacant, snags free and on the spot possession of<span style="background:yellow"> <strong>Flat No. {!Booking__c.plot__r.Name}</strong> to <strong>{!Booking__c.salutation_Applicant1__c} {!Booking__c.First_Applicant_Name__c}</strong>, in <strong>Tower ‘{!Booking__c.Block__r.Name}’</strong>, <strong>Type {!Booking__c.BHK_Type__c}</strong> with Super Built-up Area of <strong>{!Booking__c.Super_Built_up_area_NE__c} Sft</strong>. and <strong>One Covered car parking</strong></span>.
+                    </div>
+                    <div style="padding-top:20px;text-align:justify">
+                        The said flat is Built on Sy. No.{!Booking__c.Project1__r.Survey_Number__c} situated at {!Booking__c.Project1__r.Project_Address__c} in the Project known as <strong>‘{!Booking__c.Project1__r.Name}’</strong>.
+                    </div>
+                    <div style="padding-top:20px;text-align:justify">
+                         We further declare that we have received the entire sale consideration amount in full and final settlement and there are no pending dues.
+                    </div >
+                    <div style="padding-top:20px;text-align:justify">
+                        It is now confirmed that <span style="background:yellow"><strong>{!Booking__c.salutation_Applicant1__c} {!Booking__c.First_Applicant_Name__c}</strong></span>, have become the absolute owner of the said flat.
+                    </div>
+                    <div style="padding-top:20px;">
+                        We wish you a healthy and prosperous living.
+                    </div>
+                    <div style="padding-top:20px;">
+                        <strong>for Mahendra Homes Private Limited</strong>
+                    </div>
+                   <div style="padding-top:80px;">
+                       <strong>Authorised Signatory</strong>
+                    </div>
+                </apex:outputPanel>
+            </div>
+        </body>
+    </html>
+</apex:page>

@@ -1,0 +1,33 @@
+<apex:page standardController="Booking__c" extensions="BookingApprovalCtrl" title="Booking Approval">
+    <apex:sectionHeader title="{!$ObjectType.Booking__c.Label}: {!Booking__c.Name}" />
+    
+    <apex:form >
+        <apex:pageMessages id="messages"/>
+
+        <apex:pageBlock title="Approve / Reject Booking">
+            <apex:pageBlockSection columns="1">
+    <apex:outputPanel rendered="{!IF(Booking__c.Stage__c = 'Sale Agreement Execution Completed' || 
+                                     Booking__c.Stage__c = 'Registration', true, false)}">
+        <apex:pageBlockSectionItem >
+            <apex:outputLabel value="Cancellation Charge" for="cancelCharge"/>
+            <apex:inputField id="cancelCharge" value="{!Booking__c.Cancellation_Charges__c}" required="true" />
+        </apex:pageBlockSectionItem>
+    </apex:outputPanel>
+
+    <apex:inputTextarea label="Comments" value="{!approvalComments}" cols="100" rows="5" />
+</apex:pageBlockSection>
+
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Save" action="{!save}" rerender="messages, steps" status="status"/>
+                
+                <apex:actionStatus id="status" stopText="">
+                    <apex:facet name="start">Requesting... <img src="/apexpages/devmode/img/saveStatus.gif" /></apex:facet>
+                </apex:actionStatus>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+    
+
+    <!-- Show Approval History (Steps) -->
+    <apex:relatedList id="steps" subject="{!Booking__c.Id}" list="ProcessSteps" />
+</apex:page>

@@ -1,0 +1,191 @@
+/* Scrollable Slot Area */
+.THIS .slot-scrollable-area {
+    max-height: 297px;
+    overflow-y: auto;
+    padding-bottom: 80px; /* space for footer button */
+}
+
+/* Fixed Footer Button inside scrollable section */
+.THIS .slot-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #FAFAFB;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+}
+
+/* Slot Pellet Styling */
+.THIS .slot-pellet {
+    border-radius: 8px;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    background-color: #f4f6f9;
+}
+
+/*.THIS .slot-pellet.car-shape {
+    background-image: url(/resource/Car_PNG); 
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}*/
+
+/*
+.THIS .slot-pellet {
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+    height: 60px;
+}
+.THIS .slot-pellet.car-shape {
+    border-radius: 20px;
+    width: 80px;
+    height: 40px;
+    padding: 4px;
+}*/
+
+.THIS .slot-pellet:hover {
+    border-color: #3498db;
+    background-color: #e6f2fb;
+    color:black;
+    box-shadow: 0 0 4px rgba(52, 152, 219, 0.6);
+    transition: all 0.2s ease-in-out;
+    transform: scale(1.02);
+}
+
+.THIS .slot-selected {
+    background-color: #3498DB;
+    color: #fff;
+    border-color: #2980B9;
+}
+
+.THIS .slot-pellet.slot-selected:hover {
+    background-color: #2c80d3; /* darker than #3498DB */
+    border-color: #1f619f;
+    color: #fff;
+    box-shadow: 0 0 6px rgba(41, 128, 185, 0.8);
+    transform: scale(1.03);
+}
+
+.THIS .slot-available {
+    border-color: #2ECC71;
+}
+
+.THIS .slot-sold {
+    border-color: #E74C3C;
+    background-color: #fceeee;
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+
+
+.THIS .slot-icon {
+    margin-bottom: 5px;
+}
+
+/* Table Enhancements */
+.THIS table.slds-table th,
+.THIS table.slds-table td {
+    padding: 0.75rem;
+}
+
+.THIS .slds-table th {
+    background-color: #f3f6f9;
+    font-weight: bold;
+}
+
+/* Fix vertical layout spacing */
+.THIS .slds-welcome-mat__tiles {
+    position: relative;
+}
+
+/* Enhance Card Border */
+.THIS .slds-card {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+/* Better mobile/responsive layout (optional) */
+@media only screen and (max-width: 768px) {
+    .THIS .slds-welcome-mat__tiles {
+        width: 100% !important;
+    }
+
+    .THIS .slot-pellet {
+        padding: 8px;
+    }
+}
+/* Grid for slots */
+.THIS .slot-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 8px;
+}
+
+/* Each slot takes 10% width with some spacing */
+.THIS .slot-tile {
+    width: calc(10% - 8px); /* 10 per row minus gap */
+    box-sizing: border-box;
+}
+
+/* Make it responsive on very small screens */
+@media only screen and (max-width: 768px) {
+    .THIS .slot-tile {
+        width: calc(20% - 8px); /* 5 per row on mobile */
+    }
+}
+
+/* Fix the table column widths */
+.THIS .selected-parking-table {
+    table-layout: fixed;
+    width: 100%;
+    min-width: 500px; /* prevents collapsing too much on zoom out */
+}
+
+/* Optional: makes the container horizontally scrollable if zoomed too far out */
+.THIS .selected-parking-wrapper {
+    overflow-x: auto;
+}
+
+/* Fix widths for individual columns (optional but improves stability) */
+.THIS .col-slno {
+    width: 3rem;
+}
+.THIS .col-slotnumber {
+    width: 6rem;
+}
+.THIS .col-type {
+    width: 6rem;
+}
+.THIS .col-level {
+    width: 6rem;
+}.THIS .col-action {
+    width: 6rem;
+    text-align: center;
+    align-items:center;
+}
+
+.THIS .slot-pellet.slot-new {
+    background-color: #fff8b3;
+    border: 2px solid #ffcc00;
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.THIS .rotate-icon .slds-button__icon {
+    transform: rotate(90deg);
+}

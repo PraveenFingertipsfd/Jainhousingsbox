@@ -1,0 +1,143 @@
+<aura:component controller="JointInspectionController" 
+               implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" 
+               access="global">
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="showModal" type="Boolean" default="false" />
+    <aura:attribute name="isProcessing" type="Boolean" default="false" />
+    <aura:attribute name="errorMessage" type="String" default="" />
+    <aura:attribute name="unitName" type="String" default="" />
+    <aura:attribute name="inspectionId" type="String" />
+    <aura:attribute name="currentStatus" type="String" />
+    <aura:attribute name="statusOptions" type="List" default="[]" />
+    <aura:attribute name="comments" type="String" default="" />
+    <aura:attribute name="rescheduledReason" type="String" default="" />
+    <aura:attribute name="rescheduledDatetime" type="String" default="" />
+    <aura:attribute name="cancelledReason" type="String" default="" />
+    <aura:attribute name="cancelledDatetime" type="String" default="" />
+    
+    <aura:attribute name="showToast" type="Boolean" default="false" />
+    <aura:attribute name="toastTitle" type="String" default="" />
+    <aura:attribute name="toastMessage" type="String" default="" />
+    <aura:attribute name="toastType" type="String" default="error" />
+    
+    <!-- Add this near the top of your component -->
+    <aura:handler name="change" value="{!v.showToast}" action="{!c.handleToast}"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <aura:html tag="style">
+        .slds-modal__container {
+            width:75% !important;
+        } 
+        .cuf-content {
+            padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+            padding: 0rem !important;
+        }
+        .slds-modal__content {
+            height:unset !important;
+            max-height:unset !important;
+        }
+        .closeIcon {
+            display:none;
+        }
+        .status-field {
+            margin-top: 12px;
+        }
+        .conditional-fields {
+            margin-top: 20px;
+            padding-left: 20px;
+            border-left: 2px solid #dddbda;
+        }
+    </aura:html>
+    
+    <lightning:messages />
+
+    <!-- Modal Dialog -->
+    <div class="slds-modal slds-fade-in-open" role="dialog" aria-hidden="false" aura:if="{!v.showModal}">
+        <div class="slds-modal__container">
+            <!-- Modal Header -->
+            <div class="slds-modal__header">
+                <h2 class="slds-text-heading_medium slds-hyphenate"><b>Update Joint Inspection Status</b></h2>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="slds-modal__content slds-p-around_medium">
+                <!--div class="slds-form-element" style="text-align:center">
+                    <label class="slds-form-element__label"><b>Unit - {!v.unitName}</b></label>
+                </div-->
+                
+                <!-- Status Selection Dropdown -->
+                <div class="slds-form-element status-field" style="text-align:left">
+                    <div class="slds-form-element__control">
+                        <lightning:select 
+                            label="Joint Inspection Status" 
+                            value="{!v.currentStatus}" 
+                            onchange="{!c.handleStatusChange}">
+                            <aura:iteration items="{!v.statusOptions}" var="status">
+                                <option value="{!status}">{!status}</option>
+                            </aura:iteration>
+                        </lightning:select>
+                    </div>
+                </div>
+                
+                <!-- Conditional Fields -->
+                <div class="conditional-fields">
+                    <aura:if isTrue="{!v.currentStatus == 'Completed'}">
+                        <lightning:input 
+                            type="text" 
+                            label="Comments" 
+                            value="{!v.comments}" 
+                            class="slds-m-top_small"/>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!v.currentStatus == 'Re-Scheduled'}">
+                        <lightning:input 
+                            type="text" 
+                            label="Re-Scheduled Reason" 
+                            value="{!v.rescheduledReason}" 
+                            required="true"
+                            class="slds-m-top_small"/>
+                        <lightning:input 
+                            type="datetime" 
+                            label="Re-Scheduled Date &amp; Time" 
+                            value="{!v.rescheduledDatetime}" 
+                            required="true"
+                            class="slds-m-top_small"/>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!v.currentStatus == 'Cancelled'}">
+                        <lightning:input 
+                            type="text" 
+                            label="Cancelled Reason" 
+                            value="{!v.cancelledReason}" 
+                            required="true"
+                            class="slds-m-top_small"/>
+                    </aura:if>
+                </div>
+                
+                <!--p class="slds-text-color_error slds-m-top_small" aura:if="{!not(empty(v.errorMessage))}">
+                    {!v.errorMessage}
+                </p-->
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="slds-modal__footer" style="text-align:center">
+                <button class="slds-button slds-button_neutral" onclick="{!c.handleCancel}" disabled="{!v.isProcessing}">
+                    Cancel
+                </button>
+                <button class="slds-button slds-button_brand" onclick="{!c.handleUpdateStatus}" disabled="{!v.isProcessing}">
+                    <aura:if isTrue="{!v.isProcessing}">
+                        <lightning:spinner variant="brand" size="small" class="slds-m-right_x-small" />
+                        Updating...
+                    <aura:set attribute="else">
+                        Update Status
+                    </aura:set>
+                    </aura:if>
+                </button>
+            </div>
+        </div>
+    </div>
+</aura:component>

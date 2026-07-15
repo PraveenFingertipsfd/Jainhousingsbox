@@ -1,0 +1,210 @@
+<aura:component controller="ParkingController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="existingParkings" type="List"/>
+    <aura:attribute name="newlyAddedParkings" type="List" default="[]" />
+    <aura:attribute name="showModal" type="Boolean" default="false"/>
+    <aura:attribute name="parkingType" type="String"/>
+    <aura:attribute name="availableSlots" type="List"/>
+    <aura:attribute name="filteredSlots" type="List"/>
+    <aura:attribute name="selectedSlot" type="Object"/>
+    <aura:attribute name="bookingRecord" type="Object"/>
+    <aura:attribute name="UnitId" type="string"/>
+    <aura:attribute name="swapIndex" type="Integer" />
+    <aura:handler name="init" value="this" action="c.doInit"/>
+    
+    
+    
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="header43" class="slds-modal slds-fade-in-open slds-modal_large">
+        <div class="slds-modal__container">
+            <button class="slds-button slds-button_icon slds-modal__close" onclick="{!c.closeModal}">
+                <lightning:icon iconName="utility:close" alternativeText="close" size="x-small"
+                                title="close" />
+                <span class="slds-assistive-text">Cancel and close</span>
+            </button>
+            <div class="slds-modal__header">
+                <h1 id="header43" class="slds-text-heading_medium">Parking Slot Selection</h1>
+            </div>
+            
+            <div class="slds-modal__content  slds-p-around_xx-small" id="modal-content-id-1">
+                <div class="slds-welcome-mat slds-p-vertical_xx-small">
+                    <div class="slds-welcome-mat__content slds-grid">
+                        <div class="slds-welcome-mat__tiles slds-size_5-of-12 slds-p-vertical_xx-small cust-ht" tabindex="0" role="region">
+                            <article class="slds-card">
+                                <div class="slds-card__body slds-card__body_inner">
+                                    <div class="demo-only" style="background-color:#FAFAFB">
+                                        <div class="slds-card__header slds-grid">
+                                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                                <div class="slds-media__body">
+                                                    <h2 class="slds-card__header-title">
+                                                        <span>Selected Parking Slots</span>
+                                                    </h2>
+                                                </div>
+                                            </header>
+                                        </div>
+                                        
+                                        <div class="selected-parking-wrapper" style="height: 335px; overflow:auto;">
+                                            <table aria-multiselectable="true"
+                                                   class="slds-table slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols selected-parking-table"
+                                                   role="grid"
+                                                   aria-label="Payment Schedules">
+                                                <thead>
+                                                    <tr class="slds-line-height_reset">
+                                                        <th scope="col" class="col-slno"><div class="slds-truncate" title="SL.No">S.No</div></th>
+                                                        <th scope="col" class="col-slotnumber"><div class="slds-truncate" title="Slot Number">Slot Number</div></th>
+                                                        <th scope="col" class="col-type"><div class="slds-truncate" title="Type">Type</div></th>
+                                                        <th scope="col" class="col-level"><div class="slds-truncate" title="Level">Level</div></th>
+                                                        <th scope="col" class="col-action"><div class="slds-truncate" title="Action">Action</div></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    
+                                                    <!-- Existing parking records --> 
+                                                    <tr>
+                                                        <td colspan="5" class="slds-text-align_center slds-text-color_weak" style="background: beige;"><b>Existing Parkings</b></td>
+                                                    </tr>
+                                                    <aura:if isTrue="{!not(empty(v.existingParkings))}">
+                                                        <aura:iteration items="{!v.existingParkings}" var="park" indexVar="index">
+                                                            <tr class="slds-hint-parent slds-cell_action-mode">
+                                                                <td><div class="slds-truncate">{!index + 1}</div></td>
+                                                                <td>
+                                                                    <div class="slds-grid slds-grid_align-center slds-grid_vertical-align-center">
+                                                                        <div class="slds-truncate slds-m-right_x-small">{!park.Slot_Number__c}</div>
+                                                                        <aura:if isTrue="{!not(empty(park.Swapped_Slot_Number__c))}">
+                                                                            <lightning:buttonIcon iconName="utility:retweet" variant="bare" alternativeText="Swap" class="rotate-icon slds-button_icon-border" />&nbsp;&nbsp;
+                                                                            <div class="slds-truncate slds-m-right_x-small">{!park.Swapped_Slot_Number__c}</div>
+                                                                        </aura:if>
+                                                                    </div>
+                                                                </td>
+                                                                <td><div class="slds-truncate">{!park.Parking_Type__c}</div></td>
+                                                                <td><div class="slds-truncate">{!park.Level__c}</div></td>
+                                                                <td>
+                                                                    <aura:if isTrue="{!not(empty(park.Swapped_Slot_Number__c))}">
+                                                                        <div class="slds-grid slds-grid_align-center slds-grid_vertical-align-center">
+                                                                            <lightning:button label="Clear" variant="destructive" value="{!index}"  onclick="{! c.clearSwap }" />
+                                                                        </div>
+                                                                        
+                                                                        <aura:set attribute="else">
+                                                                            <div class="slds-grid slds-grid_align-center slds-grid_vertical-align-center">
+                                                                                <lightning:button label="{! if(v.swapIndex == index, 'Choose', 'Swap') }" variant="Brand" value="{!index}" onclick="{!c.swapSlot }" disabled="{!v.swapIndex == index}"/>
+                                                                            </div>
+                                                                        </aura:set>
+                                                                    </aura:if>
+                                                                </td>
+                                                            </tr>
+                                                        </aura:iteration>
+                                                        <aura:set attribute="else">
+                                                            <tr>
+                                                                <td colspan="5" class="slds-text-align_center slds-text-color_weak" style="color: brown;">No Records Exist</td>
+                                                            </tr>
+                                                        </aura:set>
+                                                    </aura:if>
+                                                    
+                                                    
+                                                    <!-- Newly added (unsaved) parking records -->
+                                                    <tr>
+                                                        <td colspan="5" class="slds-text-align_center slds-text-color_weak" style="background: beige;"><b>Newly Selected Parkings</b></td>
+                                                    </tr>
+                                                    <aura:if isTrue="{!empty(v.newlyAddedParkings)}">
+                                                        <tr>
+                                                            <td colspan="5" class="slds-text-align_center slds-text-color_weak" style="color: brown;">No New Slots are Added</td>
+                                                        </tr>
+                                                    </aura:if>
+                                                    <aura:iteration items="{!v.newlyAddedParkings}" var="slot" indexVar="index">
+                                                        <tr class="slds-hint-parent slds-cell_action-mode slds-theme_alert-texture">
+                                                            <td><div class="slds-truncate">{!index + 1}</div></td>
+                                                            <td class="slds-text-align_center"><div class="slds-truncate">{!slot.Slot_Number__c}</div></td>
+                                                            <td><div class="slds-truncate">{!slot.Parking_Type__c}</div></td>
+                                                            <td><div class="slds-truncate">{!slot.Level__c}</div></td>
+                                                            <td>
+                                                                <div class="slds-grid slds-grid_align-center slds-grid_vertical-align-center">
+                                                                    <lightning:buttonIcon iconName="utility:delete" title="Remove" onclick="{!c.removeNewSlot}" class="slds-button_icon-border" value="{!slot.Id}" />
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </aura:iteration>
+                                                    
+                                                </tbody>
+                                                
+                                            </table>
+                                        </div>
+                                        
+                                    </div>
+                                </div>   
+                            </article>
+                        </div>
+                        
+                        <div style="background-color:#FAFAFB" class="slds-welcome-mat__tiles slds-size_7-of-12 slds-welcome-mat__tiles_info-only slds-p-vertical_xx-small cust-ht">
+                            
+                            <div class="slds-align_absolute-left slds-p-top_x-large">
+                                <lightning:select label="Parking Type" onchange="{!c.handleTypeChange}" value="{!v.parkingType}" disabled="{!v.swapIndex != null}">
+                                    <option value="">-- Select --</option>
+                                    <option value="Car">Car</option>
+                                    <option value="Bike">Bike</option>
+                                </lightning:select>
+                            </div><br/>
+                            
+                            <aura:if isTrue="{!AND(v.parkingType != 'Car',v.parkingType != 'Bike')}">
+                                <div class="slds-text-align_center" style="font-size: x-large; font-weight: 800; color: lightgrey;">
+                                    Please Select Parking Type
+                                </div>
+                            </aura:if>
+                            
+                            <aura:if isTrue="{!OR(v.parkingType == 'Car',v.parkingType == 'Bike')}">
+                                <aura:if isTrue="{!empty(v.filteredSlots)}">
+                                    <div class="slds-text-align_center" style="font-size: x-large; font-weight: 800; color: lightgrey;">
+                                        No Slots Available
+                                    </div>
+                                </aura:if>
+                            </aura:if>
+                            
+                            <!-- Scrollable slot list -->
+                            <div class="slot-scrollable-area">
+                                <div class="slds-grid slot-grid">
+                                    
+                                    <aura:if isTrue="{!OR(v.parkingType == 'Car',v.parkingType == 'Bike')}">
+                                        <aura:if isTrue="{!not(empty(v.filteredSlots))}">
+                                            <aura:iteration items="{!v.filteredSlots}" var="slot">
+                                                <div class="slot-tile">
+                                                    <div class="{!'slot-pellet ' + 
+                                                                (slot.Parking_Type__c == 'Car' ? 'car-shape ' : '') +
+                                                                (slot.Status__c == 'Available' ? 'slot-available' : 'slot-sold') + 
+                                                                (slot.isNewlyAdded ? ' slot-new' : '') +
+                                                                (AND(v.selectedSlot, v.selectedSlot.Id == slot.Id) ? ' slot-selected' : '')}"
+                                                         onclick="{!c.selectSlot}" data-id="{!slot.Id}">
+                                                        
+                                                        
+                                                        <aura:if isTrue="{!slot.Parking_Type__c == 'Car'}">
+                                                            <lightning:icon class="slot-icon" iconName="utility:car" size="small" />
+                                                            <aura:set attribute="else">
+                                                                <lightning:icon class="slot-icon" iconName="utility:bike" size="small" />
+                                                            </aura:set>
+                                                        </aura:if>
+                                                        
+                                                        <p>{!slot.Slot_Number__c}</p>
+                                                    </div>
+                                                </div>
+                                            </aura:iteration>
+                                        </aura:if>
+                                    </aura:if>
+                                </div>
+                                
+                            </div>
+                            
+                            <!-- Sticky Footer inside this section -->
+                            <div class="slot-footer">
+                                <lightning:button label="Choose Slot" variant="neutral" onclick="{!c.chooseSlot}" disabled="{!empty(v.selectedSlot)}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slds-modal__footer slds-grid slds-grid_align-center">                   
+                <lightning:button label="Save" variant="brand" onclick="{! c.handlesave }" />
+                <lightning:button label="Cancel" variant="neutral" onclick="{! c.closeModal }" />
+            </div>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+        
+</aura:component>

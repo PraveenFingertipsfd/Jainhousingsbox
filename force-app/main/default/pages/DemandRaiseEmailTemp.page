@@ -1,0 +1,122 @@
+<apex:page renderAs="pdf" contentType="application/pdf" applyBodyTag="false" standardController="Booking__c" extensions="RaiseDemandController">
+    <html xmlns="http://www.w3.org/2000/1999/xhtml">
+        <head>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    font-size: 12pt;
+                    line-height: 1.5;
+                }
+                .section {
+                    margin-bottom: 20px;
+                }
+                .signature {
+                    margin-top: 50px;
+                }
+                .note {
+                    margin-top: 30px;
+                    font-size: 10pt;
+                    font-style: italic;
+                }
+                .payment-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 20px 0;
+                }
+                .payment-table th, .payment-table td {
+                    border: 1px solid #000;
+                    padding: 8px;
+                    text-align: left;
+                }
+                .payment-table th {
+                    background-color: #f2f2f2;
+                    font-weight: bold;
+                }
+                .payment-table .current-row {
+                    background-color: #e6f7ff;
+                    font-weight: bold;
+                }
+                .payment-table .total-row {
+                    background-color: #f2f2f2;
+                    font-weight: bold;
+                }
+                .amount-column {
+                    text-align: right;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="section">
+                <p>Date: <apex:outputText value="{0,date,dd/MM/yyyy}"> <apex:param value="{!TODAY()}" /> </apex:outputText></p>
+                <p>To<br/>
+                {!Booking__c.salutation_Applicant1__c} {!Booking__c.First_Applicant_Name__c}<br/>
+                  {!Booking__c.Communication_address__c}<br/>
+                  Mobile No.: {!Booking__c.Mobile_Primary__c}<br/>
+                  EMail ID: {!Booking__c.Email1__c}</p>
+            </div>
+
+            <div class="section">
+                <p><strong>Subject:</strong> Stage Intimation/Payment demand - Flat No. {!Booking__c.Plot__r.Name} on the {!Booking__c.Plot__r.Floor__c} floor  at {!Booking__c.Plot__r.Project__r.Name}, {!Booking__c.Plot__r.Project__r.Project_Address__c}</p>
+            </div>
+
+            <div class="section">
+                <p>Dear Sir/Madam,</p>
+                <p>We would like to bring to your kind attention that an amount of <strong>Rs. <apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!totalAmountPayable}" /> </apex:outputText>/-</strong> (<strong>Rupees {!totalAmountPayableInWords})</strong>
+                    is due towards the instalment "<strong>{!currentCompletedStage}</strong>", as per the agreed payment schedule for Flat No.  {!Booking__c.Plot__r.Name} located on the{!Booking__c.Plot__r.Floor__c} Floor at <strong>{!Booking__c.Plot__r.Project__r.Name}</strong>,{!Booking__c.Plot__r.Project__r.Project_Address__c}.</p>
+
+                <!-- Payment Breakup Table -->
+                <table style="width: 100%; border: 1px solid black; border-collapse: collapse; margin: 20px 0;">
+    <thead>
+        <tr>
+            <th style="border: 1px solid black; padding: 8px; background-color: #f2f2f2; font-weight: bold; text-align: left;">SI No</th>
+            <th style="border: 1px solid black; padding: 8px; background-color: #f2f2f2; font-weight: bold; text-align: left;">Payment Schedule Name</th>
+            <th style="border: 1px solid black; padding: 8px; background-color: #f2f2f2; font-weight: bold; text-align: right;">Total Amount (₹)</th>
+            <th style="border: 1px solid black; padding: 8px; background-color: #f2f2f2; font-weight: bold; text-align: right;">Paid Amount (₹)</th>
+            <th style="border: 1px solid black; padding: 8px; background-color: #f2f2f2; font-weight: bold; text-align: right;">Pending Amount (₹)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <apex:repeat value="{!paymentBreakups}" var="breakup">
+            <tr style="background-color: {!IF(breakup.isCurrent, '#e6f7ff', 'transparent')}; font-weight: {!IF(breakup.isCurrent, 'bold', 'normal')};">
+                <td style="border: 1px solid black; padding: 8px;">{!breakup.scheduleNo}</td>
+                <td style="border: 1px solid black; padding: 8px;">{!breakup.scheduleName}</td>
+                <td style="border: 1px solid black; padding: 8px; text-align: right;"><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!breakup.totalAmount}" /></apex:outputText></td>
+                <td style="border: 1px solid black; padding: 8px; text-align: right;"><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!breakup.paidAmount}" /></apex:outputText></td>
+                <td style="border: 1px solid black; padding: 8px; text-align: right;"><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!breakup.pendingAmount}" /></apex:outputText></td>
+            </tr>
+        </apex:repeat>
+        <tr style="background-color: #f2f2f2; font-weight: bold;">
+            <td style="border: 1px solid black; padding: 8px;text-align: center;" colspan="4"><strong>Total Payable</strong></td>
+           
+            <td style="border: 1px solid black; padding: 8px; text-align: right;"><strong><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!totalAmountPayable}" /></apex:outputText></strong></td>
+            <!--td style="border: 1px solid black; padding: 8px;" colspan="2"></td> -->
+        </tr>
+    </tbody>
+</table>
+
+                <p>Kindly arrange to make the payment in favour of:</p>
+
+                <p>
+                    {payeeName}<br/>
+                    {bankDetails}
+                </p>
+
+                <p>As per the terms &amp; conditions agreed between us, this payment has to be made within 15 days of this intimation. Should you require any clarification, please feel free to contact the undersigned between 2:30 PM – 5:30 PM on all working days.</p>
+
+                <p>We thank you for your continued cooperation and assure you of our best services at all times.</p>
+            </div>
+
+            <div class="signature">
+                <p>Yours faithfully,<br/>
+                For Jain House,</p>
+
+                <br/><br/>
+                <p>CRM</p>
+            </div>
+
+            <div class="note">
+                Note: Delayed payments will attract an interest of 18% per annum, applicable at the time of handover.
+            </div>
+        </body>
+    </html>
+</apex:page>

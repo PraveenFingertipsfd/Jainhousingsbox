@@ -1,0 +1,105 @@
+<aura:component controller="AdditionalChargesMainController" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    
+    <aura:attribute name="activeSections" type="List" default="['A0']" />
+    <aura:attribute name="activeSectionsMessage" type="String" default="" />
+    <aura:attribute name="selectedRecords" type="List[]" />
+    <aura:attribute name="selectedRecordIds" type="List[]" />
+    <aura:attribute name="recordsToDisplay" type="List[]" />
+    <aura:attribute name="showPoup" type="Boolean" />
+    <aura:attribute name="emailContentMap" type="Map" />
+    <aura:attribute name="showSpinner" type="Boolean" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="demo-only demo-only_viewport" style="height:640px">
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="id-of-modalheader-h1" class="slds-modal slds-fade-in-open slds-modal_small slds-list-builder">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close" onclick="{!c.Close}">
+                    <lightning:icon iconName="utility:close" alternativeText="close" size="x-small"
+                                    title="close" />
+                    <span class="slds-assistive-text">Cancel and close</span>
+                </button>
+                <div class="slds-modal__header">
+                    <h1 id="id-of-modalheader-h1" class="slds-text-heading_medium">Addidional Charge Receipts</h1>
+                </div>
+                <div class="slds-modal__content slds-grow slds-p-around_small" id="modal-content-id-1">
+                    <lightning:accordion
+                                         allowMultipleSectionsOpen="true"
+                                         onsectiontoggle="{! c.handleSectionToggle }"
+                                         activeSectionName="{! v.activeSections }"
+                                         >
+                        <aura:iteration items="{!v.recordsToDisplay}" var="record" indexVar="index">
+                            <lightning:accordionSection name="{!'A'+index}" label="{!record.Name +' - '+record.Additional_Charge_Type__c}">
+                                <aura:set attribute="body">
+                                    <div class="slds-page-header_record-home">
+                                        <div class="slds-page-header__row slds-page-header__row_gutters">
+                                            <div class="slds-page-header__col-details">
+                                                <ul class="slds-page-header__detail-row slds-p-vertical_xx-small slds-m-top_xx-small">
+                                                    <li class="slds-page-header__detail-block slds-p-horizontal_medium">
+                                                        <div class="slds-text-title slds-truncate" title="Field 1">Additional charge Id</div>
+                                                        <div class="slds-truncate" title="{!record.Name}">{!record.Name}</div>
+                                                    </li>
+                                                    <li class="slds-page-header__detail-block slds-p-horizontal_medium">
+                                                        <div class="slds-text-title slds-truncate" title="Field 1">Additional charge Type</div>
+                                                        <div class="slds-truncate" title="{!record.Additional_Charge_Type__c}">{!record.Additional_Charge_Type__c}</div>
+                                                    </li>
+                                                    <li class="slds-page-header__detail-block slds-p-horizontal_medium">
+                                                        <div class="slds-text-title slds-truncate" title="Field 1">Total Amount</div>
+                                                        <div class="slds-truncate" title="{!record.Total_Additional_Charge__c}"><lightning:formattedNumber value="{!record.Total_Additional_Charge__c}" maximumFractionDigits="2"/></div>
+                                                    </li>
+                                                    
+                                                    <li class="slds-page-header__detail-block slds-p-horizontal_medium">
+                                                        <div class="slds-text-title slds-truncate" title="Field 3">Paid Amount</div>
+                                                        <div class="slds-truncate" title="{!record.Total_Received_Amount__c}">
+                                                            <lightning:formattedNumber value="{!record.Total_Received_Amount__c}" maximumFractionDigits="2"/>
+                                                        </div>
+                                                    </li>
+                                                    <li class="slds-page-header__detail-block slds-p-horizontal_medium">
+                                                        <div class="slds-text-title slds-truncate" title="Field 4">Pending Amount</div>
+                                                        <div class="slds-truncate" title="{!record.Pending_Amount__c}"><strong><lightning:formattedNumber value="{!record.Pending_Amount__c}" maximumFractionDigits="2"/></strong></div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-p-vertical_large slds-grid slds-gutters slds-wrap">
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <c:CustomPicklistGlobal fieldAPIname="Bank__c" required="true" objAPIName="booking__c" selectedValue="{!record.Bank_Name__c}" label="Bank Name"/>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <lightning:input aura:id="field" label="Payer Bank Details" required="true" messageWhenValueMissing="Please fill this field" type="text" value="{!record.Payer_Bank_Details__c}"  placeholder="Payer Bank Details"/>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <c:CustomPicklistGlobal fieldAPIname="Payment_Method__c" required="true" objAPIName="Additional_Charge_Receipt__c" selectedValue="{!record.Payment_Method__c}" label="Payment Methods"/>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <lightning:input aura:id="field" label="Receipt Date" type="date" messageWhenValueMissing="Please fill this field" required="true" value="{!record.Receipt_Date__c}" />
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <lightning:input aura:id="field" label="Transaction ID" type="text" messageWhenValueMissing="Please fill this field" required="true" value="{!record.Transaction_Id__c}" placeholder="transactionId/cheque number"/>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <lightning:input aura:id="field" label="Amount Received" type="number" messageWhenValueMissing="Please fill this field"  min="1" required="true" max="{!record.Pending_Amount__c}" value="{!record.Amount_Received__c}"  placeholder="{!'Max value '+record.Pending_Amount__c}"/>
+                                        </div>
+                                        <div class="slds-col slds-size_2-of-3">
+                                            <lightning:textarea aura:id="field" placeholder="Remarks..." label="Remarks" value="{!record.Remarks__c}" max-length="300"/>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3 slds-text-align_right">
+                                            <p>Balance Amount = Rs.<lightning:formattedNumber value="{!record.Pending_Amount__c - record.Amount_Received__c}" maximumFractionDigits="2"/></p>
+                                        </div>
+                                    </div>  
+                                </aura:set>
+                            </lightning:accordionSection>
+                        </aura:iteration>
+                    </lightning:accordion>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick="{!c.Close}">Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick="{!c.handleSubmit}">Create Receipts</button>
+                </div>
+            </div>
+                <lightning:spinner variant="brand" size="medium" alternativeText="Loading" aura:id="spinner" class="{!v.showSpinner ? '' : 'slds-hide'}"/>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </div>
+</aura:component>

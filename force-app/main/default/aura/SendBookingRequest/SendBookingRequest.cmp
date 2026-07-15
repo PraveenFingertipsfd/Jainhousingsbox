@@ -1,0 +1,55 @@
+<aura:component controller="BookingRequest_Controller" implements="force:lightningQuickActionwithoutheader,force:appHostable,force:hasRecordId" access="global" >
+    <aura:attribute name="Email" type="string"/>
+    <aura:attribute name="IsPSAUnit" type="Boolean" default="false"/>
+    <aura:attribute name="IsButtondisable" type="Boolean"/>
+    <aura:attribute name="BlockedPrice" type="double"/>
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <aura:html tag="style">
+        .slds-modal__container{
+        //max-width: 75rem !important;
+        width:75% !important;
+        } 
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }
+        .slds-modal__content{
+        height:unset !important;
+        max-height:unset !important;
+        }
+        .closeIcon{
+        display:none;
+        }
+        .slds-col{
+        margin-left:5px;
+        }
+    </aura:html>
+    
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <!--<lightning:buttonIcon iconName="utility:close" onclick="{! c.doCancel }" alternativeText="close" variant="bare-inverse" class="slds-modal__close"/>-->
+                <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Send Request for Booking</h1>
+            </header>
+            
+            <div class="slds-modal__content slds-p-around_medium " id="modal-content-id-1">
+                <lightning:messages />
+                <p>
+                    <lightning:input type="Email" label ="Customer's Email Address" value="{!v.Email}" aura:id="EmailAddress" required='true'/>
+                    <aura:if isTrue="{!v.IsPSAUnit}">
+                        <lightning:input type="number" label ="Blocked Price" value="{!v.BlockedPrice}" aura:id="UnitBlockedPrice" required='{!v.IsPSAUnit}'/>
+                    </aura:if>
+                   
+                </p>
+            </div>
+            
+            <footer class="slds-modal__footer" style="text-align:center">
+                <lightning:button label="Cancel" title="Cancel" onclick="{!c.doCancel }" />
+                <lightning:button variant="brand" label="Send" title="Send" onclick="{!c.dosave }" disabled="{!v.IsButtondisable}"/>
+            </footer>
+        </div>
+    </section>
+</aura:component>

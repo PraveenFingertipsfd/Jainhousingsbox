@@ -1,0 +1,195 @@
+<apex:page standardController="Booking__c" extensions="TPAController" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false"  standardStylesheets="false" renderAs="PDF" >
+    <html>
+        <head>
+            <style type="text/css" media="print">
+                @page {
+                @top-center {
+                content: element(header);
+                }
+                @bottom-left {
+                content: element(footer);
+                }
+                }
+                div.header {
+                padding: 10px;
+                position: running(header);
+                }
+                div.footer {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+                }
+                .pagenumber:before {
+                content: counter(page);
+                }
+                .pagecount:before {
+                content: counter(pages);
+                }
+                div.header {
+                padding: 20px;
+                position: running(header);
+                margin-left: -200px;
+                }
+                div.footer {
+                padding: 10px;
+                position: running(footer);
+                font-size: 9px;
+                text-align:left;
+                
+                }
+                div.footer :first-child{
+                text-align:right;
+                }
+                
+                div.content, div.content p{
+                padding:0 20px;
+                line-height:1.5;
+                font-size:14px;
+                }
+                th, td {
+                padding: 5px;
+                }
+                p{
+                line-height:1;
+                padding:1px;
+                }
+                table, tr {
+                border: 1px solid black;
+                border-collapse: collapse;
+                }
+            </style> 
+        </head>
+        <body>
+            <div class="footer">
+                <div style="font-size: 12px;padding:5px;margin-top:-30px">
+                    <span style="text-align:right">Page <span class="pagenumber"/> | <span class="pagecount"/></span>
+                </div>
+            </div>
+            <div class="content" >
+                <apex:outputPanel >
+                    <div style="text-align:justify;">
+                        <div style="padding-top:10px;text-align:center;">
+                            <strong>Tripartite Agreement</strong>
+                        </div>
+                        <div style="padding-top:20px;">
+                            This agreement is executed on {!TPA_Agreement_Date} Between.
+                        </div>
+                        <div style="padding-top:10px;">
+                            <b>{!Booking__c.salutation_Applicant1__c} {!Booking__c.First_Applicant_Name__c	}, aged about {!Booking__c.Age__c} years, {!Booking__c.Relation_Details_Applicant1__c} {!Booking__c.Son_Daughter_Wife_of__c} &amp; {!Booking__c.salutation_Applicant2__c}. {!Booking__c.Second_Applicant_Name__c}, aged about {!Booking__C.Age2__c} years , {!Booking__c.Relation_Details_Applicant2__c} {!Booking__c.Son_Daughter_Wife_of1__c}, Both are Residing at {!Booking__c.Communication_Address__c}</b>. Hereafter referred to as the ‘Borrower (s)’, which term shall unless repugnant to the context shall mean and include his/her heirs, representatives, successors, executors, attorneys, administrators, and assigns, of the party at the ‘First Part’. 
+                        </div>
+                        <div style="padding-top:10px;text-align:center;">
+                            AND
+                        </div>
+                        <div style="padding-top:10px;">
+                            <b>M/s Mahendra Homes Pvt Ltd</b> (a Company incorporated under the Companies Act, 1956) having its registered office at No 51, 12th Main, 17th Cross, H S R 6th Sector, H S R Layout, Bangalore - 560102, Represented by its Managing Director, <b>Mr.B.T.Nagaraj Reddy. PAN: AAHCM5688C.</b>
+                        </div>
+                        <div style="padding-top:10px;">
+                            Hereinafter referred to as the ‘Builder/Developer’, which term shall unless repugnant to the context shall mean and include its representatives, successors, administrators and assigns, of the party at the ‘Second Part’.
+                        </div>
+                        <div style="padding-top:10px;text-align:center;">
+                            <strong>AND</strong>
+                        </div>
+                        <div style="padding-top:10px;">
+                            AND
+                            State Bank of India, a body corporate, constituted under the State Bank of India Act 1955, having amongst others one of its Branch Office at RACPC HSR Layout Bangalore, hereinafter referred as the ‘SBI’, which term shall unless repugnant to the context shall mean and include its representatives, successors, administrators and assigns, of the party at the ‘Third Part’. 
+                            
+                        </div>
+                        <div style="padding-top:10px;">
+                           <b> Whereas,</b> the ‘Builder/Developer’ is the absolute owner and in peaceful possession of the residential property bearing converted Sy.No6/1, 8/4, 9/2, 10/1, 12/1,&amp;13, situated at Heelalige Road, Andapura Village, Attibele Hobli, Anekal Taluk, Bangalore and whereas BMRDA has sanctioned building plan vide L P No.<b> TPA/CC/278/2020-21, dated 18.02.2021. by Joint Director Anekal Planning Authority BMRDA Bangalore</b> to construct a residential apartment on the said property. Whereas ‘Builder’ has taken up construction of a residential apartment known as<b> MAHENDRA {!Booking__c.Project__c}</b> on the said property. 
+                        </div>
+                        <div style="padding-top:10px;">
+                            <b>Whereas,</b>the Party at the Second Part shall complete the construction of the flats latest by 
+                            <br/><b>i) Tower "A"and "B” shall be handed over by the end of December 2025</b> and is booking the sale of the unit/apartment. The proposed buyer has to make the payment of the Sale Consideration and other charges, if any, before registration and on the payment of the entire consideration, the Party at the Second Part shall hand over the possession of the flat to the said proposed buyer. 
+                            
+                        </div>
+                        <div style="padding-top:10px;">
+                           <b> Whereas,</b> the Party at the First Part has booked a flat bearing No.<b>{!Booking__c.Plot__r.Name},Floor No. {!Booking__c.FloorNo__c}, Tower-{!Booking__c.Block__r.Name}</b>, measuring super area/built-up area <b>{!Booking__c.Super_Built_up_area_NE__c}</b>. sq. ft, (hereinafter referred to as the said flat) in the building which the Party at the Second Part shall construct on the above said plot, and the Party at the First Part has to pay the entire consideration amount before registration.
+                        </div>
+                        <div style="padding-top:10px;">
+                            <b>Whereas,</b> the Party at the First Part has approached the Party at the Third Part for availing a Home Loan of Rs.<b>{!Booking__c.Loan_Sanctioned_Amount__c}/-</b> ({!loanAmout}) to finance the purchase of the said flat. Besides other securities, the Party at the First Part has agreed to create the charge over the said flat along with the proportionate undivided share in the land in favour of the Party at the Third Part. In the absence of proper Conveyance Deed/Sale Deed in its favour, the Party at the First Part is not in a position to create a valid mortgage over the said flat and proportionate share of land in favour of the Party at the Third Part.
+                        </div>
+                        <div style="padding-top:10px;">
+                            
+                           <b> Whereas,</b> the Party at the First Part and the Party at the Second Part have requested SBI to disburse the said loan to the Borrower, notwithstanding the fact that the Conveyance Deed/Sale Deed is not executed in favour of the Party at the First Part at this stage, and in consideration of the SBI sanctioning the loan to the Borrower(s), the Borrower(s) and the Builder/Developer have executed this Agreement on the following terms and conditions. 
+                        </div>
+                        <div style="padding-top:10px;">
+                            <strong>Now therefore it is hereby agreed by and between the parties that:
+                            </strong>
+                            <ol>
+                                <li>The SBI has and shall have the first lien over the said flat for the due repayment of the loan which SBI has granted to the Borrower. The Builder shall note in its records the charge and lien of SBI over the said flat. The Builder shall not transfer the said flat to any other person without the prior written consent of the SBI.</li>
+                                <li>The Builder/Developer agrees that it has no objection to the Borrower(s) mortgaging the said flat with proportionate share in land to the SBI as security for the said loan agreed to</li>
+                                <li>
+                                    The SBI for the purpose of purchase/construction of the said flat. In the event of default in the repayment of loan and/ or the Borrower(s) committing any other default which makes the Borrower(s) liable for the repayment of the entire amount outstanding in the said loan as per the terms of the Loan Agreement executed between the Borrower(s) and the SBI, the Builder shall at the request of SBI, be under obligation to not deliver possession to the Borrower and/or to cancel the booking and pay all amounts received by the Builder on behalf of the Borrower(s) to SBI including also any amount paid by the Borrower to the Builder. However, the builder/developer shall be entitled to recover cancellation and/or any other charges, if any payable by the Borrower under the terms of application form for purchase of the said flat and/or agreement to sale/construction out of the Borrower’s contribution. Upon payment of the amounts by the Builder/Developer to SBI as aforesaid, the SBI and the Borrower will not have any claim, charge, lien, mortgage, right, title and interest etc. whatsoever, over the said flat. SBI shall issue a certificate to release any mortgage/charge/lien created on the said flat. The Borrower hereby expressly agrees that in the event of default in either repayment of the loan or any other default by the Borrower, SBI shall be entitled to request the Builder to cancel the booking and return the amounts received by the Builder and the Borrower agrees and acknowledges that any such request by SBI and payment made by the Builder under this clause to SBI shall be binding upon the Borrower.
+                                </li>
+                                <li>That if for any reason there is any increase/escalation in the cost of the said flat, the increase shall be paid and borne by the Borrower(s) without any reference to the SBI and until such payment is made, the SBI shall have the right to suspend further disbursement of the said loan.</li>
+                                <li>That in the event of the Builder cancelling the said booking for any default committed by the Borrower(s) or the project is shelved by the Builder or for any other reason whatsoever, the Builder shall pay the entire amount received on behalf of the Borrower(s) to the SBI. However, the builder/developer shall be entitled to recover cancellation and/or any other charges, if any payable by the Borrower under the terms of application form for purchase of the said flat and/or agreement to sell/construction out of the Borrower’s contribution only in the instance where the Borrower has cancelled the booking of the flat or has committed any default.</li>
+                                <li>That on the receipt of the entire consideration amount, the Builder shall execute a proper Conveyance Deed/Sale Deed/Lease Deed in favour of the Borrower. The Builder undertakes to deliver the same along with original registration fee receipt directly to the SBI and not to the Borrower(s). Before the execution of the Sale</li>
+                                <li>Deed/Conveyance Deed/Lease Deed, the builder shall inform the SBI about the same on the completion of the project.</li>
+                                <li>That the builder agrees that the loan amount may be credited to our account held with Karnataka Bank vide no.1042 0001 1017 2401. 
+                                </li>
+                                <li>That the Borrower(s) shall also keep informed the SBI about the developments in the project. The Borrower shall notify the SBI the date of taking over the possession of the said flat. In case the Borrower(s) comes into possession of the Lease Deed/Conveyance Deed/Sale Deed, he/she shall immediately deliver the same to the SBI.
+                                </li>
+                                <li>That the Borrower(s) assures that he/she will not avail finance from any other Bank or Financial Institution in respect of the aforesaid flat and/or will not create further mortgage/charge over the said flat (allotted to the borrower) in any manner whatsoever.</li>
+                                <li>
+                                    That the Borrower(s) shall pay all charges, duties, taxes in respect of the said flat imposed or payable to the Builder/Developer and or to Corporation or any other Government Department/Authority in respect of the said flat and the SBI shall not be liable or responsible in any manner whatsoever or howsoever for the same.
+                                </li>
+                                <li>That the Borrower(s) agrees and acknowledges to keep the SBI indemnified against any loss or damage incurred by it in the event of failure of the Borrower(s) to honor or to meet any of its obligations under this Agreement in connection with the sanctioning of the loan in respect of the said flat.</li>
+                                <li>That during the currency of the loan, the Borrower(s) shall not transfer the said flat to any other person, without the prior written consent of the SBI. The Builder/Developer shall not issue the duplicate allotment letter/possession letter to the Borrower(s) without the prior written consent of the SBI.</li>
+                                <li>It is understood that the term ‘loan’ mentioned herein shall include interest, penal interest and all other sums payable by the borrower(s) to the SBI.</li>
+                                <li>That in the event of any default by the Borrower(s), the SBI may at its discretion enforce the security by the sale and the Builder shall accept the Purchaser of the said flat in place of the Borrower(s), after the Purchaser complies with the necessary requirements of the Builder/Developer in this respect.</li>
+                                <li>That the Builder assures the SBI that the construction shall be completed as per schedule and as per the sanctioned plans and on completion of construction, the title of the flat with proportionate undivided share in the land shall be conveyed in the name of the Borrower(s).</li>
+                                <li>That it is further made clear and understood by all the parties that the non-completion of the project or the happening of any event shall not affect the obligations of the Borrower(s) to repay the loan availed from SBI.</li>
+                                <li>That the said flat is free from all encumbrances, charges, lien, attachment, prior agreements, whatsoever or howsoever. The party at first part and second part will not do any act or deed which will affect the security of the flat/ or charge created in favour of SBI in any manner whatsoever.</li>
+                                <li>That there is no order of attachment by the Income Tax Authorities or any other authority under any law for the time being in force nor any notice of acquisition or requisition has been received in respect of the said property.</li>
+                                <li>That this Agreement shall not affect in any manner whatsoever the duties and obligations of the Borrower(s) and the terms and conditions agreed to by the Borrower(s) in the Loan Agreement and other documents executed in favour of SBI shall remain binding upon the Borrower(s),</li>
+                                <li>That in case of acquisition, forfeiture/resumption of the said property, SBI shall be entitled to get the compensation settled in respect of the said flat and to appear and act before the Collector/Revenue Officer/Estate Officer or any other concerned authorities, to sign any form, to give any statement, affidavit, application on Borrower's behalf, to receive the compensation in its own name and on the Borrower's behalf, to file appeal in any court for the enhancement of the compensation amount, to get the compensation amount enhanced and to receive the same.
+                                </li>
+                                <li>The responsibilities of the builders under this tripartite agreement will be extinguished only after delivering the duly registered Conveyance Deed/Sale Deed/Lease Deed directly to the Bank and handing over the possession of the residential unit to the borrower(s) and thereafter the validity of the Tripartite Agreement will come to an end.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div style="Page-break-before:always;">
+                        <div style="padding-top:150px;">
+                            In witness whereof the parties hereto have signed this Agreement on the day,
+                            month and year first herein above written.
+                        </div>
+                        <div style="padding-top:40px;">
+                            Signed and delivered by the: <br/>Named Borrower (s)
+                        </div>
+                        <table width="100%">
+                            <tr>
+                                <td valign="top" height="100px" style="" width="75%"> i) {!Booking__c.First_Applicant_Name__c} </td>
+                                <td style="text-align:right;" valign="bottom" width="25%">Signature of Borrower (s)</td>
+                            </tr>
+                            <tr>
+                                <td valign="top" height="150px">Authorized signatory of Builder M/s</td>
+                                <td valign="bottom"></td>
+                            </tr>
+                            <tr>
+                                <td valign="top" height="100px">State Bank of India,<br/>
+                                    Represented by its authorized official.
+                                </td>
+                                <td style="text-align:center;" valign="center">Signature</td>
+                            </tr>
+                            <tr>
+                                <td>Witness:<br/>
+                                    Name &amp; Address<br/></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td height="100px" valign="top">
+                                    1. {!Booking__c.First_Applicant_Name__c}
+                                </td>
+                                <td style="text-align:center;" valign="center">Signature</td>
+                            </tr>
+                            <tr>
+                                <td height="100px" valign="top">2. {!Booking__c.Second_Applicant_Name__c}</td>
+                                <td style="text-align:center;" valign="center">Signature</td>
+                            </tr>
+                        </table>
+                    </div>
+                </apex:outputPanel>
+            </div>
+        </body>
+    </html>
+</apex:page>

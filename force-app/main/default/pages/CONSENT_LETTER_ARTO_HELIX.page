@@ -1,0 +1,125 @@
+<apex:page standardController="Booking__c" extensions="Cost_SheetController" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false"  standardStylesheets="false" renderAs="PDF" >
+    <html>
+        <head>
+            <style type="text/css" media="print">
+               
+                 th, td {
+                padding: 5px;
+                }
+                
+                
+            </style> 
+        </head>
+        <body>
+            
+            <div class="content">
+                <apex:outputPanel >
+                    <div style="font-size:14px;line-height:1.5;">
+                        <table border="0" width="100%">
+                            <tr>
+                                <td colspan="3" style="text-align:center"><u>CONSENT LETTER</u></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="text-align:right"><p> Date:<apex:outputText value="{0,date,dd/MM/yyyy}"> <apex:param value="{!TODAY()}" /> </apex:outputText></p></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" ><strong>To {!Booking__c.salutation_Applicant1__c}. {!Booking__c.First_Applicant_Name__c} &amp; {!Booking__c.salutation_Applicant2__c}. {!Booking__c.Second_Applicant_Name__c}</strong></td>
+                            </tr>
+                            <tr>
+                                <td width="45%" colspan="2"><p><strong>{!Booking__c.Communication_address__c}</strong></p></td>
+                                <td width="55%"></td>  
+                            </tr>
+                            <tr>
+                                <td colspan="3"><strong>Dear Sir/Madam,</strong></td>
+                            </tr>
+                            <tr>
+                                <td valign="top" width="15%" style="text-align:right;padding-top:15px"><strong>Reference:</strong></td>
+                                <td colspan="2" width="85%" style="padding-left:20px;padding-top:15px;text-align: justify;">Intimation and consent regarding modification of sanctioned plans with respect to the Project <strong>“MAHENDRA ARTO – HELIX”</strong> situated at Sinus. 275/1 &amp; 275/2, Hulimangala Village, Jigani Hobli, Anekal Taluk, Bengaluru Urban.</td>
+                            </tr>
+                            <tr>
+                                <td valign="top" width="15%" style="text-align:right;padding-top:15px"><strong>Subject:</strong></td>
+                                <td colspan="2" style="padding-left:20px;padding-top:15px;text-align: justify;">Agreement for Sale dated <apex:outputText value="{0,date,dd/MM/yyyy}"><apex:param value="{!Booking__c.Sale_Agreement_Date__c}" /></apex:outputText> with respect to the Apartment No. {!Booking__c.Plot__r.Name}, {!FloorNumber} of {!Booking__c.Block__r.Name} in the Project <strong>“MAHENDRA ARTO – HELIX”</strong>.</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="padding-top:15px;text-align: justify;" >This is with respect to, obtaining consent from you for the proposed modification of sanctioned plans of the above project. In this regard, please note the following:</td>
+                            </tr>
+                        </table>
+                        
+                        <ol >
+                            <li><p style="text-align: justify;">With reference to the above Project  “MAHENDRA ARTO – HELIX”  being developed by us which has been registered with the Karnataka Real Estate Regulatory Authority under the Real Estate ( Regulation and Development ) Act, 2016 (ACT) and Karnataka Real Estate (Regulation and Development )Rules, 2017 (RULES) on 27.07.2023 vide registration No. PRM/KA/RERA/1251/308/PR/270723/006099</p></li>
+                            <li><p style="text-align: justify;">In view of the provisions of the Act and Rules applicable to the project and in view of the proposed modification, the sanctioned building plan of the Project will be changed by virtue of the modified sanction plan, the building in the Project may include additional floors and increase in number of units in each Tower which will be informed after obtaining the modified plan sanction. Apart from the said modifications, there are no other changes proposed to the sanctioned building plan. </p></li>
+                            <li><p style="text-align: justify;">The Plan has been sanctioned by the Bangalore Development Authority (BDA) vide No. ಬೆಂಅಪ್ರಾ/ನಮ/ಅಸ/ಅಅ-3/ತಾಸ-2/ದ/46/2022-23, dated 27.03.2023 for construction of Multistoried Residential Apartment Complex consisting of 273 units in 2 Towers (i.e. Tower-A comprising of 134 Units consisting of 2BF+GF+24 Upper Floors and, Tower-B comprising of 139 Units consisting of with 2BF+GF+23 Upper Floors) and Amenity Block comprising of Ground and First Floors.</p></li>
+                            <li><p style="text-align: justify;">The application to modify the Plan sanction will be applied with the jurisdictional Planning/Sanctioning authority being the BDA, after completion of due process and obtaining NOC from the Authority.</p></li>
+                            
+                        </ol>
+                    </div>
+                </apex:outputPanel>
+                <div style="Page-break-after:always;"></div>
+            </div>
+            
+             
+             <div style="font-size: 14px;line-height:1.5;Page-break-after:auto;">
+                     <ol>
+                        <li style="list-style: none;"></li>
+                         <li style="list-style: none;"></li>
+                          <li style="list-style: none;"></li>
+                           <li style="list-style: none;"></li>
+                            <li><p style="text-align: justify;">It is hereby informed to you that as per the modified building plan, the Apartment proposed to be purchased by you may undergo the following changes.</p></li>
+                        </ol>
+                        <table style="border: 1px solid black;border-collapse: collapse;text-align:center" border="1" width="100%"   cellpadding="2">
+                            <tr>
+                                <th width="13%">Details</th>
+                                <th width="13%">Apartment No.</th>
+                                <th width="10%">Tower</th>
+                                <th width="10%">Floor</th>
+                                <th width="11%">Carpet area (sq.ft)</th>
+                                <th width="13%">Share/Area in Exclusive common area</th>
+                                <th width="13%">Share/Area in common area</th>
+                                <th width="17%">Undivided share of land and Interest in the Project (% or in Sq.ft)</th>
+                            </tr>
+                            <tr>
+                                <td>Present details as per Agreement</td>
+                                <td><strong>{!Booking__c.Plot__r.Name}</strong></td>
+                                <td><strong>{!Booking__c.Block__r.Name}</strong></td>
+                                <td><strong>{!Booking__c.FloorNo__c}</strong></td>
+                                <td><strong>{!Booking__c.Carpet_Area__c}</strong></td>
+                                <td><strong>{!Booking__c.Unit_Share__c}/{!Booking__c.Common_Area__c}</strong></td>
+                                <td><strong>{!Booking__c.Unit_Share__c}</strong></td>
+                                <td><strong>{!Booking__c.Plot__r.UDS__c}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Change due to modification</td>
+                                <td><strong><!--{!Booking__c.Apartment_Number__c}-->Nill</strong></td>
+                                <td><strong><!--{!Booking__c.Block__r.Name}-->Nill</strong></td>
+                                <td><strong><!--{!Booking__c.FloorNo__c}-->Nill</strong></td>
+                                <td><strong><!--{!Booking__c.Carpet_Area__c}-->Nill</strong></td>
+                                <td><strong><!--{!Booking__c.Unit_Share__c}-->Nill/{!Booking__c.Common_Area__c}</strong></td>
+                                <td><strong><!--{!Booking__c.Unit_Share__c}-->Nill</strong></td>
+                                <td><strong>Will be reduced proportionately as per the revised built-up area to be approved in the modified Plan to be issued by the BDA 
+                                    
+                                    s</strong></td>
+                            </tr>
+                        </table>
+                        <ol>
+                        <li style="list-style: none;"></li>
+                         <li style="list-style: none;"></li>
+                          <li style="list-style: none;"></li>
+                           <li style="list-style: none;"></li>
+                            <li style="list-style: none;"></li>
+                            <li>As a result of the modification, the time for completion of the Project will not be changed. We will take necessary steps for completion of the modified plan as per the provisions of the Act and will fulfill our contractual obligations in respect of your Apartment.</li>
+                            <li>We request your co-operation in this regard. We request you to sign a copy of this letter and send it back to us, acknowledging the information being given to you regarding the proposed modification of the sanctioned building plan for the Project and giving your consent for the same, which shall be treated as consent under Section 14(2) (ii) of the Act, to enable us to do the needful. </li>
+                        </ol>
+                        
+                        <p>Thanking You</p>
+                        <p> For Mahendra Arto, Limited Liability Part</p>
+                        </div>
+                         <div style="font-size: 14px;line-height:1.5;Page-break-before:always;">
+                        <p  style="padding-top:50px;text-align:center;padding-bottom:40px;"><strong> READ AND ACCEPTED </strong></p>
+                        <p>I/We <strong> {!Booking__c.salutation_Applicant1__c}. {!Booking__c.First_Applicant_Name__c} &amp; {!Booking__c.salutation_Applicant2__c}. {!Booking__c.Second_Applicant_Name__c},</strong> the buyer/s has/have booked a Apartment in the Project <strong>“Mahendra Arto Helix”</strong> situated at Sy.Nos. 275/1 &amp; 275/2, Hulimangala Village, Jigani Hobli, Anekal Taluk, Bengaluru. I/We am/are aware that there will be modification  of the plan sanction of the Project and I/We have no objection for the proposed modification of plan sanction of Project which is not in contravention to the provisions of The Real Estate (Regulation and Development ) Act, 2016 and Karnataka Real Estate (Regulation and Development) Rules, 2017.</p>
+                        <p style="text-align:right">Signature of the Allottee/Joint Allottee</p>
+                        <p><strong> Name: {!Booking__c.salutation_Applicant1__c}. {!Booking__c.First_Applicant_Name__c} &amp; {!Booking__c.salutation_Applicant2__c}. {!Booking__c.Second_Applicant_Name__c}</strong></p>
+                        <p> Flat  No : <strong>{!Booking__c.Flat_Actual_Number__c}</strong></p>
+                    </div>
+              </body>
+    </html>
+</apex:page>

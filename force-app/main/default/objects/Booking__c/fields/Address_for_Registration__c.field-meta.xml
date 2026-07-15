@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Address_for_Registration__c</fullName>
+    <label>Address for Registration</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Same as Correspondence Address</fullName>
+                <default>false</default>
+                <label>Same as Correspondence Address</label>
+            </value>
+            <value>
+                <fullName>Same as Permanent Address</fullName>
+                <default>false</default>
+                <label>Same as Permanent Address</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

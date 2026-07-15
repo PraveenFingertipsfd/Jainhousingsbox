@@ -1,0 +1,79 @@
+<aura:component controller="GenerateDocumnetController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionwithoutHeader" access="global" >
+
+                
+    <aura:html tag="style">
+        
+    </aura:html>
+    <!-- Attributes -->
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="emailBody" type="String"/>
+    <aura:attribute name="customerName" type="String"/>
+    <aura:attribute name="isApprovalSubmitted" type="Boolean" default="false"/>
+    
+    <!-- Preview Modal attributes -->
+    <aura:attribute name="showPreview" type="Boolean" default="false"/>
+    <aura:attribute name="previewUrl" type="String"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container" style="width: 100%;">
+            
+            <!-- Header -->
+            <header class="slds-modal__header">
+                <h2 class="slds-text-heading_medium">Jain Housing - NDC &amp; Possession</h2>
+            </header>
+
+            <!-- Body -->
+            <div class="slds-modal__content slds-p-around_medium">
+                <!-- Rich Text Editor -->
+                <lightning:inputRichText value="{!v.emailBody}" 
+                                         label=""
+                                         class="slds-m-bottom_medium"
+                                         disabledCategories="LINK IMAGE"
+                                         placeholder="Type your email content..." />
+
+                <!-- Attached Files Section -->
+                <div class="slds-m-top_medium">
+                    <p><strong>Attached Files:</strong></p>
+                    <p class="slds-m-top_x-small">
+                        <lightning:icon iconName="doctype:pdf" size="small" class="slds-m-right_small" />
+                        <a href="javascript:void(0);" onclick="{!c.previewNDC}">No Due Certificate</a>
+                    </p>
+                    <p class="slds-m-top_x-small">
+                        <lightning:icon iconName="doctype:pdf" size="small" class="slds-m-right_small" />
+                        <a href="javascript:void(0);" onclick="{!c.previewPossession}">Possession Letter</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="slds-modal__footer">
+                <lightning:button label="Cancel" onclick="{!c.close}" class="slds-button slds-button_neutral" />
+                <lightning:button label="Submit for Approval" 
+                                  onclick="{!c.submitForApproval1}" 
+                                  class="slds-button slds-button_brand"
+                                  disabled="{!v.isApprovalSubmitted}" />
+            </footer>
+        </div>
+    </section>
+
+    <!-- Preview Modal -->
+    <aura:if isTrue="{!v.showPreview}">
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_large">
+            <div class="slds-modal__container" style="max-width: 90%; min-height: 600px;">
+
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close" 
+                                          class="slds-modal__close" 
+                                          onclick="{!c.closePreview}" 
+                                          alternativeText="Close"/>
+                </header>
+                <div class="slds-modal__content" style="height:90%">
+                    <iframe src="{!v.previewUrl}" width="100%" height="100%" style="border:none;"></iframe>
+                </div>
+            </div>
+        </section>
+        <!--div class="slds-backdrop slds-backdrop_open"></div-->
+    </aura:if>
+</aura:component>

@@ -1,0 +1,234 @@
+<aura:component controller="UpdateBookingStageController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader" access="global">
+                
+
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="showModal" type="Boolean" default="true" />
+    <aura:attribute name="isProcessing" type="Boolean" default="false" />
+    <aura:attribute name="currentStage" type="String" />
+    <aura:attribute name="errorMessage" type="String" default="" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+     <aura:attribute name="showApprovalModal" type="Boolean" default="false" />
+    <aura:attribute name="saleAgreementDate" type="String" />
+
+    <aura:attribute name="fileUploaded" type="Boolean" default="false" />
+    <aura:attribute name="fileUploadError" type="String" default="" />
+
+    <aura:attribute name="SaleAgreement" type="ContentDocument[]"/>
+	
+    <!--  sale deed-->
+    <aura:attribute name="SaleDeed" type="ContentDocument[]"/>
+
+    
+    <aura:attribute name="approvalType" type="String" default="" />
+    <aura:attribute name="registrationDate" type="String" />
+    
+    <aura:html tag="style">
+        .slds-modal__container { width:100% !important; } 
+        .cuf-content { padding: 0 !important; }
+        .slds-p-around--medium { padding: 0 !important; }
+        .slds-modal__content { height:unset !important; max-height:unset !important; }
+        .stage-field { margin-top: 12px; }
+        .conditional-fields { margin-top: 20px; padding-left: 20px; border-left: 2px solid #dddbda; }
+        .date-error { color: #c23934; font-size: 0.75rem; margin-top: 0.25rem; display: block; }
+        button.slds-modal__close {display: none !important;}
+    
+		
+    </aura:html>
+    
+    <aura:html tag="style">
+        /* Remove modal shadow and overlay */
+        .slds-modal__container {
+        box-shadow: none !important;
+        }
+        .slds-backdrop {
+        
+        }
+        
+        /* Modal positioning */
+        .custom-modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9001;
+        background: white;
+        border-radius: 4px;
+        width: 30%;
+        min-width: 400px;
+        }
+        
+        /* Header styling */
+        .approval-modal-header {
+            font-size: 1rem;
+            font-weight: 700;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #dddbda;
+        }
+        
+        /* Content styling */
+        .modal-content {
+        padding: 1.5rem;
+        line-height: 1.5;
+        }
+        
+        /* Footer styling */
+        .modal-footer {
+        padding: 0.75rem 1rem;
+        border-top: 1px solid #dddbda;
+        text-align: right;
+        }
+        
+        /* Button spacing */
+        .modal-footer button {
+        margin-left: 0.5rem;
+        }
+        
+        .bold-disabled input:disabled {
+        font-weight: 500;
+        color: #333 !important; /* Make it darker if needed */
+        padding-left: 7px;
+        }
+    </aura:html>
+    
+    
+  
+
+    <!-- Modal UI -->
+    <aura:if isTrue="{!!v.showApprovalModal}">
+    <aura:if isTrue="{!v.showModal}">
+        <div class="slds-modal slds-fade-in-open" role="dialog">
+            <div class="slds-modal__container">
+                <!-- Header -->
+                <div class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium"><b>Update Booking Stage</b></h2>
+                </div>
+
+                <!-- Body -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning:recordEditForm aura:id="editForm"
+                                              objectApiName="Booking__c"
+                                              recordId="{!v.recordId}"
+                                              onsuccess="{!c.handleSuccess}"
+                                              onsubmit="{!c.handleSubmit}"
+                                              onerror="{!c.handleError}">
+
+                        <!-- Stage -->
+                        <div class="stage-field">
+                            <lightning:inputField fieldName="Stage__c" onchange="{!c.handleStageChange}" />
+                        </div>
+
+                        <!-- Conditionally Required Date -->
+                        <aura:if isTrue="{!v.currentStage == 'Agreement'}">
+                            <div>
+                                <lightning:inputField fieldName="Sale_Agreement_Date__c" />
+                                <span class="date-error" aura:if="{!not(empty(v.errorMessage))}">
+                                    {!v.errorMessage}
+                                </span>
+                            </div>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.currentStage == 'Sale Agreement Execution Completed'}">
+                            <div>
+                                <lightning:inputField fieldName="Sale_Agreement_Date__c" required="true"/>
+                                <span class="date-error" aura:if="{!not(empty(v.errorMessage))}">
+                                    {!v.errorMessage}
+                                </span>
+                            </div>
+                            
+                            <div class="slds-card slds-card_boundary" style="text-align:center;">
+                                <div>  
+                                    <lightning:fileUpload label="Upload Sale Agreement" name="Sale-Agreement" multiple="false"  recordId="{!v.recordId}" onuploadfinished="{!c.uploadFinished}" />  
+                                </div> 
+                                <c:FileUploadCommonCMP DocumentsList="{!v.SaleAgreement}"/> 
+                            </div>
+                        </aura:if>
+                        
+                        <!-- Registration Date -->
+                        <aura:if isTrue="{!v.currentStage == 'Registration'}">
+                            <div>
+                                <lightning:inputField fieldName="Registration_Date__c" />
+                                <span class="date-error" aura:if="{!not(empty(v.errorMessage))}">
+                                    {!v.errorMessage}
+                                </span>
+                            </div>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.currentStage == 'Registration Completed'}">
+                            <div>
+                                <lightning:inputField fieldName="Registration_Date__c" required="true"/>
+                                <span class="date-error" aura:if="{!not(empty(v.errorMessage))}">
+                                    {!v.errorMessage}
+                                </span>
+                            </div>
+                                      
+                            <div class="slds-m-top_medium">
+                                <lightning:inputField fieldName="Document_Number__c" required="true"/>
+                                <span class="date-error" aura:if="{!not(empty(v.errorMessage))}">
+                                    {!v.errorMessage}
+                                </span>
+                            </div>
+                            
+                            <div class="slds-form-element__control bold-disabled">
+                                <lightning:inputField fieldName="Unit_UDS_Area__c" disabled="true" />
+                            </div>
+                            
+                            <div class="slds-card slds-card_boundary" style="text-align:center;">
+                                <div >  <!-- class="slds-align_absolute-center" -->
+                                    <lightning:fileUpload label ="Upload Sale Deed" name="Sale-Deed" multiple="false" recordId="{!v.recordId}" onuploadfinished="{!c.uploadFinished}" />  
+                                </div> 
+                                <c:FileUploadCommonCMP DocumentsList="{!v.SaleDeed}"/> 
+                            </div>
+                        </aura:if>
+                        
+                        
+                        <!-- Footer -->
+                        <div class="slds-modal__footer" style="text-align:center;border:none;">
+                            <button class="slds-button slds-button_neutral" onclick="{!c.handleCancel}" disabled="{!v.isProcessing}">Cancel</button>
+                            <button class="slds-button slds-button_brand" type="submit" disabled="{!v.isProcessing}">
+                                <aura:if isTrue="{!v.isProcessing}">
+                                    <lightning:spinner variant="brand" size="small" class="slds-m-right_x-small" />
+                                    Updating...
+                                    <aura:set attribute="else">Update Stage</aura:set>
+                                </aura:if>
+                            </button>
+                        </div>
+                    </lightning:recordEditForm>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    </aura:if>
+    
+    <!-- Add this modal below the existing modal -->
+    <aura:if isTrue="{!v.showApprovalModal}">
+        <div class="custom-modal">
+            <div class="slds-modal__header approval-modal-header">
+                 <h2 class="slds-text-heading_medium slds-hyphenate">
+                        <b>Submit for Approval</b>
+                    </h2>
+            </div>
+            <div class="modal-content">
+                <aura:if isTrue="{!v.approvalType == 'Agreement'}">
+                    <p>10% amount is not collected. Do you wish to send approval to Sales Head?</p>
+                    <div style="margin-top: 1rem;">
+                        <lightning:outputField fieldName="Stage__c" value="Agreement" variant="label-hidden"/>
+                        <lightning:outputField fieldName="Sale_Agreement_Date__c" variant="label-hidden"/>
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!v.approvalType == 'Registration'}">
+                    <p>90% amount is not collected. Do you wish to send approval to CRM Head?</p>
+                    <div style="margin-top: 1rem;">
+                        <lightning:outputField fieldName="Stage__c" value="Registration" variant="label-hidden"/>
+                        <lightning:outputField fieldName="Registration_Date__c" variant="label-hidden"/>
+                    </div>
+                </aura:if>
+            </div>
+            <div class="modal-footer">
+                <button class="slds-button slds-button_neutral" onclick="{!c.handleApprovalCancel}">Cancel</button>
+                <button class="slds-button slds-button_brand" onclick="{!c.handleSendApproval}">Send Approval</button>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

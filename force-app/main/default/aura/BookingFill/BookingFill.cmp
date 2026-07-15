@@ -1,0 +1,1133 @@
+<aura:component controller="BookingFill_Controller" implements="force:appHostable,lightning:isUrlAddressable,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,lightning:actionOverride,force:lightningquickAction" access="global" >
+    <aura:attribute name="recordId" type="string"/>
+    <aura:attribute name="BkReqId" type="string"/>
+    <aura:attribute name="Booking" type="Object"/>
+    <aura:attribute name="costSheet" type="Object"/>
+    <aura:attribute name="paymentScheduleList" type="List"/>
+    <aura:attribute name="Is_BookingFill_Section" type="boolean" default="false"/>
+    <aura:attribute name="CusComments" type="string" default=''/>
+    <aura:attribute name="coApplicants" type="Object[]" default="[]" />
+    <aura:attribute name="uploadedPrimaryDocs" type="Map" default="{}"/>
+    <aura:attribute name="uploadedFilesMap" type="Map" default="{}" />
+    
+    <!--aura:attribute name="selectedFiles" type="Map" default="{}"/> -->
+    <aura:attribute name="selectedFiles" type="Object" default="{}"/>
+	<aura:attribute name="fileDataMap" type="Object" default="{}"/>
+
+    <aura:attribute name="Is_BookingPDF_Section" type="boolean" default="false"/>
+    <aura:attribute name="signatureCmp" type="Aura.Component" />
+    <aura:attribute name="signatureData" type="String" />
+
+    <aura:attribute name="Unit" type="Object"/>
+    <aura:attribute name="BookingReq" type="Object"/>
+    <aura:attribute name="IsFormFilled" type="boolean" default="false"/>
+    <aura:attribute name="spinner" type="boolean" default="false"/>
+    <aura:attribute name="IsSaveDisabled" type="boolean" default="false"/>
+    
+    <aura:attribute name="CusName" type="string" default=''/>
+    <aura:attribute name="AadhaarNumber" type="string" default=''/>
+    <aura:attribute name="MobileNumber" type="string" default=''/>
+    <aura:attribute name="PANNumber" type="string" default=''/>
+    <aura:attribute name="IsResponded" type="boolean" default="false"/>
+    <aura:attribute name="showPaymentSection" type="boolean" default="false"/>
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    <aura:attribute name="serviceItems" type="object[]" default="[]"/>
+    
+    <aura:attribute name="paymentModes" type="List" default="[]"/>
+    <aura:attribute name="banks" type="List" default="[]"/>
+    <aura:attribute name="reRender" type="String" default=""/>
+    
+    <aura:attribute name="PaymentDetails" type="Object"/>
+    <aura:attribute name="objectApiName" type="String" default="Booking__c" />
+    
+    <aura:attribute name="Is_KYC_Section" type="boolean" default="false" />
+    
+    <aura:attribute name="termsAccepted" type="Boolean" default="false"/>
+    <aura:attribute name="showTermsModal" type="Boolean" default="false"/>
+    <!--aura:attribute name="termsContent" type="String" default="&lt;h3 style='font-size: 1.1rem; color: #032d60; margin-bottom: 0.5rem;'&gt;Terms &amp; Conditions&lt;/h3&gt;&lt;ol style='padding-left: 1.5rem;'&gt;&lt;li style='margin-bottom: 0.75rem;'&gt;This electronic signature constitutes your legal acceptance of all terms.&lt;/li&gt;&lt;li style='margin-bottom: 0.75rem;'&gt;Your signature is legally binding.&lt;/li&gt;&lt;li style='margin-bottom: 0.75rem;'&gt;You certify that all information provided is accurate.&lt;/li&gt;&lt;/ol&gt;"/-->
+    
+    <aura:attribute name="termsContent" type="String"/>
+    
+    <aura:attribute name="showInitialButtons" type="Boolean" default="true"/>   <!-- show only Disagree / Agree initially -->
+    <aura:attribute name="showDisagreeModal" type="Boolean" default="false"/>  <!-- show the comments + Back/Submit UI -->
+    <aura:attribute name="showCSPS" type="Boolean" default="true"/>            <!-- show Cost Sheet & Payment Schedule -->
+
+
+    
+    <lightning:messages />
+    
+    <div class="slds-grid slds-align_absolute-baseline"  style="height: 100vh; width: 100vw; padding: 60px;">  
+        
+        <div style="width:100%;padding-top: 0px; align-items: center;">
+            
+            <aura:if isTrue="{!!v.costSheet.Is_Form_Responded__c}"> 
+                <aura:if isTrue="{!!v.Is_KYC_Section}">
+                    <aura:if isTrue="{!!v.Is_BookingPDF_Section}">
+                        
+                        <aura:if isTrue="{!!v.Is_BookingFill_Section}">
+                            <!-- Header -->
+                            <div class="slds-grid slds-gutters" style="width:100%; padding-top:0px; text-align:center;">
+                                <div class="slds-col " style="padding-left: 100px; align-content: center;padding-top: 0px;">
+                                    <h2 style="font-weight: 900; font-size: 30px; font-style: oblique; color: navy;">Cost Sheet &amp; Payment Schedules &nbsp;&nbsp; <img style="width:100px;height:100px;" src="{!$Resource.JainHousingLOGO}" alt="JainHousing" /></h2>
+                                </div>
+                            </div><br/>
+                            <aura:if isTrue="{!v.showCSPS}">
+                            <!-- Cost Sheet Table -->
+                            <div class="border boxShadow" style="background:antiquewhite; padding:15px; margin:auto; border-radius:15px; float:center; width:75%; font-size: 11px; color: darkred;">
+                                <h3 style="font-size:16px; font-weight:bold; margin-bottom:10px;color: beige; text-align: center; background: darkslategray; border-radius: 4px;">Cost Sheet</h3>
+                                <div class="slds-grid slds-wrap slds-grid_pull-padded-x-small">
+                                    <div class="slds-size_1-of-2 slds-p-horizontal_x-small">
+                                        <table style="padding:15px;">
+                                            <tr><th>Cost Sheet No:</th><td> <a style="font-size: 11px;color:black;font-weight:600"> {!v.costSheet.Name}</a></td></tr>
+                                            <tr><th>Floor:</th><td> <a style="font-size: 11px;color:black;font-weight:600"> {!v.costSheet.Floor__c}</a></td></tr>
+                                            <tr><th>BHK Type:</th><td> <a style="font-size: 11px;color:black;font-weight:600"> {!v.costSheet.BHK_Type__c} </a></td></tr>
+                                            <tr><th>Balcony Area:</th><td> <a style="font-size: 11px;color:black;font-weight:600"> {!v.costSheet.Balcony_Area__c != null ? v.costSheet.Balcony_Area__c : 0} </a></td></tr>
+                                            <tr><th>Super Built Up Area:</th><td> <a style="font-size: 11px;color:black;font-weight:600"> {!v.costSheet.Super_Built_Up_Area__c != null ? v.costSheet.Super_Built_Up_Area__c : 0} </a></td></tr><br/>
+                                            
+                                            <tr><th>Price for Saleable Area:</th><td> <a style="font-size: 11px;color:black;font-weight:600">₹ <lightning:formattedNumber value="{!v.costSheet.Basic_Price__c != null ? v.costSheet.Basic_Price__c : 0}" maximumFractionDigits="2" /></a></td></tr>
+                                            <tr><th>Floor Rise Charges:</th><td> <a style="font-size: 11px;color:black;font-weight:600">₹ <lightning:formattedNumber value="{!v.costSheet.Floor_Rise_Charges__c != null ? v.costSheet.Floor_Rise_Charges__c : 0}" maximumFractionDigits="2" /></a></td></tr>
+                                            <tr><th>Premium Charges:</th><td> <a style="font-size: 11px;color:black;font-weight:600">₹ <lightning:formattedNumber value="{!v.costSheet.Premium_Charges__c != null ? v.costSheet.Premium_Charges__c : 0}" maximumFractionDigits="2" /></a></td></tr>
+                                            <tr><th>GST Charges On Total Cost:</th><td> <a style="font-size: 11px;color:black;font-weight:600">₹ <lightning:formattedNumber value="{!v.costSheet.GST_Charges_On_Total_Cost__c != null ? v.costSheet.GST_Charges_On_Total_Cost__c : 0}" maximumFractionDigits="2" /></a></td></tr><br/>
+                                            
+                                            <tr><th>Corpus Fund:</th><td> <a style="font-size: 11px;color:black;font-weight:600">₹ <lightning:formattedNumber value="{!v.costSheet.Corpus_Fund__c != null ? v.costSheet.Corpus_Fund__c : 0}" maximumFractionDigits="2" /></a></td></tr>
+                                            <tr><th>Maintenance Charges:</th><td> <a style="font-size: 11px;color:black;font-weight:600">₹ <lightning:formattedNumber value="{!v.costSheet.Maintenance_Charges__c != null ? v.costSheet.Maintenance_Charges__c : 0}" maximumFractionDigits="2" /></a></td></tr>
+                                            <tr><th>EB &amp; Debris:</th><td> <a style="font-size: 11px;color:black;font-weight:600">₹ <lightning:formattedNumber value="{!v.costSheet.EB_Debris__c != null ? v.costSheet.EB_Debris__c : 0}" maximumFractionDigits="2" /></a></td></tr>
+                                        </table>
+                                    </div>
+                                    <div class="slds-size_1-of-2 slds-p-horizontal_x-small">
+                                        <table style="padding:15px">
+                                            <tr><th>Project Name:</th><td> <a style="font-size: 11px;color:black;font-weight:600"> {!v.costSheet.Project__r.Name} </a></td></tr>
+                                            <tr><th>Unit Number:</th><td> <a style="font-size: 11px;color:black;font-weight:600"> {!v.costSheet.Unit__r.Name} </a></td></tr>
+                                            <tr><th>Carpet Area:</th><td> <a style="font-size: 11px;color:black;font-weight:600"> {!v.costSheet.Carpet_Area__c != null ? v.costSheet.Carpet_Area__c : 0} </a></td></tr>
+                                            <tr><th>Open Terrace Area:</th><td> <a style="font-size: 11px;color:black;font-weight:600"> {!v.costSheet.Open_Terrace_Area__c != null ? v.costSheet.Open_Terrace_Area__c : 0} </a></td></tr>
+                                            <tr><th>Price Per Sq Ft:</th><td> <a style="font-size: 11px;color:black;font-weight:600">₹ <lightning:formattedNumber value="{!v.costSheet.Final_Price_Per_Sq_ft__c != null ? v.costSheet.Final_Price_Per_Sq_ft__c : 0}" maximumFractionDigits="2" /></a></td></tr><br/>
+                                            
+                                            <tr><th>Car Parking Charges:</th><td> <a style="font-size: 11px;color:black;font-weight:600">₹ <lightning:formattedNumber value="{!v.costSheet.Car_Parking_Charges__c != null ? v.costSheet.Car_Parking_Charges__c : 0}" maximumFractionDigits="2" /></a></td></tr>
+                                            <tr><th>Other Charges:</th><td> <a style="font-size: 11px;color:black;font-weight:600">₹ <lightning:formattedNumber value="{!v.costSheet.Other_Charges__c != null ? v.costSheet.Other_Charges__c : 0}" maximumFractionDigits="2" /></a></td></tr>
+                                            <tr><th>Total Cost:</th><td> <a style="font-size: 11px;color:black;font-weight:600">₹ <lightning:formattedNumber value="{!v.costSheet.Total_Cost__c != null ? v.costSheet.Total_Cost__c : 0}" maximumFractionDigits="2" /></a></td></tr>
+                                            <tr><th>Total Cost Including GST:</th><td> <a style="font-size: 11px;color:black;font-weight:600">₹ <lightning:formattedNumber value="{!v.costSheet.Total_Cost_Including_GST__c != null ? v.costSheet.Total_Cost_Including_GST__c : 0}" maximumFractionDigits="2" /></a></td></tr><br/>
+                                            
+                                            <tr><th>GST for Corpus Fund:</th><td> <a style="font-size: 11px;color:black;font-weight:600">₹ <lightning:formattedNumber value="{!v.costSheet.GST_for_Corpus_Fund__c != null ? v.costSheet.GST_for_Corpus_Fund__c : 0}" maximumFractionDigits="2" /></a></td></tr>
+                                            <tr><th>GST for Maintenance Charge:</th><td> <a style="font-size: 11px;color:black;font-weight:600">₹ <lightning:formattedNumber value="{!v.costSheet.GST_for_Maintenance_Charge__c != null ? v.costSheet.GST_for_Maintenance_Charge__c : 0}" maximumFractionDigits="2" /></a></td></tr>
+                                            <tr><th>Grand Total:</th><td> <a style="font-size: 11px;color:black;font-weight:600">₹ <lightning:formattedNumber value="{!v.costSheet.Grand_Total__c != null ? v.costSheet.Grand_Total__c : 0}" maximumFractionDigits="2" /></a></td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div><br/>
+                            
+                            <!-- Payment Schedule Table -->
+                            <div class="border boxShadow" style="background:antiquewhite; padding:15px; margin:auto; border-radius:15px; width:75%">
+                                <h3 style="font-size:16px; font-weight:bold; margin-bottom:10px;color: beige; text-align: center; background: darkslategray; border-radius: 4px;">Payment Schedule</h3>
+                                
+                                <aura:if isTrue="{!not(empty(v.paymentScheduleList))}">
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered" style="border-bottom-right-radius: 11px; border-bottom-left-radius: 11px;">
+                                        <thead>
+                                            <tr class="slds-line-height_reset">
+                                                <th scope="col"><div class="slds-truncate">Name</div></th>
+                                                <th scope="col"><div class="slds-truncate">Percentage</div></th>
+                                                <th scope="col"><div class="slds-truncate">Total Amount</div></th>
+                                                <th scope="col"><div class="slds-truncate">Received Amount</div></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <aura:iteration items="{!v.paymentScheduleList}" var="item">
+                                                <tr>
+                                                    <td><div class="slds-truncate">{!item.Name}</div></td>
+                                                    <td><div class="slds-truncate">{!item.Payment_percent__c}%</div></td>
+                                                    <td><div class="slds-truncate">₹ <lightning:formattedNumber value="{!item.AmountB__c != null ? item.AmountB__c : 0}" maximumFractionDigits="2" /> </div></td>
+                                                    <td><div class="slds-truncate">₹ {!item.Received_Amount1__c}</div></td>
+                                                </tr>
+                                            </aura:iteration>
+                                        </tbody>
+                                    </table>
+                                    <aura:set attribute="else">
+                                        <p>No payment schedules available.</p>
+                                    </aura:set>
+                                </aura:if>
+                            </div><br/>
+                        </aura:if>
+                        </aura:if>
+                        <aura:if isTrue="{!v.Is_BookingFill_Section}">
+                            <!-- Header -->
+                            <div class="slds-grid slds-gutters" style="width:100%; padding-top:0px; text-align:center;">
+                                <div class="slds-col " style="padding-left: 100px; align-content: center;padding-top: 0px;">
+                                    <h2 style="font-weight: 900; font-size: 30px; font-style: oblique; color: navy;">Booking Form &nbsp;&nbsp; <img style="width:100px;height:100px;" src="{!$Resource.JainHousingLOGO}" alt="JainHousing" /></h2>
+                                </div>
+                            </div><br/>
+                            
+                            <!--Registration Details -->
+                            <table style="table-layout:fixed; width:75%; border-collapse: separate;border-spacing: 0; border-radius:15px; margin:auto; margin-top:8px; border:1px solid black" styleClass="alldatatables">
+                                <tr style="color:black; ">
+                                    <th style="width:100%; font-style:arial;  height:25px; background: coral; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                        <div style="font-family:Arial Unicode MS bold; font-size:20px; text-align:center; font-weight:bold; color: ghostwhite; font-style: italic;"><b>Registration Details</b></div>
+                                    </th>
+                                </tr>
+                                
+                                <div class="border boxShadow" style="background:antiquewhite; padding:15px; margin:auto; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; float:center;">
+                                    <div class="slds-grid slds-wrap slds-grid_pull-padded-x-small">
+                                        <div class="slds-size_1-of-2 slds-p-horizontal_x-small">
+                                            <table style="padding:15px">
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>Address for Registration:</th>
+                                                    <td>
+                                                        <div style="font-size: 11px; color: black;">
+                                                            <lightning:select name="Address for Registration" aura:id="CusAddforReg" value="{!v.Booking.Address_for_Registration__c}" messageWhenValueMissing="Please select Address for Registration">
+                                                                <option value="">--None--</option>
+                                                                <option value="Same as Correspondence Address">Primary Applicant's Correspondence Address</option>
+                                                                <option value="Same as Permanent Address">Primary Applicant's Permanent Address</option>
+                                                            </lightning:select>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <!--tr>
+                                                <th><aura:if isTrue="{!v.Booking.Funding_Type__c == 'Loan'}"><span style="color:red;">* </span><aura:set attribute="else">&nbsp;&nbsp;</aura:set></aura:if>
+                                                    Applied to any Bank for Loan?:</th>
+                                                <td>
+                                                    <a style="font-size: 11px;color:black;">
+                                                        <lightning:select name="Loan Applied?" aura:id="CusLoanApp" value="{!v.Booking.Applied_to_any_Bank__c}" messageWhenValueMissing="Please select Loan Applied or Not">
+                                                            <option value="">None</option>
+                                                            <option value="Yes">Yes</option>
+                                                            <option value="No">No</option>
+                                                        </lightning:select>
+                                                    </a>
+                                                </td>
+                                            </tr> -->
+                                            </table>
+                                        </div>
+                                        <div class="slds-size_1-of-2 slds-p-horizontal_x-small">
+                                            <table style="padding:15px">
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>Funding Type:</th>
+                                                    <td>
+                                                        <div style="font-size: 11px; color: black;">
+                                                            <lightning:select name="Funding Type" aura:id="CusFunTyp" value="{!v.Booking.Funding_Type__c}" messageWhenValueMissing="Please select Funding Type">
+                                                                <option value="">--None--</option>
+                                                                <option value="Self">Self</option>
+                                                                <option value="Loan">Loan</option>
+                                                            </lightning:select>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <!--tr>
+                                                <th><aura:if isTrue="{!v.Booking.Funding_Type__c == 'Loan'}"><span style="color:red;">* </span><aura:set attribute="else">&nbsp;&nbsp;</aura:set></aura:if>
+                                                    Bank Name:</th>
+                                                <td>
+                                                    <div style="font-size: 11px; color: black;">
+                                                        <lightning:select name="Bank" aura:id="CusBank" value="{!v.Booking.Bank__c}" messageWhenValueMissing="Please select Bank">
+                                                            <option value="">None</option>
+                                                            <aura:iteration items="{!v.banks}" var="bank">
+                                                                <option value="{!bank}">{!bank}</option>
+                                                            </aura:iteration>
+                                                        </lightning:select>
+                                                    </div>
+                                                </td>
+                                            </tr> -->
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </table><br/>
+                            
+                            <!--Primary Applicant Details -->
+                            <table style="table-layout:fixed; width:75%; border-collapse: separate;border-spacing: 0; border-radius:15px; margin:auto; margin-top:8px; border:1px solid black" styleClass="alldatatables">
+                                <tr style="color:black; ">
+                                    <th style="width:100%; font-style:arial;  height:25px; background: coral; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                        <div style="font-family:Arial Unicode MS bold; font-size:20px; text-align:center; font-weight:bold; color: ghostwhite; font-style: italic;"><b>Primary Applicant Details</b></div>
+                                    </th>
+                                </tr>
+                                
+                                <div class="border boxShadow" style="background:antiquewhite; padding:15px; margin:auto; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; float:center;">
+                                    <div class="slds-grid slds-wrap slds-grid_pull-padded-x-small">
+                                        <div class="slds-size_1-of-2 slds-p-horizontal_x-small">
+                                            <table style="padding:15px">
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>Salutation:</th>
+                                                    <td>
+                                                        <div style="font-size: 11px; color: black;">
+                                                            <lightning:select name="salutation" aura:id="CusSalt" value="{!v.Booking.salutation_Applicant1__c}" messageWhenValueMissing="Please select salutation">
+                                                                <option value="">--None--</option>
+                                                                <option value="Mr">Mr</option>
+                                                                <option value="Mrs">Mrs</option>
+                                                                <option value="Ms">Ms</option>
+                                                                <option value="Dr">Dr</option>
+                                                            </lightning:select>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>Gender:</th>
+                                                    <td>
+                                                        <div style="font-size: 11px; color: black;">
+                                                            <lightning:select name="gender" aura:id="CusGender" value="{!v.Booking.Gender__c}" messageWhenValueMissing="Please select gender">
+                                                                <option value="">--None--</option>
+                                                                <option value="Male">Male</option>
+                                                                <option value="Female">Female</option>
+                                                            </lightning:select>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>Relation Type:</th>
+                                                    <td>
+                                                        <div style="font-size: 11px; color: black;">
+                                                            <lightning:select name="Relation Type" aura:id="CusRelTyp" value="{!v.Booking.Relation_Details_Applicant1__c}" messageWhenValueMissing="Please select Relation Type">
+                                                                <option value="">--None--</option>
+                                                                <option value="S/o">S/o</option>
+                                                                <option value="W/o">W/o</option>
+                                                                <option value="D/o">D/o</option>
+                                                            </lightning:select>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>Aadhaar Number:</th>
+                                                    <td> <a style="font-size: 11px;color:black;">
+                                                        <lightning:input name="input1" aura:id="CusAadhaar" value="{!v.Booking.Aadhaar_Number1__c}" placeholder="Enter the Aadhaar Number" messageWhenValueMissing="Complete this field" type="string" pattern="[0-9]{12}" maxlength="12"/>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>Nationality:</th>
+                                                    <td>
+                                                        <div style="font-size: 11px; color: black;">
+                                                            <lightning:select name="Nationality" aura:id="CusNat" value="{!v.Booking.Nationality__c}" messageWhenValueMissing="Please select Nationality">
+                                                                <option value="">--None--</option>
+                                                                <option value="Resident">Resident</option>
+                                                                <option value="PIO">PIO</option>
+                                                                <option value="NRI">NRI</option>
+                                                                <option value="OCI">OCI</option>
+                                                            </lightning:select>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>Marital Status:</th>
+                                                    <td>
+                                                        <a style="font-size: 11px;color:black;">
+                                                            <lightning:select name="maritalStatus" aura:id="CusMarStat" value="{!v.Booking.Marital_Status__c}" messageWhenValueMissing="Please select Marital Status">
+                                                                <option value="">--None--</option>
+                                                                <option value="Married">Married</option>
+                                                                <option value="Single">Single</option>
+                                                            </lightning:select>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>Mobile Number:</th>
+                                                    <td> <a style="font-size: 11px;color:black;">
+                                                        <lightning:input name="input1" aura:id="CusMobile" value="{!v.Booking.Mobile_Primary1__c}" placeholder="Enter the Mobile Number" messageWhenValueMissing="Complete this field" type="string" pattern="[0-9]{10}"  maxlength="10"/>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>Email:</th>
+                                                    <td> <a style="font-size: 11px;color:black;">
+                                                        <lightning:input name="input1" aura:id="CusEmail" value="{!v.Booking.Email1__c}" placeholder="Enter the Email" messageWhenValueMissing="Complete this field" type="string" />
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>Profession:</th>
+                                                    <td>
+                                                        <a style="font-size: 11px;color:black;">
+                                                            <lightning:select name="Profession" aura:id="CusProfs" value="{!v.Booking.Profession1__c}" messageWhenValueMissing="Please select Profession">
+                                                                <option value="">--None--</option>
+                                                                <option value="Salaried">Salaried</option>
+                                                                <option value="Self Employed">Self Employed</option>
+                                                                <option value="Other">Other</option>
+                                                            </lightning:select>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><aura:if isTrue="{!v.Booking.Profession1__c == 'Salaried'}"><span style="color:red;">* </span><aura:set attribute="else">&nbsp;&nbsp;</aura:set></aura:if>Company Name:</th>
+                                                    <td> <a style="font-size: 11px;color:black;">
+                                                        <lightning:input name="input1" aura:id="CusCmpny" value="{!v.Booking.Name_of_Company1__c}" placeholder="Enter the Company Name" messageWhenValueMissing="Complete this field" type="string" />
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <th><aura:if isTrue="{!v.Booking.Profession1__c == 'Salaried'}"><span style="color:red;">* </span><aura:set attribute="else">&nbsp;&nbsp;</aura:set></aura:if>Company Address:</th>
+                                                    <td> 
+                                                        <a style="font-size: 11px;color:black;">
+                                                            <lightning:textarea name="input1" aura:id="CusCompnyAdd" value="{!v.Booking.Company_Address__c}" placeholder="Enter Company Address" messageWhenValueMissing="Complete this field" />
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>Permanent Address:</th>
+                                                    <td> 
+                                                        <a style="font-size: 11px;color:black;">
+                                                            <lightning:textarea name="input1" aura:id="CusPermAdd" value="{!v.Booking.Permanent_Address1__c}" placeholder="Enter Permanent Address" messageWhenValueMissing="Complete this field" />
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="slds-size_1-of-2 slds-p-horizontal_x-small">
+                                            <table style="padding:15px">
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>Applicant Name:</th>
+                                                    <td>
+                                                        <a style="font-size: 11px;color:black;"> 
+                                                            <lightning:input name="input1" aura:id="CusApplicantName" value="{!v.Booking.First_Applicant_Name__c}" placeholder="Enter the Name" messageWhenValueMissing="Complete this field" type="text"/>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>Date of Birth:</th>
+                                                    <td> 
+                                                        <a style="font-size: 11px;color:black;">
+                                                            <lightning:input name="input1" aura:id="CusDOB" value="{!v.Booking.Date_of_Birth1__c}" placeholder="Enter DOB" messageWhenValueMissing="Complete this field" type="date" />
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>Son/Daughter/Wife of:</th>
+                                                    <td> 
+                                                        <a style="font-size: 11px;color:black;">
+                                                            <lightning:input name="input1" aura:id="CusSDW" value="{!v.Booking.Son_Daughter_Wife_of1__c}" placeholder="Enter Relation Name" messageWhenValueMissing="Complete this field" type="string"/>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>PAN Number:</th>
+                                                    <td> 
+                                                        <a style="font-size: 11px;color:black;">
+                                                            <lightning:input name="input1" aura:id="CusPAN" value="{!v.Booking.PAN_Number1__c}" placeholder="Enter the PAN Number" messageWhenValueMissing="Complete this field" type="string" maxlength="10"/>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><aura:if isTrue="{!v.Booking.Nationality__c != 'Resident'}"><span style="color:red;">* </span><aura:set attribute="else">&nbsp;&nbsp;</aura:set></aura:if>Passport Number:</th>
+                                                    <td> 
+                                                        <a style="font-size: 11px;color:black;">
+                                                            <lightning:input name="Passport" aura:id="CusPassport" value="{!v.Booking.Passport_Aadhar_1__c}" placeholder="Enter the Passport Number" messageWhenValueMissing="Complete this field" type="string" pattern="[A-Za-z0-9]{8}" maxlength="8"/>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><aura:if isTrue="{!v.Booking.Marital_Status__c == 'Married'}"><span style="color:red;">* </span><aura:set attribute="else">&nbsp;&nbsp;</aura:set></aura:if>Anniverssary Date:</th>
+                                                    <td> 
+                                                        <a style="font-size: 11px;color:black;">
+                                                            <lightning:input name="input1" aura:id="CusAnniversary" value="{!v.Booking.Anniverssary_Date__c}" placeholder="Enter Anniverssary Date" messageWhenValueMissing="Complete this field" type="date"/>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>&nbsp;&nbsp;Alternate Mobile Number:</th>
+                                                    <td> <a style="font-size: 11px;color:black;">
+                                                        <lightning:input name="input1" aura:id="CusAltMobile" value="{!v.Booking.Mobile_Alternate1__c}" placeholder="Enter the Mobile Number" messageWhenValueMissing="Complete this field" type="string"/>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>&nbsp;&nbsp;Alternate Email:</th>
+                                                    <td> <a style="font-size: 11px;color:black;">
+                                                        <lightning:input name="input1" aura:id="CusAltEmail" value="{!v.Booking.Alternate_Email1__c}" placeholder="Enter the Email" messageWhenValueMissing="Complete this field" type="email" />
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><aura:if isTrue="{!v.Booking.Profession1__c == 'Other'}"><span style="color:red;">* </span><aura:set attribute="else">&nbsp;&nbsp;</aura:set></aura:if>Others(Please Specify):</th>
+                                                    <td> 
+                                                        <a style="font-size: 11px;color:black;">
+                                                            <lightning:input name="input1" aura:id="CusOthrProf" value="{!v.Booking.Other_Profession1__c}" placeholder="Enter Profession Name" messageWhenValueMissing="Complete this field" type="string"/>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><aura:if isTrue="{!v.Booking.Profession1__c == 'Salaried'}"><span style="color:red;">* </span><aura:set attribute="else">&nbsp;&nbsp;</aura:set></aura:if>Job Designation:</th>
+                                                    <td> <a style="font-size: 11px;color:black;">
+                                                        <lightning:input name="input1" aura:id="CusJD" value="{!v.Booking.Designation1__c}" placeholder="Enter the Job Designation" messageWhenValueMissing="Complete this field" type="string" />
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span style="color:red;">* </span>Correspondence Address:</th>
+                                                    <td> 
+                                                        <a style="font-size: 11px;color:black;">
+                                                            <lightning:textarea name="input1" aura:id="CusCorresAdd" value="{!v.Booking.Communication_address1__c}" placeholder="Enter Correspondence Address" messageWhenValueMissing="Complete this field" />
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </table><br/>
+                            
+                            <!--table style="width:75%; margin:auto;">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" style="background:coral; color:white; font-weight:bold; text-align:center; border-radius:8px;">
+                                            Upload Documents - Primary Applicant
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Aadhaar:</td>
+                                        <td>
+                                            <input type="file" data-id="primaryAadhaar"
+                                                   accept=".pdf,.jpg,.png"
+                                                   onchange="{!c.handleFileChange}" />
+                                            <p>{!v.selectedFiles.primaryAadhaar}</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>PAN Card:</td>
+                                        <td>
+                                            <input type="file" data-id="primaryPAN"
+                                                   accept=".pdf,.jpg,.png"
+                                                   onchange="{!c.handleFileChange}" />
+                                            <p>{!v.selectedFiles.primaryPAN}</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Photo:</td>
+                                        <td>
+                                            <input type="file" data-id="primaryPhoto"
+                                                   accept=".jpg,.jpeg,.png"
+                                                   onchange="{!c.handleFileChange}" />
+                                            <p>{!v.selectedFiles.primaryPhoto}</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Passport:</td>
+                                        <td>
+                                            <input type="file" data-id="primaryPassport"
+                                                   accept=".pdf,.jpg,.png"
+                                                   onchange="{!c.handleFileChange}" />
+                                            <p>{!v.selectedFiles.primaryPassport}</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table> -->
+                            
+                            
+                            
+                            <!-- Co Applicants -->
+                            <aura:iteration items="{!v.coApplicants}" var="coApp" indexVar="index">
+                                <table style="table-layout:fixed; width:75%; border-collapse: separate;border-spacing: 0; border-radius:15px; margin:auto; margin-top:8px; border:1px solid black">
+                                    <tr style="color:black;">
+                                        <th style="width:100%; font-style:arial; height:25px; background: coral; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                            <div style="font-family:Arial Unicode MS bold; font-size:20px; text-align:center; font-weight:bold; color: ghostwhite; font-style: italic;">
+                                                <b>Co-Applicant {!index + 1} Details</b>
+                                                <lightning:button variant="destructive" label="Remove" class="btnCancel" onclick="{!c.removeCoApplicant}" name="{!index}" iconName="utility:close" />
+                                                
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <div class="border boxShadow" style="background:antiquewhite; padding:15px; margin:auto; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+                                        <div class="slds-grid slds-wrap slds-grid_pull-padded-x-small">
+                                            <!-- LEFT COLUMN -->
+                                            <div class="slds-size_1-of-2 slds-p-horizontal_x-small">
+                                                <table style="padding:15px">
+                                                    <tr>
+                                                        <th><span style="color:red;">* </span>Salutation:</th>
+                                                        <td>
+                                                            <lightning:select aura:id="CoApp_Salutation_{!index}" value="{!coApp.Salutation__c}">
+                                                                <option value="">--None--</option>
+                                                                <option value="Mr">Mr</option>
+                                                                <option value="Mrs">Mrs</option>
+                                                                <option value="Ms">Ms</option>
+                                                                <option value="Dr">Dr</option>
+                                                            </lightning:select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><span style="color:red;">* </span>Gender:</th>
+                                                        <td>
+                                                            <lightning:select aura:id="CoApp_Gender_{!index}" value="{!coApp.Gender__c}">
+                                                                <option value="">--None--</option>
+                                                                <option value="Male">Male</option>
+                                                                <option value="Female">Female</option>
+                                                            </lightning:select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><span style="color:red;">* </span>Relation Type:</th>
+                                                        <td>
+                                                            <div style="font-size: 11px; color: black;">
+                                                                <lightning:select aura:id="CoApp_Relation_{!index}" value="{!coApp.Relalation_Details__c}" messageWhenValueMissing="Please select Relation Type">
+                                                                    <option value="">--None--</option>
+                                                                    <option value="S/o">S/o</option>
+                                                                    <option value="W/o">W/o</option>
+                                                                    <option value="D/o">D/o</option>
+                                                                </lightning:select>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><span style="color:red;">* </span>Aadhaar Number:</th>
+                                                        <td>
+                                                            <lightning:input aura:id="CoApp_Aadhaar_{!index}" value="{!coApp.Aadhar_Number__c}" type="text" pattern="[0-9]{12}" maxlength="12" placeholder="Enter Aadhaar Number" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><span style="color:red;">* </span>Nationality:</th>
+                                                        <td>
+                                                            <div style="font-size: 11px; color: black;">
+                                                                <lightning:select aura:id="CoApp_Country_{!index}" value="{!coApp.Country__c}" messageWhenValueMissing="Please select Nationality">
+                                                                    <option value="">--None--</option>
+                                                                    <option value="Resident">Resident</option>
+                                                                    <option value="PIO">PIO</option>
+                                                                    <option value="NRI">NRI</option>
+                                                                    <option value="OCI">OCI</option>
+                                                                </lightning:select>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><span style="color:red;">* </span>Marital Status:</th>
+                                                        <td>
+                                                            <lightning:select aura:id="CoApp_MaritalStatus_{!index}" value="{!coApp.Marital_Status__c}">
+                                                                <option value="">--None--</option>
+                                                                <option value="Single">Single</option>
+                                                                <option value="Married">Married</option>
+                                                            </lightning:select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><span style="color:red;">* </span>Mobile Number:</th>
+                                                        <td>
+                                                            <lightning:input aura:id="CoApp_Mobile_{!index}" value="{!coApp.Contact_Number__c}" type="tel" maxlength="10" placeholder="Enter Mobile Number" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><span style="color:red;">* </span>Email:</th>
+                                                        <td>
+                                                            <lightning:input aura:id="CoApp_Email_{!index}" value="{!coApp.Email__c}" type="email" placeholder="Enter Email" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><span style="color:red;">* </span>Profession:</th>
+                                                        <td>
+                                                            <a style="font-size: 11px;color:black;">
+                                                                <lightning:select aura:id="CoApp_Occupation_{!index}" value="{!coApp.Occupation__c}" messageWhenValueMissing="Please select Profession">
+                                                                    <option value="">--None--</option>
+                                                                    <option value="Salaried">Salaried</option>
+                                                                    <option value="Self Employed">Self Employed</option>
+                                                                    <option value="Other">Other</option>
+                                                                </lightning:select>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><aura:if isTrue="{!coApp.Occupation__c == 'Salaried'}"><span style="color:red;">* </span><aura:set attribute="else">&nbsp;&nbsp;</aura:set></aura:if>Company Name:</th>
+                                                        <td>
+                                                            <lightning:input aura:id="CoApp_Cmpny_{!index}" value="{!coApp.Name_of_Company__c}"  placeholder="Enter Company Name" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><aura:if isTrue="{!coApp.Occupation__c == 'Salaried'}"><span style="color:red;">* </span><aura:set attribute="else">&nbsp;&nbsp;</aura:set></aura:if>Company Address:</th>
+                                                        <td>
+                                                            <lightning:textarea aura:id="CoApp_CmpnyAddress_{!index}" value="{!coApp.Company_Address__c}" placeholder="Enter Company Address" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><span style="color:red;">* </span>Permanent Address:</th>
+                                                        <td>
+                                                            <lightning:textarea aura:id="CoApp_PermanentAddress_{!index}" value="{!coApp.Permenent_Address__c}" placeholder="Enter Permanent Address" />
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            
+                                            <!-- RIGHT COLUMN -->
+                                            <div class="slds-size_1-of-2 slds-p-horizontal_x-small">
+                                                <table style="padding:15px">
+                                                    <tr>
+                                                        <th><span style="color:red;">* </span>Co-Applicant Name:</th>
+                                                        <td>
+                                                            <lightning:input aura:id="CoApp_Name_{!index}" value="{!coApp.Name}" type="text" placeholder="Enter Co-Applicant Name" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><span style="color:red;">* </span>Date of Birth:</th>
+                                                        <td>
+                                                            <lightning:input aura:id="CoApp_DOB_{!index}" value="{!coApp.Date_of_Birth__c}" type="date" placeholder="Enter DOB" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><span style="color:red;">* </span>Son/Daughter/Wife of:</th>
+                                                        <td>
+                                                            <lightning:input aura:id="CoApp_WSC_{!index}" value="{!coApp.W_o_S_o_C_o_c__c}" type="text" placeholder="Enter Relation Name" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><span style="color:red;">* </span>PAN Number:</th>
+                                                        <td>
+                                                            <lightning:input aura:id="CoApp_PAN_{!index}" value="{!coApp.PAN_Number__c}" type="text" maxlength="10" placeholder="Enter PAN Number" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><aura:if isTrue="{!coApp.Country__c != 'Resident'}"><span style="color:red;">* </span><aura:set attribute="else">&nbsp;&nbsp;</aura:set></aura:if>Passport Number:</th>
+                                                        <td>
+                                                            <lightning:input aura:id="CoApp_Passport_{!index}" value="{!coApp.Passport_Aadhar_number__c}" type="text" maxlength="8" placeholder="Enter Passport" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><aura:if isTrue="{!coApp.Marital_Status__c == 'Married'}"><span style="color:red;">* </span><aura:set attribute="else">&nbsp;&nbsp;</aura:set></aura:if>Anniversary Date:</th>
+                                                        <td>
+                                                            <lightning:input aura:id="CoApp_Anniversary_{!index}" value="{!coApp.Anniverssary_Date__c}" type="date" placeholder="Enter Anniversary Date" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>&nbsp;&nbsp;Alternate Mobile Number:</th>
+                                                        <td>
+                                                            <lightning:input aura:id="CoApp_AltMobile_{!index}" value="{!coApp.Alternate_Mobile__c}" type="tel" maxlength="10" placeholder="Enter Alternate Mobile" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>&nbsp;&nbsp;Alternate Email:</th>
+                                                        <td>
+                                                            <lightning:input aura:id="CoApp_AltEmail_{!index}" value="{!coApp.Alternate_Email__c}" type="email" placeholder="Enter Alternate Email" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><aura:if isTrue="{!coApp.Occupation__c == 'Other'}"><span style="color:red;">* </span><aura:set attribute="else">&nbsp;&nbsp;</aura:set></aura:if>Others(Please Specify):</th>
+                                                        <td>
+                                                            <lightning:input aura:id="CoApp_OthrProf_{!index}" value="{!coApp.Other_Profession__c}" type="text" placeholder="Enter Profession Name" />
+                                                        </td>
+                                                    </tr>
+                                                    
+                                                    <tr>
+                                                        <th><aura:if isTrue="{!coApp.Occupation__c == 'Salaried'}"><span style="color:red;">* </span><aura:set attribute="else">&nbsp;&nbsp;</aura:set></aura:if>Job Designation:</th>
+                                                        <td> 
+                                                            <lightning:input aura:id="CoApp_Designation_{!index}" value="{!coApp.Designation__c}" type="text" placeholder="Enter Job Designation" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th><span style="color:red;">* </span>Correspondence Address:</th>
+                                                        <td>
+                                                            <lightning:textarea aura:id="CoApp_Address_{!index}" value="{!coApp.Address__c}" placeholder="Enter Correspondence Address" />
+                                                        </td>
+                                                    </tr>
+                                                    
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </table><br/>
+                            </aura:iteration>
+                            
+                            <!--div class="slds-box slds-theme_default" style="margin: 20px auto; width: 75%; padding:0px;border:0px">
+                                <h3 class="slds-text-heading_medium" style="font-size: 25px; margin-bottom: 10px; font-weight: 500; font-style: italic;">Signature</h3>
+                                <c:digitalSignaturePad aura:id="signaturePadCmp" />
+                            </div-->
+                            
+                            
+                        </aura:if>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!v.Is_BookingPDF_Section}">
+                        <!-- here i want to show Booking Form (VF Page) with values-->
+                        <iframe aura:id="vfFrame"
+                                src="/apex/AnushreeBookingForm"
+                                width="100%" height="1000px" frameborder="0">
+                        </iframe>
+                    </aura:if>
+                </aura:if>
+                
+                <aura:if isTrue="{!v.Is_KYC_Section}">
+                     <!-- Header -->
+        <div class="slds-grid slds-gutters" style="width:100%; padding-top:0px; text-align:center;">
+            <div class="slds-col" style="padding-left: 100px; align-content: center;padding-top: 0px;">
+                <h2 style="font-weight: 900; font-size: 30px; font-style: oblique; color: navy;">
+                    KYC Collection &nbsp;&nbsp; 
+                    <img style="width:100px;height:100px;" src="{!$Resource.JainHousingLOGO}" alt="JainHousing"/>
+                </h2>
+            </div>
+        </div><br/>
+        
+        <table style="table-layout:fixed; width:75%; border-collapse: separate;border-spacing: 0; border-radius:15px; margin:auto; margin-top:8px; border:1px solid black">
+            <tr style="color:black;">
+                <th style="width:100%; font-style:arial; height:25px; background: coral; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                    <div style="font-family:Arial Unicode MS bold; font-size:20px; text-align:center; font-weight:bold; color: ghostwhite; font-style: italic;">
+                        <b>Required Documents</b>
+                    </div>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <div class="slds-p-around_medium">
+                        <!-- Aadhaar Card -->
+                        <div class="slds-box slds-theme_default slds-m-bottom_medium" style="border-radius: 8px; border-left: 4px solid #0066cc;">
+                            <div class="slds-grid slds-wrap slds-gutters">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <p class="slds-text-heading_small" style="font-weight: bold; color: #0066cc;"><span style="color:red;">* </span>Aadhaar Card</p>
+                                    <p class="slds-text-body_small slds-m-top_x-small">Upload as PDF, JPG or PNG</p>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2" style="display: flex; align-items: center;">
+                                    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                                        <div style="width: 60%; min-height: 24px; text-align: left;">
+                                            <aura:if isTrue="{!not(empty(v.selectedFiles.primaryAadhaar))}">
+                                                <span class="slds-file-selector__text">
+                                                    {!v.selectedFiles.primaryAadhaar}
+                                                    <button onclick="{!c.clearFile}" 
+                                                            data-id="primaryAadhaar"
+                                                            data-input="primaryAadhaarInput"
+                                                            class="slds-button slds-button_icon slds-button_icon-small slds-m-left_x-small" 
+                                                            title="Clear file"
+                                                            onmouseup="event.preventDefault();event.stopPropagation()"
+                                                            ontouchend="event.preventDefault();event.stopPropagation()">
+                                                        <lightning:icon iconName="utility:clear" size="x-small" class="slds-icon-text-error"/>
+                                                    </button>
+                                                </span>
+                                                <aura:set attribute="else">
+                                                    <span class="slds-file-selector__text" style="visibility: hidden;">
+                                                        Placeholder
+                                                    </span>
+                                                </aura:set>
+                                            </aura:if>
+                                        </div>
+                                        <div style="width: 35%;">
+                                            <div class="slds-file-selector slds-file-selector_files">
+                                                <label class="slds-file-selector__body">
+                                                    <input type="file" data-id="primaryAadhaar"
+                                                           id="primaryAadhaarInput"
+                                                           accept=".pdf,.jpg,.png"
+                                                           onchange="{!c.handleFileChange}"
+                                                           class="slds-file-selector__input slds-assistive-text" />
+                                                    <span class="slds-file-selector__button slds-button slds-button_neutral">
+                                                        <lightning:icon iconName="utility:upload" class="slds-button__icon slds-button__icon_left" size="x-small"/>
+                                                        Choose File
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pan Card -->
+                        <div class="slds-box slds-theme_default slds-m-bottom_medium" style="border-radius: 8px; border-left: 4px solid #ff6a13;">
+                            <div class="slds-grid slds-wrap slds-gutters">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <p class="slds-text-heading_small" style="font-weight: bold; color: #ff6a13;"><span style="color:red;">* </span>Pan Card</p>
+                                    <p class="slds-text-body_small slds-m-top_x-small">Upload PAN card as PDF, JPG or PNG</p>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2" style="display: flex; align-items: center;">
+                                    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                                        <div style="width: 60%; min-height: 24px; text-align: left;">
+                                            <aura:if isTrue="{!not(empty(v.selectedFiles.primaryPAN))}">
+                                                <span class="slds-file-selector__text">
+                                                    {!v.selectedFiles.primaryPAN}
+                                                    <button onclick="{!c.clearFile}" 
+                                                            data-id="primaryPAN"
+                                                            data-input="primaryPANInput"
+                                                            class="slds-button slds-button_icon slds-button_icon-small slds-m-left_x-small" 
+                                                            title="Clear file"
+                                                            onmouseup="event.preventDefault();event.stopPropagation()"
+                                                            ontouchend="event.preventDefault();event.stopPropagation()">
+                                                        <lightning:icon iconName="utility:clear" size="x-small" class="slds-icon-text-error"/>
+                                                    </button>
+                                                </span>
+                                                <aura:set attribute="else">
+                                                    <span class="slds-file-selector__text" style="visibility: hidden;">
+                                                        Placeholder
+                                                    </span>
+                                                </aura:set>
+                                            </aura:if>
+                                        </div>
+                                        <div style="width: 35%;">
+                                            <div class="slds-file-selector slds-file-selector_files">
+                                                <label class="slds-file-selector__body">
+                                                    <input type="file" data-id="primaryPAN"
+                                                           id="primaryPANInput"
+                                                           accept=".pdf,.jpg,.png"
+                                                           onchange="{!c.handleFileChange}"
+                                                           class="slds-file-selector__input slds-assistive-text" />
+                                                    <span class="slds-file-selector__button slds-button slds-button_neutral">
+                                                        <lightning:icon iconName="utility:upload" class="slds-button__icon slds-button__icon_left" size="x-small"/>
+                                                        Choose File
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Applicant Photo -->
+                        <div class="slds-box slds-theme_default slds-m-bottom_medium" style="border-radius: 8px; border-left: 4px solid #04844b;">
+                            <div class="slds-grid slds-wrap slds-gutters">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <p class="slds-text-heading_small" style="font-weight: bold; color: #04844b;"><span style="color:red;">* </span>Applicant Photo</p>
+                                    <p class="slds-text-body_small slds-m-top_x-small">Upload recent photo as JPG, JPEG or PNG</p>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2" style="display: flex; align-items: center;">
+                                    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                                        <div style="width: 60%; min-height: 24px; text-align: left;">
+                                            <aura:if isTrue="{!not(empty(v.selectedFiles.primaryPhoto))}">
+                                                <span class="slds-file-selector__text">
+                                                    {!v.selectedFiles.primaryPhoto}
+                                                    <button onclick="{!c.clearFile}" 
+                                                            data-id="primaryPhoto"
+                                                            data-input="primaryPhotoInput"
+                                                            class="slds-button slds-button_icon slds-button_icon-small slds-m-left_x-small" 
+                                                            title="Clear file"
+                                                            onmouseup="event.preventDefault();event.stopPropagation()"
+                                                            ontouchend="event.preventDefault();event.stopPropagation()">
+                                                        <lightning:icon iconName="utility:clear" size="x-small" class="slds-icon-text-error"/>
+                                                    </button>
+                                                </span>
+                                                <aura:set attribute="else">
+                                                    <span class="slds-file-selector__text" style="visibility: hidden;">
+                                                        Placeholder
+                                                    </span>
+                                                </aura:set>
+                                            </aura:if>
+                                        </div>
+                                        <div style="width: 35%;">
+                                            <div class="slds-file-selector slds-file-selector_files">
+                                                <label class="slds-file-selector__body">
+                                                    <input type="file" data-id="primaryPhoto"
+                                                           id="primaryPhotoInput"
+                                                           accept=".jpg,.jpeg,.png"
+                                                           onchange="{!c.handleFileChange}"
+                                                           class="slds-file-selector__input slds-assistive-text" />
+                                                    <span class="slds-file-selector__button slds-button slds-button_neutral">
+                                                        <lightning:icon iconName="utility:upload" class="slds-button__icon slds-button__icon_left" size="x-small"/>
+                                                        Choose File
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Passport -->
+                        <div class="slds-box slds-theme_default" style="border-radius: 8px; border-left: 4px solid #a041c4;">
+                            <div class="slds-grid slds-wrap slds-gutters">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <p class="slds-text-heading_small" style="font-weight: bold; color: #a041c4;">
+                                        <aura:if isTrue="{!v.Booking.Nationality__c != 'Resident'}">
+                                            <span style="color:red;">* </span>
+                                        </aura:if>
+                                        Passport
+                                        
+                                    </p>
+                                    <p class="slds-text-body_small slds-m-top_x-small">Upload passport as PDF, JPG or PNG</p>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2" style="display: flex; align-items: center;">
+                                    <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                                        <div style="width: 60%; min-height: 24px; text-align: left;">
+                                            <aura:if isTrue="{!not(empty(v.selectedFiles.primaryPassport))}">
+                                                <span class="slds-file-selector__text">
+                                                    {!v.selectedFiles.primaryPassport}
+                                                    <button onclick="{!c.clearFile}" 
+                                                            data-id="primaryPassport"
+                                                            data-input="primaryPassportInput"
+                                                            class="slds-button slds-button_icon slds-button_icon-small slds-m-left_x-small" 
+                                                            title="Clear file"
+                                                            onmouseup="event.preventDefault();event.stopPropagation()"
+                                                            ontouchend="event.preventDefault();event.stopPropagation()">
+                                                        <lightning:icon iconName="utility:clear" size="x-small" class="slds-icon-text-error"/>
+                                                    </button>
+                                                </span>
+                                                <aura:set attribute="else">
+                                                    <span class="slds-file-selector__text" style="visibility: hidden;">
+                                                        Placeholder
+                                                    </span>
+                                                </aura:set>
+                                            </aura:if>
+                                        </div>
+                                        <div style="width: 35%;">
+                                            <div class="slds-file-selector slds-file-selector_files">
+                                                <label class="slds-file-selector__body">
+                                                    <input type="file" data-id="primaryPassport"
+                                                           id="primaryPassportInput"
+                                                           accept=".pdf,.jpg,.png"
+                                                           onchange="{!c.handleFileChange}"
+                                                           class="slds-file-selector__input slds-assistive-text" />
+                                                    <span class="slds-file-selector__button slds-button slds-button_neutral">
+                                                        <lightning:icon iconName="utility:upload" class="slds-button__icon slds-button__icon_left" size="x-small"/>
+                                                        Choose File
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>                   
+                    <!-- Signature Pad -->
+                    <!-- Enhanced Signature Pad - Pure UI Improvements -->
+                    <div class="slds-box" style="margin: 20px auto; width: 75%; 
+                                                 background: white; 
+                                                 border: 1px solid #dddbda;
+                                                 border-radius: 0.5rem;
+                                                 box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        
+                        <div style="padding: 1.5rem;">
+                            <!-- Header with Icon -->
+                            <div class="slds-media slds-media_center slds-m-bottom_medium">
+                                <div class="slds-media__figure">
+                                    <lightning:icon iconName="utility:signature" size="small" class="slds-icon-text-default"/>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h3 class="slds-text-heading_small" style="font-weight: 600; color: #080707;">Sign Here</h3>
+                                    <p class="slds-text-body_small" style="color: #706e6b;">Your signature is required to proceed</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Signature Canvas Area -->
+                            <div style="border: 0px solid #dddbda;
+                                        border-radius: 10px;
+                                        background: #fafaf9;
+                                        min-height: 150px;
+                                        position: relative;
+                                        margin-bottom: 1rem;
+                                        overflow: hidden;">
+                                <c:digitalSignaturePad aura:id="signaturePadCmp" />
+                            </div>
+                            
+                            
+                             <!-- Terms Acceptance -->
+                            <div class="slds-m-bottom_small" style="display: flex; align-items: center;">
+                                <lightning:input type="checkbox" 
+                                                 name="termsCheckbox"
+                                                 aura:id="termsCheckbox"
+                                                 label="I agree to the Terms &amp; Conditions" 
+                                                 checked="{!v.termsAccepted}"
+                                                 messageWhenValueMissing="You must accept the terms to proceed"
+                                                 required="true"/>
+                                <a href="#" onclick="{!c.showTermsModal}" 
+                                   class="slds-m-left_x-small" 
+                                   style="color: #0176d3; font-size: 0.75rem; text-decoration: underline;">
+                                    (View Terms)
+                                </a>
+                            </div>		
+                            
+                            <!-- Footer with Instructions 
+        <div class="slds-grid slds-wrap slds-grid_align-spread">
+            <div class="slds-col">
+                <p class="slds-text-body_small" style="color: #706e6b;">
+                    <lightning:icon iconName="utility:info" size="x-small" class="slds-icon-text-default"/>
+                    Draw your signature inside the box above
+                </p>
+            </div>
+        </div> -->
+                        </div>
+                    </div>
+                    
+                    <!-- Terms Modal -->
+                    <aura:if isTrue="{!v.showTermsModal}">
+                        <div class="slds-modal slds-fade-in-open" tabindex="-1" role="dialog">
+                            <div class="slds-modal__container" style="max-width: 70%;">
+                                <div class="slds-modal__header">
+                                    <h2 class="slds-text-heading_medium">Terms &amp; Conditions</h2>
+                                    <button class="slds-button slds-button_icon slds-modal__close" 
+                                            onclick="{!c.closeTermsModal}">
+                                        <lightning:icon iconName="utility:close" size="small"/>
+                                        <span class="slds-assistive-text">Close</span>
+                                    </button>
+                                </div>
+                                <div class="slds-modal__content slds-p-around_medium" 
+                                     style="max-height: 60vh; overflow-y: auto;">
+                                    <aura:unescapedHtml value="{!v.termsContent}"/>
+                                </div>
+
+
+                                <div class="slds-modal__footer">
+                                    <lightning:button variant="brand" 
+                                                      label="I Understand" 
+                                                      onclick="{!c.closeTermsModal}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-backdrop slds-backdrop_open"></div>
+                    </aura:if>
+                    
+                </aura:if>
+                
+            </aura:if>
+            
+            <div class="slds-modal__content slds-p-around--medium  slds-p-around--xx-small boxShadow" style="background:antiquewhite; border-radius:15px; margin: auto; width:75%"> 
+                <aura:if isTrue="{!v.spinner}">
+                    <div class="spinner-overlay">
+                        <lightning:spinner alternativeText="Loading" size="medium" />
+                    </div>
+                </aura:if>
+                
+                <aura:if isTrue="{!!v.costSheet.Is_Form_Responded__c}"> 
+                    <aura:if isTrue="{!!v.Is_KYC_Section}">
+                        <aura:if isTrue="{!!v.Is_BookingFill_Section}">
+                            <!-- <lightning:textarea name="input3" aura:id="masterCmt" value="{!v.CusComments}" label="Comments" placeholder="Your valuable Comments" messageWhenValueMissing="Complete this field" /><br/>
+                            <div class="slds-align_absolute-center">
+                                <lightning:button label="Disagree" class="btnReject" onclick="{!c.handleReject}"/> 
+                                <lightning:button label="Agree &amp; Continue" class="btnAccept" onclick="{!c.handleNext}"/>
+                                <br/>
+                            </div>  -->  
+                            
+                            <!-- Initial Buttons Only -->
+                            <aura:if isTrue="{!v.showInitialButtons}">
+                                <div class="slds-align_absolute-center">
+                                    <lightning:button label="Disagree" class="btnReject" onclick="{!c.openDisagreeModal}"/> 
+                                    <lightning:button label="Agree &amp; Continue" class="btnAccept" onclick="{!c.handleNext}"/>
+                                    <br/>
+                                </div>    
+                            </aura:if>
+                            
+                            <!-- Disagree Modal (same look as before with textarea + buttons) -->
+                            <aura:if isTrue="{!v.showDisagreeModal}">
+                                <lightning:textarea name="input3" aura:id="masterCmt" 
+                                                    value="{!v.CusComments}" 
+                                                    label="Comments" 
+                                                    placeholder="Your valuable Comments" 
+                                                    required="true"
+                                                    messageWhenValueMissing="Complete this field"/><br/>
+                                <div class="slds-align_absolute-center">
+                                    <lightning:button label="Back" class="btnback" onclick="{!c.closeDisagreeModal}"/> 
+                                    <lightning:button label="Submit" class="btnAccept" onclick="{!c.submitDisagree}"/>
+                                    <br/>
+                                </div>    
+                            </aura:if>
+                            
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.Is_BookingFill_Section}">
+                            <div class="slds-align_absolute-center">
+                                <lightning:button label="Back" class="btnback" onclick="{!c.handleBack}"/> 
+                                <!--lightning:button label="Submit" class="btnAccept"  onclick="{!c.handleSubmit}"/--> 
+                                <lightning:button label="Next" class="btnAccept"  onclick="{!c.handleNextKYC}"/> 
+                                <lightning:button label="Add Co-Applicant" class="btnAdd" onclick="{!c.addCoApplicant}" iconName="utility:add" />
+                                <!--<lightning:button label="Sign Document" class="btnSign"  onclick="{!c.handleSign}"/>-->
+                                <br/>
+                            </div>    
+                        </aura:if>
+                    </aura:if>
+                    
+                    <aura:if isTrue="{!v.Is_KYC_Section}">
+                        <div class="slds-align_absolute-center">
+                            <lightning:button label="Back" class="btnback" onclick="{!c.handleBackToForm}"/> 
+                            <lightning:button label="Submit" class="btnAccept" onclick="{!c.handleSubmit}" /> 
+                        </div>
+                    </aura:if>
+                    
+                    <aura:set attribute="else">
+                        <div class="slds-align_absolute-center" style="font-size:20px; color: saddlebrown; height:6rem;style:italic;">
+                            <b>Thank you! Your response has been submitted.</b><br/>
+                        </div> 
+                    </aura:set>
+                </aura:if>
+                
+            </div><br/>
+        </div>
+    </div>
+</aura:component>

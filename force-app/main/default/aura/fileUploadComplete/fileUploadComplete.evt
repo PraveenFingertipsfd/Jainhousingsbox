@@ -1,0 +1,4 @@
+<!-- fileUploadComplete.evt -->
+<aura:event type="COMPONENT" description="Event fired when file upload completes">
+    <aura:attribute name="files" type="Object[]" description="Uploaded files"/>
+</aura:event>

@@ -1,0 +1,67 @@
+<apex:page renderAs="pdf" contentType="application/pdf" applyBodyTag="false" standardController="Additional_Charges__c" >
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    font-size: 12pt;
+                    line-height: 1.5;
+                }
+                .section {
+                    margin-bottom: 20px;
+                }
+                .signature {
+                    margin-top: 50px;
+                }
+                .note {
+                    margin-top: 30px;
+                    font-size: 10pt;
+                    font-style: italic;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="section">
+                <p>Date: <apex:outputText value="{0,date,dd/MM/yyyy}"> <apex:param value="{!TODAY()}" /> </apex:outputText></p>
+                <p>To<br/>
+                {!Additional_Charges__c.Booking__r.salutation_Applicant1__c} {!Additional_Charges__c.Booking__r.First_Applicant_Name__c}<br/>
+                  {!Additional_Charges__c.Booking__r.Communication_address__c}<br/>
+                  Mobile No.: {!Additional_Charges__c.Booking__r.Mobile_Primary1__c}<br/>
+                  EMail ID: {!Additional_Charges__c.Booking__r.Email1__c}</p>
+            </div>
+
+            <div class="section">
+                <p><strong>Subject:</strong> Stage Intimation/Payment demand - Flat No. {!Additional_Charges__c.Booking__r.Plot__r.Name} on the {!Additional_Charges__c.Booking__r.Plot__r.Floor__c} floor  at {!Additional_Charges__c.Booking__r.Plot__r.Project__r.Name}, {!Additional_Charges__c.Booking__r.Plot__r.Project__r.Project_Address__c}</p>
+            </div>
+
+            <div class="section">
+                <p>Dear Sir/Madam,</p>
+                <p>We would like to bring to your kind attention that an amount of <strong>Rs. <apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Additional_Charges__c.Amount__c}" /> </apex:outputText>/-</strong> <!--(<strong>Rupees )</strong>-->
+                    is due towards the “<strong>Additional Charges</strong>”, as per the agreed payment schedule for Flat No.  {!Additional_Charges__c.Booking__r.Plot__r.Name} located on the{!Additional_Charges__c.Booking__r.Plot__r.Floor__c} Floor at <strong>{!Additional_Charges__c.Booking__r.Plot__r.Project__r.Name}</strong>,{!Additional_Charges__c.Booking__r.Plot__r.Project__r.Project_Address__c}.</p>
+
+                <p>Kindly arrange to make the payment in favour of:</p>
+
+                <p>
+                    {payeeName}<br/>
+                    {bankDetails}
+                </p>
+
+                <p>As per the terms &amp; conditions agreed between us, this payment has to be made within 15 days of this intimation. Should you require any clarification, please feel free to contact the undersigned between 2:30 PM – 5:30 PM on all working days.</p>
+
+                <p>We thank you for your continued cooperation and assure you of our best services at all times.</p>
+            </div>
+
+            <div class="signature">
+                <p>Yours faithfully,<br/>
+                For Jain House,</p>
+
+                <br/><br/>
+                <p>CRM</p>
+            </div>
+
+            <div class="note">
+                Note: Delayed payments will attract an interest of 18% per annum, applicable at the time of handover.
+            </div>
+        </body>
+    </html>
+</apex:page>

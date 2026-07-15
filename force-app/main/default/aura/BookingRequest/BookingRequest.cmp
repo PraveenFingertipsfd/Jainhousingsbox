@@ -1,0 +1,848 @@
+<aura:component controller="BookingRequest_Controller" implements="force:appHostable,lightning:isUrlAddressable,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,lightning:actionOverride,force:lightningquickAction" access="global" >
+    <aura:attribute name="recordId" type="string" />
+    <aura:attribute name="BkReqId" type="string"/>
+    <aura:attribute name="BkReqStatus" type="string" default=''/>
+    <aura:attribute name="Unit" type="Object"   />
+    <aura:attribute name="BookingReq" type="Object"   />
+    <aura:attribute name="IsFormFilled" type="boolean" default="false"/>
+    <aura:attribute name="spinner" type="boolean" default="false"/>
+    <aura:attribute name="IsSaveDisabled" type="boolean" default="false"/>
+    <aura:attribute name="CusComments" type="string" default=''/>
+    <aura:attribute name="CusName" type="string" default=''/>
+    <aura:attribute name="AadhaarNumber" type="string" default=''/>
+    <aura:attribute name="MobileNumber" type="string" default=''/>
+    <aura:attribute name="PANNumber" type="string" default=''/>
+    <aura:attribute name="IsResponded" type="boolean" default="false"/>
+    <aura:attribute name="showPaymentSection" type="boolean" default="false"/>
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    <aura:attribute name="serviceItems" type="object[]" default="[]"/>
+    
+    <aura:attribute name="paymentModes" type="List" default="[]"/>
+    <aura:attribute name="banks" type="List" default="[]"/>
+    <aura:attribute name="reRender" type="String" default=""/>
+    
+    <aura:attribute name="showUPIDetails" type="boolean" default="false"/>
+    
+    <aura:attribute name="PaymentDetails" type="Object"   />
+    
+    <lightning:messages />
+    
+    <aura:html tag="style">
+        .booking-container {
+        font-family: 'Salesforce Sans', 'Segoe UI', Arial, sans-serif;
+        background: white;
+        padding: 16px;
+        max-width: 1000px;
+        margin: 0 auto;
+        }
+        
+        .header-section {
+        text-align: center;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .logo-title-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        margin-bottom: 8px;
+        }
+        
+        .company-logo {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        }
+        
+        .title-text {
+        font-size: 24px;
+        font-weight: 700;
+        color: #2e5aa5;
+        }
+        
+        .subtitle {
+        color: #64748b;
+        font-size: 14px;
+        margin-top: 4px;
+        }
+        
+        .section-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+        }
+        
+        .section-header {
+        color: #2e5aa5;
+        font-weight: 600;
+        font-size: 18px;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        }
+        
+        .section-header-icon {
+        color: #0176d3;
+        font-size: 20px;
+        }
+        
+        .details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 10px;
+        }
+        
+        .detail-item {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        }
+        
+        .detail-label {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        }
+        
+        .detail-value {
+        font-size: 16px;
+        color: #0f172a;
+        font-weight: 500;
+        }
+        
+        .highlight-value {
+        color: #0176d3;
+        font-weight: 600;
+        }
+        
+        
+        .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+        }
+        
+        .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        }
+        
+        .form-label {
+        font-size: 14px;
+        color: #334155;
+        font-weight: 600;
+        }
+        
+        
+        .form-input {
+        width: 100%;
+        padding: 13px 16px;
+        font-size: 14.5px;
+        font-weight: 400;
+        color: #334155;
+        background: linear-gradient(0deg, #FFFFFF, #FFFFFF), 
+        linear-gradient(0deg, #F8FAFC, #F8FAFC);
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        outline: none;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03), 
+        0 1px 1px rgba(0, 0, 0, 0.02);
+        }
+        
+        /* Hover Effect 
+        .form-input:hover {
+        border-color: #d1d9e6;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 
+        0 2px 4px -1px rgba(0, 0, 0, 0.04);
+        transform: translateY(-1px);
+        } */
+        
+        /* Focus Effect */
+        .form-input:focus {
+        border-color: #60a5fa; /* Softer blue */
+        box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15),
+        0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        background-color: #fafeff;
+        }
+        
+        /* Placeholder Styling */
+        .form-input::placeholder {
+        color: #9ca3af;
+        font-weight: 400;
+        font-size: 13.5px;
+        letter-spacing: 0.15px;
+        }
+        
+        /* Textarea Specific Styling */
+        textarea.form-input {
+        min-height: 100px;
+        resize: vertical;
+        line-height: 1.6;
+        padding: 15px 16px;
+        }
+        
+        
+        .payment-section {
+        border-left: 4px solid #0176d3;
+        }
+        
+        /*
+        .payment-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+        }
+        */
+        
+        .upi-container {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 20px;
+        text-align: center;
+        border: 1px solid #e2e8f0;
+        }
+        
+        .upi-title {
+        font-size: 16px;
+        color: #2e5aa5;
+        margin-bottom: 16px;
+        font-weight: 600;
+        }
+        
+        .upi-content {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        }
+        
+        .qr-code {
+        width: 150px;
+        height: 150px;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        }
+        
+        .upi-divider {
+        font-size: 16px;
+        color: #cbd5e1;
+        font-weight: 600;
+        }
+        
+        .upi-id {
+        font-size: 16px;
+        font-weight: 600;
+        color: #2e5aa5;
+        background: white;
+        padding: 12px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid #e2e8f0;
+        transition: all 0.2s ease;
+        }
+        
+        .upi-id:hover {
+        background: #f1f5f9;
+        }
+        
+        .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 20px;
+        }
+        
+        .btn {
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s ease;
+        }
+        
+        .btn-primary {
+        background: #0176d3;
+        color: white;
+        }
+        
+        .btn-primary:hover {
+        /* background: #0d2d5e; */
+        }
+        
+        .btn-secondary {
+        background: white;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+        }
+        
+        .btn-secondary:hover {
+        background: #f8fafc;
+        }
+        
+        .status-message {
+        text-align: center;
+        padding: 24px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 12px;
+        margin: 16px 0;
+        }
+        
+        .status-success {
+        background: #f0fdf4;
+        color: #15803d;
+        border: 1px solid #bbf7d0;
+        }
+        
+        .status-error {
+        background: #fef2f2;
+        color: #b91c1c;
+        border: 1px solid #fecaca;
+        }
+        
+        .spinner-container {
+        display: flex;
+        justify-content: center;
+        padding: 24px;
+        }
+        
+        .copy-icon {
+        cursor: pointer;
+        color: #64748b;
+        }
+        
+        .copy-icon:hover {
+        color: #0176d3;
+        }
+        
+        .progress-indicator {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 24px;
+        }
+        
+        .progress-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0 90px;
+        position: relative;
+        }
+        
+        .step-number {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #e2e8f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: #64748b;
+        margin-bottom: 8px;
+        font-size: 14px;
+        }
+        
+        .step-number-active {
+        background: #0176d3;
+        color: white;
+        }
+        
+        .step-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #64748b;
+        }
+        
+        .step-label-active {
+        color: #0176d3;
+        }
+        
+        .step-connector {
+        position: absolute;
+        top: 16px;
+        right: -10px;
+        width: 20px;
+        height: 2px;
+        background: #e2e8f0;
+        }
+        
+        @media (max-width: 768px) {
+        .details-grid,
+        .form-grid,
+        .payment-grid {
+        grid-template-columns: 1fr;
+        }
+        
+        .button-group {
+        flex-direction: column;
+        }
+        
+        .upi-content {
+        flex-direction: column;
+        }
+        
+        .progress-indicator {
+        flex-wrap: wrap;
+        gap: 16px;
+        }
+        
+        .step-connector {
+        display: none;
+        }
+        }
+        
+        .unit-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        background: #f1f5f9;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #475569;
+        margin-left: 8px;
+        }
+        
+        /* for customer details design */
+        .customer-details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Always two columns */
+        gap: 16px 40px; /* Vertical + Horizontal gap */
+        margin-top: 10px;
+        }
+        
+        .form-group-inline {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        }
+        
+        .form-label-inline {
+        font-size: 14px;
+        font-weight: 600;
+        color: #334155;
+        min-width: 130px; /* To align labels neatly */
+        text-align: left;
+        }
+        
+        .form-input {
+        flex: 1;
+        }
+        
+        
+        /* Payment Section */
+        .payment-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px 24px; /* Row gap | Column gap */
+        margin-top: 12px;
+        align-items: center;
+        }
+        
+        /* Align label and input */
+        .form-group-inline2 {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        }
+        
+        .form-group-inline2 label {
+        flex: 0 0 160px; /* Fixed label width */
+        font-weight: 500;
+        color: #2d3748;
+        }
+        
+        /* Make inputs uniform */
+        .payment-field {
+        flex: 1;
+        padding: 10px;
+        border-radius: 6px;
+        background: white;
+        box-shadow: 0 0 0 1px #e2e8f0;
+        transition: all 0.2s ease-in-out;
+        width: 100%;
+        max-width: 280px;
+        }
+        
+        .section-card1 {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        border: 1px solid #e2e8f0;
+        
+        /* Center content vertically horizontally */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        }
+        
+        /* Center buttons inside the card */
+        .button-group1 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px; /* Space between buttons */
+        }
+        
+        
+        
+        
+    </aura:html>    
+    
+    <aura:attribute name="currentStep" type="Integer" default="1"/>
+
+    
+    <div class="booking-container">
+        <!-- Header Section -->
+        <div class="header-section">
+            <div class="logo-title-container">
+                <img class="company-logo" src="{!$Resource.JainHousingLOGO}" alt="Jain Housing" />
+                <div class="title-text">Booking Requisition Form</div>
+            </div>
+            <!--div class="subtitle">Complete your booking request in a few simple steps</div-->
+        </div>
+        
+        <!-- Progress Indicator -->
+        <aura:if isTrue="{!AND(!v.IsResponded,v.Unit.Status__c != 'Available',v.Unit.Status__c != 'Blocked',v.BkReqStatus != 'Request Abandoned')}">
+            <div class="progress-indicator">
+                <div class="progress-step">
+                    <div class="{!v.showPaymentSection ? 'step-number' : 'step-number step-number-active'}">1</div>
+                    <div class="{!v.showPaymentSection ? 'step-label' : 'step-label step-label-active'}">Customer Details</div>
+                    <div class="step-connector"></div>
+                </div>
+                <div class="progress-step">
+                    <div class="{!v.showPaymentSection ? 'step-number step-number-active' : 'step-number'}">2</div>
+                    <div class="{!v.showPaymentSection ? 'step-label step-label-active' : 'step-label'}">Payment</div>
+                </div>
+            </div>
+        </aura:if>
+
+
+
+        
+        <!-- Unit Details Section -->
+        <div class="section-card">
+            <div class="section-header">
+                <lightning:icon iconName="standard:address" size="small" class="section-header-icon" />
+                Unit Details
+            </div>
+            
+            <aura:if isTrue="{!v.Unit.Is_PSA_Unit__c}">
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">Unit Number</span>
+                        <span class="detail-value highlight-value">{!v.Unit.Name}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">BHK Type</span>
+                        <span class="detail-value">--NA--</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Floor</span>
+                        <span class="detail-value">--NA--</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Flat Number</span>
+                        <span class="detail-value">--NA--</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Project Name</span>
+                        <span class="detail-value highlight-value">{!v.Unit.Project__r.Name}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tower</span>
+                        <span class="detail-value">--NA--</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Super Built Up Area</span>
+                        <span class="detail-value">--NA--</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Grand Total</span>
+                        <span class="detail-value">--NA--</span>
+                    </div>
+                </div>
+            </aura:if>
+            
+            <aura:if isTrue="{!!v.Unit.Is_PSA_Unit__c}">
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">Unit Number</span>
+                        <span class="detail-value highlight-value">{!v.Unit.Name}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">BHK Type</span>
+                        <span class="detail-value">{!v.Unit.BHK_Type__c}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Floor</span>
+                        <span class="detail-value">{!v.Unit.Floor__c}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Flat Number</span>
+                        <span class="detail-value">{!v.Unit.Plot_Number__c}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Project Name</span>
+                        <span class="detail-value highlight-value">{!v.Unit.Project__r.Name}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Tower</span>
+                        <span class="detail-value">{!v.Unit.Block1__r.Name}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Super Built Up Area</span>
+                        <span class="detail-value">{!v.Unit.Super_built_up_area__c} sq.ft.</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Grand Total</span>
+                        <span class="detail-value highlight-value">₹{!v.Unit.Total__c}</span>
+                    </div>
+                </div>
+            </aura:if>
+        </div>
+        
+        <aura:if isTrue="{!v.BkReqStatus != 'Request Abandoned'}">
+            <aura:if isTrue="{!AND(!v.IsResponded,v.Unit.Status__c == 'Blocked')}">
+                <!-- Customer Details Section -->
+                <aura:if isTrue="{!!v.showPaymentSection}">
+                    <div class="section-card">
+                        <div class="section-header">
+                            <lightning:icon iconName="standard:contact" size="small" class="section-header-icon" />
+                            Customer Details
+                        </div>
+                        
+                        <!-- Always 2-Column Grid -->
+                        <!-- Customer Details Grid -->
+                        <div class="customer-details-grid">
+                            <!-- Row 1 -->
+                            <div class="form-group-inline">
+                                <label class="form-label-inline">Customer Name:</label>
+                                <lightning:input name="customerName" aura:id="CusName" value="{!v.BookingReq.Customer_Name__c}"
+                                                 placeholder="Enter the Name" messageWhenValueMissing="Complete this field"
+                                                 class="form-input" />
+                            </div>
+                            
+                            <div class="form-group-inline">
+                                <label class="form-label-inline">Mobile Number:</label>
+                                <lightning:input name="mobileNumber" aura:id="CusName" value="{!v.BookingReq.Mobile__c}"
+                                                 placeholder="Enter the Mobile Number" messageWhenValueMissing="Complete this field"
+                                                 type="string" maxlength="10" class="form-input" />
+                            </div>
+                            
+                            <!-- Row 2 -->
+                            <div class="form-group-inline">
+                                <label class="form-label-inline">Aadhaar Number:</label>
+                                <lightning:input name="aadhaarNumber" aura:id="CusName" value="{!v.BookingReq.Aadhaar_Number__c}"
+                                                 placeholder="Enter the Aadhaar Number" messageWhenValueMissing="Complete this field"
+                                                 type="string" pattern="[0-9]{12}" maxlength="12"
+                                                 onchange="{!c.validateAadhaar}" onkeyup="{!c.restrictToNumbers}"
+                                                 class="form-input" />
+                            </div>
+                            
+                            <div class="form-group-inline">
+                                <label class="form-label-inline">PAN Number:</label>
+                                <lightning:input name="panNumber" aura:id="CusName" value="{!v.BookingReq.PAN_Number__c}"
+                                                 placeholder="Enter the PAN Number" messageWhenValueMissing="Complete this field"
+                                                 type="string" pattern="[A-Za-z0-9]{10}" maxlength="10"
+                                                 class="form-input" />
+                                
+                            </div>
+                        </div>
+                        
+                        
+                        <!-- Comments Full Width -->
+                        <div class="form-group comments">
+                            <br/>
+                            <label class="form-label">Comments</label>
+                            <lightning:textarea name="comments" aura:id="masterCmt" value="{!v.BookingReq.Customer_Comments__c}"
+                                                placeholder="Your valuable Comments" messageWhenValueMissing="Complete this field"
+                                                variant="label-hidden" class="form-input" />
+                        </div>
+                        
+                        
+                        <div class="button-group">
+                            <lightning:button label="Proceed to Payment" class="btn-primary" disabled="{!v.IsSaveDisabled}" onclick="{!c.proceedToPayment}" />
+                        </div>
+                    </div>
+                </aura:if>
+                
+                <!-- Payment Details Section -->
+                <aura:if isTrue="{!v.showPaymentSection}">
+                    <div class="section-card payment-section">
+                        <div class="section-header">
+                            <lightning:icon iconName="standard:payment" size="small" class="section-header-icon" />
+                            Payment Details
+                        </div>
+                        
+                        <!-- Two Column Payment Grid -->
+                        <div class="payment-grid">
+                            <!-- Payment Mode -->
+                            <div class="form-group-inline2">
+                                <label class="form-label">Payment Mode</label>
+                                <lightning:select name="paymentMode"
+                                                  value="{!v.PaymentDetails.Mode_of_Payment__c}"
+                                                  onchange="{!c.handlePaymentModeChange}"
+                                                  class="payment-field">
+                                    <option value="">--Select--</option>
+                                    <aura:iteration items="{!v.paymentModes}" var="mode">
+                                        <option value="{!mode}">{!mode}</option>
+                                    </aura:iteration>
+                                </lightning:select>
+                            </div>
+                            
+                            <!-- Amount -->
+                            <div class="form-group-inline2">
+                                <label class="form-label">Amount</label>
+                                <lightning:input type="number"
+                                                 name="amount"
+                                                 value="{!v.PaymentDetails.Amount__c}"
+                                                 formatter="currency"
+                                                 step="0.01"
+                                                 class="payment-field" />
+                            </div>
+                            
+                            <!-- Cheque/Transaction No -->
+                            <aura:if isTrue="{!v.PaymentDetails.Mode_of_Payment__c != 'Cash'}">
+                                <div class="form-group-inline2">
+                                    <label class="form-label">Cheque/Transaction No</label>
+                                    <lightning:input type="text"
+                                                     name="transactionNo"
+                                                     value="{!v.PaymentDetails.Cheque_no_Transaction_Number__c}"
+                                                     class="payment-field" />
+                                </div>
+                                
+                                <!-- Bank -->
+                                <div class="form-group-inline2">
+                                    <label class="form-label">Bank</label>
+                                    <lightning:select name="bank"
+                                                      value="{!v.PaymentDetails.Bank__c}"
+                                                      onchange="{!c.handleBankChange}"
+                                                      class="payment-field">
+                                        <option value="">--Select--</option>
+                                        <aura:iteration items="{!v.banks}" var="bank">
+                                            <option value="{!bank}">{!bank}</option>
+                                        </aura:iteration>
+                                    </lightning:select>
+                                </div>
+                            </aura:if>
+                            
+                            <!-- Cheque Date -->
+                            <aura:if isTrue="{!v.PaymentDetails.Mode_of_Payment__c == 'Cheque'}">
+                                <div class="form-group-inline2">
+                                    <label class="form-label">Cheque Date</label>
+                                    <lightning:input type="date"
+                                                     name="chqdate"
+                                                     value="{!v.PaymentDetails.Cheque_Date__c}"
+                                                     class="payment-field" />
+                                </div>
+                            </aura:if>
+                        </div>
+                        
+                        
+                        <!-- UPI Payment Section -->
+                        <aura:if isTrue="{!v.PaymentDetails.Mode_of_Payment__c == 'UPI'}">
+                            <div class="upi-container">
+                                <div class="upi-title">Pay via UPI</div>
+                                
+                                <div class="upi-content">
+                                    <div>
+                                        <div class="qr-code">
+                                            <img src="{!$Resource.JainHousing_UPI_QR}" alt="UPI QR Code" />
+                                        </div>
+                                        <div style="font-weight: 600; margin-top: 12px; font-size: 14px;">Scan QR Code</div>
+                                    </div>
+                                    
+                                    <div class="upi-divider">OR</div>
+                                    
+                                    <div>
+                                        <div class="upi-id" onclick="{!c.copyUPIId}">
+                                            {!$Label.c.UPI_ID}
+                                            <lightning:buttonIcon iconName="utility:copy" variant="bare" alternativeText="Copy UPI ID" class="copy-icon" />
+                                        </div>
+                                        <div style="font-weight: 600; margin-top: 12px; font-size: 14px;">Send to UPI ID</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </aura:if>
+                        
+                        
+                    </div>
+                    <div class="section-card1">
+                        <div class="button-group1">
+                            <lightning:button label="Back" class="btn-secondary" disabled="{!v.IsSaveDisabled}" onclick="{!c.handleBack}" />
+                            <lightning:button label="Submit" class="btn-primary" disabled="{!v.IsSaveDisabled}" onclick="{!c.handleAccept}" />
+                        </div>
+                    </div>
+                    
+                </aura:if>
+            </aura:if>
+        </aura:if>
+        
+        <!-- Status Messages Section -->       
+        <aura:if isTrue="{!v.spinner}">
+            <div class="spinner-container">
+                <lightning:spinner alternativeText="Loading" size="medium" />
+            </div>
+        </aura:if>
+        
+        <aura:if isTrue="{!v.BkReqStatus != 'Request Abandoned'}">
+            <aura:if isTrue="{!v.Unit.Status__c == 'Blocked'}">
+                <aura:if isTrue="{!v.IsResponded}">
+                    <div class="status-message status-success">
+                        Thank you! Your request has been submitted.
+                    </div>
+                </aura:if>
+            </aura:if>
+            
+            <aura:if isTrue="{!v.Unit.Status__c == 'Available'}">
+                <div class="status-message status-error">
+                    Sorry!! Booking Request has been revoked, Please contact your Sales Representative
+                </div>
+            </aura:if>
+            
+            <aura:if isTrue="{!AND(v.Unit.Status__c != 'Available',v.Unit.Status__c != 'Blocked')}">
+                <div class="status-message status-error">
+                    Sorry! This Unit Has been Booked
+                </div>
+            </aura:if>
+        </aura:if>
+        
+        <aura:if isTrue="{!v.BkReqStatus == 'Request Abandoned'}">
+            <div class="status-message status-error">
+                Sorry!! Booking Request has been revoked, Please contact your Sales Representative
+            </div>
+        </aura:if>
+        
+    </div>
+</aura:component>

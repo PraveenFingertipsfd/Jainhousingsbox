@@ -1,0 +1,33 @@
+<apex:page standardController="Joint_Inspection__c">
+    <body>
+        <div>
+            
+        </div>
+    </body>
+    <apex:includeLightning />
+    
+    <div id="lightningvf" style="width:100%; height:100%"/>
+    
+        
+    <script>
+    
+    function getParameterByName(name) {
+        var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+        return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+    }
+
+    var inspectionId = getParameterByName('Id');
+
+    $Lightning.use("c:csrFillApp", function() {
+        $Lightning.createComponent("c:csrFill",
+            {
+                recordId: inspectionId
+            },
+            "lightningvf",
+            function(cmp) {
+                console.log("Joint Inspection Form initialized");
+            }
+        );
+    });
+    </script>
+</apex:page>

@@ -1,0 +1,57 @@
+<aura:component controller = "RoundRobinUsersView" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="roundRobinMembers" type="Round_Robin_Member__c[]" />
+    <aura:attribute name="roundRobinMemberspostsale" type="Round_Robin_Member__c[]" />
+    <aura:attribute name="showTable" type="boolean" default="true"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"></aura:handler>
+    <aura:renderIf isTrue="{!v.showTable}">
+        <table class="slds-table slds-table_bordered slds-table_cell-buffer" style="border-radius: 20px; border-top: 0px; border-bottom: 0px;">
+            <thead>
+                 <tr>
+                    <td colspan="3" class="slds-text-align_center">
+                        <a href="javascript:void(0);" 
+                           onclick="{!c.doInit}" 
+                           class="slds-text-heading_large slds-text-title_bold">
+                            Round Robin Members
+                        </a>
+                    </td>
+                </tr>
+                <tr class="slds-line-height_reset">
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Name">Name</div>
+                    </th>
+                    <th class="" scope="col" style="text-align:center">
+                        <div class="slds-truncate" title="Active">Active</div>
+                    </th>
+                    <th class="" scope="col" style="text-align:center">
+                        <div class="slds-truncate" title="Action">Action</div>
+                    </th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                
+                <!--<tr>
+                    <td colspan="3" class="slds-text-align_center">
+                        <label class="slds-text-heading_large slds-text-title_bold">Post Sales Users</label>
+                    </td>
+                </tr>-->
+                <aura:iteration items="{!v.roundRobinMemberspostsale}" var="member" indexVar="index">
+                    <tr>
+                        <td data-label="Name">
+                            <div>{!member.User__r.Name}</div>
+                        </td>
+                        <td data-label="Active" style="text-align:center">
+                            <div>{!member.Active__c}</div>
+                        </td>
+                        <td data-label="Action" style="text-align:center">
+                            <lightning:button value="{!member.Id}" label="{! member.Active__c ? 'Deactivate' : 'Activate' }" 
+                                              variant="{! member.Active__c ? 'destructive' : 'brand' }"
+                                              onclick="{!c.toggleActiveStatus}" class="small-button"/>
+                            
+                        </td>
+                    </tr>
+                </aura:iteration>
+            </tbody>
+        </table>
+    </aura:renderIf>
+</aura:component>

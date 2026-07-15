@@ -1,0 +1,11 @@
+<apex:page renderAs="pdf" >
+    <apex:form >
+    <apex:pageBlock title="Gender">
+            <apex:pageBlockSection title="MALE"><apex:inputCheckbox label="Male" /></apex:pageBlockSection></apex:pageBlock></apex:form> 
+    <label>
+<input type="checkbox" name="sex" value="True"/> Male
+</label><br/>
+<label>
+<input type="checkbox" name="sex" value="Female"/> Female
+</label>
+</apex:page>

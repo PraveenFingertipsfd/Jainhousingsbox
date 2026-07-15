@@ -1,0 +1,195 @@
+<apex:page standardController="Booking__c"  extensions="Cost_SheetController" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false"  standardStylesheets="false" renderAs="PDF" >
+    <html>
+        <head>
+            <style type="text/css" media="print">
+                @page {
+                @top-center {
+                content: element(header);
+                }
+                @bottom-left {
+                content: element(footer);
+                }
+                }
+                div.header {
+                padding: 10px;
+                position: running(header);
+                }
+                div.footer {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+                }
+                .pagenumber:before {
+                content: counter(page);
+                }
+                .pagecount:before {
+                content: counter(pages);
+                }
+                div.header {
+                padding: 20px;
+                position: running(header);
+                margin-left: -200px;
+                }
+                div.footer {
+                padding: 10px;
+                position: running(footer);
+                text-align: center;
+                font-size: 9px;
+                
+                }
+                th, td {
+                padding: 5px;
+                }
+                .mainTable th, .mainTable td {
+                padding: 5px;
+                border: 1px solid black;
+                }
+                p{
+                line-height:1;
+                padding:1px;
+                }
+                table, tr {
+                border: 1px solid black;
+                border-collapse: collapse;
+                }
+                div.watermark {
+                position: fixed;
+                top: 30%;
+                left:15%;
+                bottom:50%;
+                right: 50%;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 150px !important;
+                color: #e5e5e5 !important; 
+                transform: rotate(-30deg);
+                white-space: nowrap;
+                pointer-events: none;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: cover;
+                }
+                div{
+                font-size:12px;
+                line-height:1.2;
+                }
+            </style> 
+        </head>
+        <body>
+            <div class="content">
+                <apex:outputPanel rendered="{!Booking__c.Stage__c == 'Reservation'}">
+                    <div class="watermark">DRAFT</div>
+                </apex:outputPanel>
+                <div class="footer">
+                    <div style="text-align: center; font-size: 9.5px;border-top: 0.5px solid #000;padding:5px;margin-top: -30px;">
+                        Regd. Office: #51, 17th Cross, 12th Main, 6th Sector, H S R Layout, Bangalore 560102 Tel: 080 25722761<br/>
+                        Corp Office: # 51, KB Royal, R S Garden Layout, Bommasandra, Bangalore 560 099, Tel: 080 29766117<br/>
+                        <a href="http://www.mahendrahomes.com" target="">www.mahendrahomes.com</a>
+                    </div>
+                </div>
+                <apex:outputPanel >
+                    <table style="text-align:left;font-size:12px;padding-bottom:2px;width:100%" >
+                            <tr>
+                                <td colspan="2" valign="bottom" style="text-align:left;font-size:18px;">MAHENDRA HOMES PVT LTD</td>
+                                <td rowspan="2" style="text-align:right"><img src="{!$Resource.Mahendra_logo}" width="80px" height="40" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top" style="text-align:left;font-size:9px;">CIN-U70102KA2011PTCO60295</td>
+                        </tr>
+                    </table>
+                    <div style="text-align:right;padding-top:10px">
+                       Date: <apex:outputText value="{0,date,dd/MM/yyyy}"> <apex:param value="{!TODAY()}" /> </apex:outputText>
+                    </div>
+                    <div style="padding-top:10px">
+                        <strong> To,</strong>
+                    </div>
+                    <div>
+                        <strong>
+                            {!Booking__c.salutation_Applicant1__c} {!Booking__c.First_Applicant_Name__c}  
+                            <!-- Output panel for second applicant -->
+                            <apex:outputPanel rendered="{!NOT(ISBLANK(Booking__c.Second_Applicant_Name__c))}">
+                                &amp;
+                                <strong>{!Booking__c.salutation_Applicant2__c} {!Booking__c.Second_Applicant_Name__c}</strong>
+                            </apex:outputPanel>
+                        </strong>
+                    </div>
+                    <div style="width:75%">
+                        <strong>{!Booking__c.Communication_address__c}</strong>
+                    </div>
+                    <div>
+                        <strong>{!Booking__c.Mobile_Primary__c}</strong>
+                    </div>
+                    <div style="padding-top:30px">
+                        <strong>SUB: Cost Break-Up of MAHENDRA AARYA</strong>
+                    </div>
+                    <div style="padding-top:30px;padding-bottom:30px">
+                        <strong>Ref: Flat No - {!Booking__c.Plot__r.Name} Tower- {!Booking__c.Block__r.Name} {!FloorNumber}</strong>
+                    </div>
+                    <table width="60%" border="1">
+                        <tr>
+                            <td width="70%">Flat Number</td>
+                            <td style="text-align:right">{!Booking__c.Plot__r.Name}</td>
+                        </tr>
+                        <tr>
+                            <td>Super Built up Area Sq Ft (A) </td>
+                            <td style="text-align:right"><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!NULLVALUE(Booking__c.Super_Built_up_area_NE__c, 0)}" /> </apex:outputText></td>
+                        </tr>
+                        <tr>
+                            <td>Price Per Sq Ft</td>
+                            <td style="text-align:right"><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!NULLVALUE(Booking__c.Price_per_sqft__c, 0)}" /> </apex:outputText></td>
+                        </tr>
+                        <tr>
+                            <td>Basic Price</td>
+                            <td style="text-align:right"><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!NULLVALUE(PricePerSqFt, 0)}" /> </apex:outputText></td>
+                        </tr>
+                        <tr>
+                            <td>Floor Rise</td>
+                            <td style="text-align:right"><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!NULLVALUE(FloorRiseCharges, 0)}" /> </apex:outputText></td>
+                        </tr>
+                        <tr>
+                            <td>Premium Charges</td>
+                            <td style="text-align:right"><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!NULLVALUE(PremiumCharges, 0)}" /> </apex:outputText></td>
+                        </tr>
+                        <tr>
+                            <td >Other Charges</td>
+                            <td style="text-align:right"><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!NULLVALUE(otherCharges, 0)}" /> </apex:outputText></td>
+                        </tr>
+                        <tr>
+                            <td>Covered Car Parking</td>
+                            <td style="text-align:right"><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!NULLVALUE(Booking__c.Covered_Park_Parking__c, 0)}" /> </apex:outputText></td>
+                        </tr>
+                        <tr>
+                            <td>Extra Covered Car Parking</td>
+                            <td style="text-align:right"><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!NULLVALUE(Booking__c.Extra_Covered_Parking_Charges__c, 0)}" /> </apex:outputText></td>
+                        </tr>
+                        <tr>
+                            <td>Solar Charges</td>
+                            <td style="text-align:right"><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!NULLVALUE(Booking__c.Solar_Charges__c, 0)}" /> </apex:outputText></td>
+                        </tr>
+                        <tr>
+                            <td>TAXES</td>
+                            <td style="text-align:right"><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!NULLVALUE(Booking__c.GST_Amount__c, 0)}" /> </apex:outputText></td>
+                        </tr>
+                        <tr>
+                            <td><strong>TOTAL</strong></td>
+                            <td style="text-align:right"><strong><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!NULLVALUE(Booking__c.Total__c, 0)}" /> </apex:outputText></strong></td>
+                        </tr>
+                    </table>
+                    <div style="padding-top:30px">
+                        <strong>Note:</strong> REGISTRATION Amount (Shall be paid by the client at the time of registration to the concerned department)
+                    </div>
+                    <div style="padding-top:50px">
+                        <strong>For: MAHENDRA HOMES PVT LTD</strong>
+                    </div>
+                    <div style="padding-top:60px">
+                        <strong>(Authorised Signatory)</strong>
+                    </div>
+                </apex:outputPanel>
+            </div>
+        </body>
+    </html>
+</apex:page>

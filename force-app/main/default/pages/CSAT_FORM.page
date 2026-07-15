@@ -1,0 +1,34 @@
+<apex:page standardController="Booking__c">
+    <body>
+        <div>
+            
+        </div>
+    </body>
+    <apex:includeLightning />
+    
+    <div id="lightningvf" style="width:100%; height:100%"/>
+    
+    <script>
+    
+    function getParameterByName(name) {
+        var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+        return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+    }
+
+    
+    var bookingId = getParameterByName('Id');
+    console.log('Booking ID from VF:', bookingId);
+
+    $Lightning.use("c:CSAT_FORM_APP", function() {
+        $Lightning.createComponent("c:CSAT_FORM",
+            {
+                recordId: bookingId
+            },
+            "lightningvf",
+            function(cmp) {
+                console.log("Joint Inspection Form initialized");
+            }
+        );
+    });
+    </script>
+</apex:page>

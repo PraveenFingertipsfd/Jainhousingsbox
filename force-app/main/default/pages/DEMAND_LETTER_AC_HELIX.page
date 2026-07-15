@@ -1,0 +1,179 @@
+<apex:page standardController="Additional_Charges__c" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false"  standardStylesheets="false" renderAs="PDF" >
+    <html>
+        <head>
+            <style type="text/css" media="print">
+                @page {
+                @top-center {
+                content: element(header);
+                }
+                @bottom-left {
+                content: element(footer);
+                }
+                }
+                div.header {
+                padding: 10px;
+                position: running(header);
+                }
+                div.footer {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+                }
+                .pagenumber:before {
+                content: counter(page);
+                }
+                .pagecount:before {
+                content: counter(pages);
+                }
+                div.header {
+                padding: 20px;
+                position: running(header);
+                margin-left: -200px;
+                }
+                div.footer {
+                padding: 10px;
+                position: running(footer);
+                text-align: center;
+                font-size: 9px;
+                
+                }
+                th, td {
+                padding: 5px;
+                }
+                p{
+                line-height:1;
+                padding:1px;
+                }
+                table, tr {
+                border: 1px solid black;
+                border-collapse: collapse;
+                }
+                 div.no-milestone {
+                position: absolute;
+                top: 0;
+                left:0;
+                bottom:0;
+                right: 0;
+                width: 100%;
+                height: 1500px;
+                z-index: 10;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 50px !important;
+                color: #e5e5e5 !important; 
+                transform: rotate(-30deg); 
+                white-space: nowrap; 
+                pointer-events: none; 
+                background-repeat: no-repeat;
+                background-position: center;
+                background-color:white;
+                }
+            </style> 
+        </head>
+        <body>
+            <div class="content">
+                <apex:outputPanel >
+                    <div style="font-size:12px;">
+                        
+                        <table style="text-align:left;font-size:12px;padding-bottom:2px;width:100%" >
+                            <tr>
+                                <td colspan="2" valign="bottom" style="text-align:left;font-size:18px;">Mahendra Arto LLP</td>
+                                <td rowspan="2" style="text-align:right"><img src="{!$Resource.Mahendra_Arto_Helix}" width="120px" height="80" /></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" valign="top" style="text-align:left;font-size:9px;">ABA-1309</td>
+                            </tr>
+                            <tr>
+                                <td width="33%"></td>
+                                <td style="text-align:center"><u>DEMAND LETTER FOR ADDITIONAL CHARGES</u></td>
+                                <td width="33%" style="text-align:center"><strong>Date:</strong><apex:outputText value="{0,date,dd/MM/yyyy}"> <apex:param value="{!TODAY()}" /> </apex:outputText></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <strong>Customer ID: {!Additional_Charges__c.Booking__r.Name}</strong><br/>
+                                    <strong>{!Additional_Charges__c.Booking__r.salutation_Applicant1__c} {!Additional_Charges__c.Booking__r.First_Applicant_Name__c}</strong>
+                                    
+                                    <!-- Output panel for second applicant -->
+                                    <apex:outputPanel rendered="{!NOT(ISBLANK(Additional_Charges__c.Booking__r.Second_Applicant_Name__c))}">
+                                        &amp;
+                                        <strong>{!Additional_Charges__c.Booking__r.salutation_Applicant2__c} {!Additional_Charges__c.Booking__r.Second_Applicant_Name__c}</strong><br/>
+                                    </apex:outputPanel>
+                                    
+                                    <br/>
+                                </td>
+                                
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <strong>
+                                        {!Additional_Charges__c.Booking__r.Communication_address__c}<br/>
+                                        Mobile No.: {!Additional_Charges__c.Booking__r.Mobile_Primary__c}<br/>
+                                        EMail ID: {!Additional_Charges__c.Booking__r.Email1__c}
+                                    </strong></td>
+                                <td></td>
+                            </tr>
+                        </table >                        
+                        
+                        <p><strong>Dear Sir/Madam,</strong></p>
+                        <p style="text-align:center;padding-bottom:2px"><strong>Sub: Demand Note on {!Additional_Charges__c.Additional_Charge_Type__c}</strong></p>
+                        <p style="line-height:1.3;">We would like to inform you about the additional charges associated with your Flat No. <strong>{!Additional_Charges__c.Booking__r.Block__r.Name}</strong> <strong>{!Additional_Charges__c.Booking__r.Plot__r.Name}</strong> in <strong>Mahendra Arto Helix</strong> Project, We kindly request you to settle the following amounts <strong>Rs.<apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Additional_Charges__c.Pending_Amount__c}" /> </apex:outputText>/-</strong> (<strong>Rupees )</strong> Summary of payment is as below;</p>
+                        
+                        <table style="width:75%;font-size:12px;line-height:1;" border="1">
+                            <tr>
+                                <th style="text-align: center;" width="70%">Particulars</th>
+                                <th style="text-align: right;" width="30%">Amount(Rs.)</th>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Amount against "{!Additional_Charges__c.Additional_Charge_Type__c}"</td>
+                                <td style="text-align: right;"><strong><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Additional_Charges__c.Amount__c}" /> </apex:outputText></strong></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">GST ({!Additional_Charges__c.GST__c}%)</td>
+                                <td style="text-align: right;"><strong><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Additional_Charges__c.Amount__c * Additional_Charges__c.GST__c / 100}" /></apex:outputText></strong></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Total amount against "{!Additional_Charges__c.Additional_Charge_Type__c}"</td>
+                                <td style="text-align: right;"><strong><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Additional_Charges__c.Total_Additional_Charge__c}" /> </apex:outputText></strong></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Total paid amount</td>
+                                <td style="text-align: right;"><strong><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Additional_Charges__c.Total_Received_Amount__c}" /> </apex:outputText></strong></td>
+                            </tr>
+                            
+                            <tr>
+                                <td style="text-align: left;"><strong>TOTAL AMOUNT PAYABLE</strong></td>
+                                <td style="text-align: right;"><strong><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Additional_Charges__c.Pending_Amount__c}" /> </apex:outputText></strong></td>
+                            </tr>
+                        </table>
+                        <table style="width:100%;font-size:12px;">
+                            <tr>
+                                <td colspan="2" style="padding-top:7px;text-align: left;">Request you to release the payment within 7 days from this demand note date. Remittance details are as below</td>
+                            </tr>
+                            <tr>
+                                <td width="30%" style="text-align: left;">Account Name</td>
+                                <td width="70%" style="text-align: left;">: 100 PERCENT RERA ACC MAHENDRA ARTO LLP</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Escrow A/c No.</td>
+                                <td style="text-align: left;">: 9062000100120001</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">IFSC Code</td>
+                                <td style="text-align: left;">: KARB0000906</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Bank Name &amp; Branch</td>
+                                <td style="text-align: left;">:: Karnataka Bank LTD, Bommasandra, Bangalore.</td>
+                            </tr>
+                        </table>
+                        <p  style="line-height:1;">Please make the payment through RTGS/NEFT OR cheque/DD.</p>
+                        <p  style="line-height:1;">Note: For any clarification please contact Ms.Kavitha on - 9845090926 <br/>Thanking you,</p>
+                        <p>Encl: Photograph &amp; Valuation report</p>
+                    </div>
+                </apex:outputPanel>
+            </div>
+        </body>
+    </html>
+</apex:page>

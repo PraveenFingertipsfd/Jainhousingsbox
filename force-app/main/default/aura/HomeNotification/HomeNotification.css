@@ -1,0 +1,132 @@
+/* Base Card Styles */
+.THIS .slds-card {
+    min-height: 120px;
+    /*transition: transform 0.2s; */
+    border: 3px solid #dddbda;
+}
+
+/*
+.THIS .slds-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+} */
+
+.THIS .slds-card__header-title a {
+    font-weight: 600;
+    color: #0070d2;
+    text-decoration: none;
+}
+
+.THIS .slds-card__header-title a:hover {
+    text-decoration: underline;
+}
+
+/* Color Variants */
+.THIS .slds-card__background {
+    background-color: #F47C7C;   /* Pending Items - Red */
+    border: 1px solid #d8dde6;
+    /*border-radius: 4px;*/
+}
+
+.THIS .slds-card__bground {
+    background-color: #FFF3CD;   /* Registration Push - Yellow */
+    border: 1px solid #d8dde6;
+    /*border-radius: 4px;*/
+}
+
+/* Container Styles */
+.THIS .slds-box {
+    background: white;
+    border: 1px solid #dddbda;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 24px;
+    margin-bottom: 16px;
+}
+
+.THIS .slds-text-heading_medium {
+    color: #032d60;
+    font-weight: 600;
+    border-bottom: 2px solid #dddbda;
+    padding-bottom: 8px;
+}
+
+/* Scrollable Containers (for both Today's and Pending) */
+.THIS .horizontal-scroll-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #0176d3 #f3f2f2;
+}
+
+.THIS .scrollable-row {
+    display: inline-flex;
+    gap: 12px;
+}
+
+.THIS .card-container {
+    display: inline-block;
+    width: 310px;
+    vertical-align: top;
+}
+
+/* Card Hover Effects 
+.THIS .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+} */
+
+/* Pending Items Specific Styles */
+.THIS .slds-card__background .slds-text-body_small,
+.THIS .slds-card__background a {
+    color: #ffffff !important;
+}
+
+.THIS .slds-card__background lightning-icon {
+    --slds-c-icon-color-foreground-default: white;
+}
+
+/* Scrollbar Styling */
+.THIS .horizontal-scroll-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.THIS .horizontal-scroll-container::-webkit-scrollbar-thumb {
+    background-color: #0176d3;
+    border-radius: 4px;
+    border: 1px solid #f3f2f2;
+}
+
+.THIS .horizontal-scroll-container::-webkit-scrollbar-thumb:hover {
+    background-color: #014486;
+}
+
+.THIS .horizontal-scroll-container::-webkit-scrollbar-track {
+    background: #f3f2f2;
+}
+
+/* Utility Classes */
+.THIS .slds-align_absolute-center {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.THIS .slds-button {
+    min-width: 80px;
+}
+
+.THIS .refresh-button {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+}
+
+/* Text Styles */
+.THIS .slds-text-body_small {
+    color: #706e6b;
+    font-size: 0.8125rem;
+}

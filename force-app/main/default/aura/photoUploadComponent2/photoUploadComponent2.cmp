@@ -1,0 +1,41 @@
+<aura:component controller="UpdateBookingStageController" implements="flexipage:availableForAllPageTypes,force:appHostable,force:hasRecordId" access="global" >
+	<aura:attribute name="files" type="ContentDocument[]"/>
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="acceptFileTypes" type="List" default="['.pdf']"/>
+    <aura:attribute name="uploadMultiple" type="Boolean" default="false"/>
+    <aura:attribute name="selectedFileId" type="String" access="global"/>
+    <aura:attribute name="onfileUploadComplete" type="Aura.Action"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!-- Add this to your component -->
+    <aura:handler event="aura:doneRendering" action="{!c.onRenderComplete}"/>
+    
+    <aura:attribute name="uploadedFiles" type="List" default="[]" /> <!-- to display one file -->
+    
+    <aura:registerEvent name="fileUploadComplete" type="c:fileUploadComplete"/>
+
+    <div class="slds-card slds-card_boundary">  
+        <div class="slds-align_absolute-center">  
+            <lightning:fileUpload 
+                multiple="{!v.uploadMultiple}" 
+                accept="{!v.acceptFileTypes}" 
+                recordId="{!v.recordId}" 
+                onuploadfinished="{!c.uploadFinished}"/>  
+        </div>  
+
+        <table class="slds-table slds-table_bordered slds-m-top_small">
+            <tbody>
+                <aura:iteration items="{!v.files}" var="f">
+                    <tr>
+                        <!--td>
+                            <lightning:input type="radio" name="fileSelect" checked="{!f.Id == v.selectedFileId}" onchange="{!c.handleFileSelection}" value="{!f.Id}"/>
+                        </td-->
+                        <td>
+                            <a href="javascript:void(0)" id="{!f.Id}" onclick="{!c.previewFile}">{!f.Title}</a>
+                        </td>
+                    </tr>
+                </aura:iteration>
+            </tbody>
+        </table>
+    </div>
+</aura:component>

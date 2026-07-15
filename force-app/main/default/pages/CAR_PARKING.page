@@ -1,0 +1,66 @@
+<apex:page renderAs="pdf" standardController="Booking__c" extensions="NCDController" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false">
+    <html>
+        <head>
+            <style type="text/css" media="print">
+                @page {
+                size: A4;
+                font-family: Arial, sans-serif;
+              
+                }
+                
+                p {
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+                line-height: 1.8;
+                }
+                
+                .right-align {
+                text-align: right;
+                }
+                
+               
+            </style>
+        </head>
+        
+            <div style="padding-left:80px; padding-right:80px; padding-top:100px">
+                
+            
+            <p style="text-align:right">
+                
+               <Strong>Date:</Strong>  <apex:outputText value="{0,date,MMMM d, yyyy}">
+    <apex:param value="{!TODAY()}" />
+</apex:outputText> </p>
+            
+            
+            <p>{!Booking__c.salutation_Applicant1__c} {!Booking__c.First_Applicant_Name__c}<br/>
+                {!Booking__c.Address__c}
+            </p>
+            
+            
+            <p>Dear Sir / Madam,</p>
+            
+                <p style="padding-left:100px; line-height:1.5"><strong>Sub:</strong> Car Parking Allotment – Reg.</p>
+                 <p style="padding-left:100px; line-height:1.5"><strong>Ref:</strong> Flat No: {!Booking__c.Flat_Actual_Number__c}, Block:{!Booking__c.Plot__r.Name}, {!floor} Floor at <strong>{!Booking__c.Project__c}.</strong></p>
+            
+            <p style="text-align:justify"> 
+
+                This is to inform you that, you have been allotted  {!ptypes} park bearing Slot Number {!slots} No at {!levels} in our project “{!Booking__c.Project__c}”, {!Booking__c.Project1__r.Project_Address__c}. </p>
+               <p style="margin-top:-20px">
+                   This is for your information and records 
+                </p> 
+            
+            
+            <p>Thanking you,</p>
+            
+            <p>Yours faithfully,<br/>
+                For <strong>Jain Housing</strong>,
+            </p>
+            
+                <p style="margin-top: 90px;"><Strong>CRM</Strong> </p>
+                <p style= "font-size:11px; text-align:justify">
+                    <strong>Note: This allotment is subject to the terms &amp; conditions and usage guidelines envisaged in the agreement for sale of flat entered between us. </strong>
+                </p>
+                </div>
+        
+    </html>
+</apex:page>

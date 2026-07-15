@@ -1,0 +1,32 @@
+<aura:component controller="BookingRequest_Controller" implements="force:lightningQuickActionwithoutheader,force:appHostable,force:hasRecordId" access="global" >
+    <aura:attribute name="Email" type="string"/>
+    <aura:attribute name="IsPSAUnit" type="Boolean" default="false"/>
+    <aura:attribute name="IsButtondisable" type="Boolean"/>
+    <aura:attribute name="BlockedPrice" type="double"/>
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"/>
+    
+    <aura:html tag="style">
+        .slds-modal__container{
+        //max-width: 75rem !important;
+        width:75% !important;
+        } 
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }
+        .slds-modal__content{
+        height:unset !important;
+        max-height:unset !important;
+        }
+        .closeIcon{
+        display:none;
+        }
+        .slds-col{
+        margin-left:5px;
+        }
+    </aura:html>
+    <lightning:messages />
+    
+</aura:component>

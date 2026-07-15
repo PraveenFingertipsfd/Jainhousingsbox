@@ -1,0 +1,200 @@
+<apex:page standardController="Booking__c" extensions="TPAController" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false"  standardStylesheets="false" renderAs="PDF" >
+    <html>
+        <head>
+            <style type="text/css" media="print">
+                @page {
+                @top-center {
+                content: element(header);
+                }
+                @bottom-left {
+                content: element(footer);
+                }
+                }
+                div.header {
+                padding: 10px;
+                position: running(header);
+                }
+                div.footer {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+                }
+                .pagenumber:before {
+                content: counter(page);
+                }
+                .pagecount:before {
+                content: counter(pages);
+                }
+                div.header {
+                padding: 20px;
+                position: running(header);
+                margin-left: -200px;
+                }
+                div.footer {
+                padding: 10px;
+                position: running(footer);
+                font-size: 9px;
+                text-align:left;
+                
+                }
+                div.footer :first-child{
+                text-align:right;
+                }
+                
+                div.content, div.content p{
+                padding:0 20px;
+                line-height:1.5;
+                font-size:14px;
+                }
+                th, td {
+                padding: 5px;
+                }
+                p{
+                line-height:1;
+                padding:1px;
+                }
+                table, tr {
+                border: 1px solid black;
+                border-collapse: collapse;
+                }
+            </style> 
+        </head>
+        <body>
+            <div class="footer">
+                <div style="font-size: 12px;padding:5px;margin-top:-30px">
+                    <span style="text-align:right">Page <span class="pagenumber"/> | <span class="pagecount"/></span>
+                </div>
+            </div>
+            <div class="content" >
+                <apex:outputPanel >
+                    <div style="margin-top:25%">
+                        <table width="100%" style="font-weight:600">
+                            <tr>
+                                <td width="45%">
+                                    <div>
+                                        To,
+                                    </div>
+                                    <div style="padding-top:10px">
+                                        The Asst. Gen. Manager,<br/>
+                                        State Bank of India,<br/>
+                                        RACPC, <br/>
+                                        Bangalore.<br/>
+                                    </div>
+                                    <div style="padding-top:20px">
+                                        DearSir/Madam,
+                                    </div>
+                                    <div style="padding:10px 0 10px 0">
+                                        We M/s Mahendra Homes Pvt Ltd is hereby certify that:
+                                    </div>
+                                </td>
+                                <td width="55%" valign="top" style="text-align:right">Date: <apex:outputText value="{0,date,dd/MM/yyyy}"> <apex:param value="{!TODAY()}" /> </apex:outputText></td>
+                            </tr>
+                        </table>
+                        <div style="padding-top:10px">
+                            We have transferable rights to the property described below, which has been allotted by us to <strong>{!Booking__c.salutation_Applicant1__c} {!Booking__c.First_Applicant_Name__c} &amp; {!Booking__c.salutation_Applicant2__c} {!Booking__c.Second_Applicant_Name__c} </strong>hereinafter referred to as “the purchasers”, subject to the due and proper performance and compliance of all the terms and conditions of the Sale Agreement dated &nbsp;<strong><apex:outputText value="{0,date,dd/MM/yyyy}"><apex:param value="{!Booking__c.Sale_Agreement_Date__c}" /></apex:outputText></strong> (hereinafter referred to as the “Sale document”)
+                        </div>
+                        <div style="padding-top:10px">
+                            Description of the property:
+                        </div>
+                        <div style="padding-top:10px;padding-left:50px;">
+                            <table width="100%" border="1">
+                                <tr>
+                                    <td>FlatNo./HouseNo.</td>
+                                    <td>{!Booking__c.Plot__r.Name}, {!Booking__c.FloorNo__c}, Tower-{!Booking__c.Block__r.Name}</td>
+                                </tr>
+                                <tr>
+                                    <td>BuildingNo./Name</td>
+                                    <td>Mahendra AARYA</td>
+                                </tr>
+                                <tr>
+                                    <td>PlotNo</td>
+                                    <td>Sy.No 6/1, 8/4, 9/2, 10/1, 12/1, &amp;13</td>
+                                </tr>
+                                <tr>
+                                    <td>Locality Name</td>
+                                    <td>Heelalige Road</td>
+                                </tr>
+                                <tr>
+                                    <td>AreaName</td>
+                                    <td>Andapura</td>
+                                </tr>
+                                <tr>
+                                    <td>CityName</td>
+                                    <td>Bangalore</td>
+                                </tr>
+                                <tr>
+                                    <td>PinCode</td>
+                                    <td>560099.</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="padding-top:10px">
+                            2.That the total consideration for this transaction is <strong>Rs.{!Booking__c.Loan_Sanctioned_Amount__c}/- ({!loanAmout}).</strong>
+                        </div>
+                        <div style="padding-top:10px">
+                            3.The title of the property  described above is clear ,marketable, and free from all encumbrances and doubts. 
+                        </div>
+                        <div style="padding-top:10px">
+                            4.We confirm that we have no objection whatsoever to the said purchasers, at their own costs, charges, risks, and consequences mortgaging the said property to STATE BANK OF INDIA (hereinafter referred to as “the Bank”) as security for the amount advanced by the Bank to them subject to the due and proper performance and compliances of all the terms and conditions of the sale document by the said purchasers.
+                        </div>
+                        <div style="padding-top:10px">
+                            5. We have borrowed a loan from Karnataka Bank, Bommasandra Branch. Whose NOC for this transaction is enclosed herewith.
+                        </div>
+                        <div style="padding-top:10px">
+                            6.After creation of proper charge/mortgage and after receipt of the copies thereof and after receipt of proper nomination in favour of the Bank, from the said purchasers, we are agreeable to accept State Bank of India as a nominee of the above named purchaser for the property described above and once the nomination favoring the Bank has been registered and advice sent to the Bank of having done so, I/We note not to change the same without the written NOC of the Bank.
+                        </div>
+                        <div style="padding-top:10px">
+                            7.After creation of charge/mortgage and after receipt of the copies thereof and after receipt of the proper nomination in favour of the Bank, from the above-named purchaser, we undertake to inform the society about the Bank’s charge on the said flat as and when the society is formed.
+                        </div>
+                        <div style="padding-top:10px">
+                            8. Please note that the payment for this transaction should be made by crossed cheque/ Transfer of funds favoring Karnataka Bank Ltd. vide no. 1042 0001 1017 2401.
+                        </div>
+                        <div style="padding-top:10px">
+                            9. In case of cancellation of the sale agreement for any reason, I / We shall refund the amount by crossed cheque favoring the Bank A/c of.<strong> {!Booking__c.salutation_Applicant1__c} {!Booking__c.First_Applicant_Name__c} &amp; {!Booking__c.salutation_Applicant2__c} {!Booking__c.Second_Applicant_Name__c}</strong> and forward the same to you directly.
+                        </div>
+                        <div style="padding-top:10px">
+                            10. The signatory to this letter draws authority to sign this undertaking on behalf of the company / firm vide 01-04-2019 (description of document of delegation of authority to the signatory).
+                        </div>
+                        <div style="padding-top:10px">
+                            Yours faithfully,
+                        </div>
+                        <div style="padding-top:30px">
+                        </div>
+                        <div style="padding-top:10px">
+                            Authorized Signatory:
+                        </div>
+                        <div style="padding-top:10px">
+                            Name: Mallikarjuana.M.S
+                        </div>
+                        <div>
+                            Designation:  CFO
+                        </div>
+                        <div style="padding-top:15px">
+                            Place: Bangalore.  
+                        </div>
+                        <div style="padding-top:15px">
+                            Date:<apex:outputText value="{0,date,dd/MM/yyyy}"> <apex:param value="{!TODAY()}" /> </apex:outputText>
+                        </div>
+                    </div>
+                    <div style="Page-break-before:always;text-align:justify;">
+                    	<div style="text-align:right;adiing-right:5px;padding-top:200px">
+                            Date:31-05-2024
+                        </div>
+                        <div style="padding-top:50px;text-align:justify">
+                            We confirm that the original documents are in the custody of Karnataka Bank,Bommasandra Branch. These have been mortgaged with Karnataka Bank. We also confirm that flat <strong> {!booking__c.Plot__r.Name} block-{!booking__c.Plot__r.Block__c} Tower-{!booking__c.Block__r.Name} </strong>, <strong>{!booking__c.Project1__r.Name}</strong>, Sy.No {!booking__c.Project1__r.Survey_Number__c} situated at {!booking__c.Project1__r.Project_Address__c}, which is being sold to of <strong>{!Booking__c.salutation_Applicant1__c} {!Booking__c.First_Applicant_Name__c} &amp; {!Booking__c.salutation_Applicant2__c} {!Booking__c.Second_Applicant_Name__c}</strong> falls within the sanctioned plan.
+                        </div>
+                        <div style="padding-top:50px;text-align:justify">
+                            We have availed project loan with Karnataka Bank; hence the original documents are mortgaged with them. We have obtained NOC from the said financial institution to release the flat to <strong>{!Booking__c.salutation_Applicant1__c} {!Booking__c.First_Applicant_Name__c} &amp; {!Booking__c.salutation_Applicant2__c} {!Booking__c.Second_Applicant_Name__c}</strong> accordingly, the amount may be released in our favour with the loan account. vide no. 1042000110172401 and the name of the financial institution is Karnataka Bank Ltd., marked thereon. 
+                        </div>
+                        <div style="padding-top:50px;">
+                            Yours Sincerely,
+                        </div>
+                         <div style="padding-top:50px;">
+                             Authorized Signatory
+                        </div>
+                    </div>
+                </apex:outputPanel>
+            </div>
+        </body>
+    </html>
+</apex:page>

@@ -1,0 +1,214 @@
+<apex:page standardController="Demand_Raised__c" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false"  standardStylesheets="false" renderAs="PDF" >
+    <html>
+        <head>
+            <style type="text/css" media="print">
+                @page {
+                @top-center {
+                content: element(header);
+                }
+                @bottom-left {
+                content: element(footer);
+                }
+                }
+                div.header {
+                padding: 10px;
+                position: running(header);
+                }
+                div.footer {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+                }
+                .pagenumber:before {
+                content: counter(page);
+                }
+                .pagecount:before {
+                content: counter(pages);
+                }
+                div.header {
+                padding: 10px;
+                position: running(header);
+                margin-left: -200px;
+                }
+                div.footer {
+                padding: 10px;
+                position: running(footer);
+                text-align: center;
+                font-size: 9px;
+                
+                }
+                th, td {
+                padding: 4px;
+                }
+                p{
+                line-height:1;
+                padding:1px;
+                }
+                table, tr {
+                border: 1px solid black;
+                border-collapse: collapse;
+                }
+                div{
+                font-size:12px;
+                line-height:1.2;
+                }
+                div.no-milestone {
+                position: absolute;
+                top: 0;
+                left:0;
+                bottom:0;
+                right: 0;
+                width: 100%;
+                height: 1000px;
+                z-index: 10;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 50px !important;
+                color: #e5e5e5 !important; 
+                transform: rotate(-30deg); 
+                white-space: nowrap; 
+                pointer-events: none; 
+                background-repeat: no-repeat;
+                background-position: center;
+                background-color:white;
+                }
+            </style> 
+        </head>
+        <body>
+             <apex:outputPanel rendered="{!Demand_Raised__c.Current_Milestone__c == 'No milestone completed'}">
+                    <div class="no-milestone">No milestone completed</div>
+                </apex:outputPanel>
+            
+            <div class="footer">
+                <div style="text-align: center; font-size: 9.5px;border-top: 0.5px solid #000;padding:5px;margin-top: -30px;">
+                    Regd. Office: #51, 17th Cross, 12th Main, 6th Sector, H S R Layout, Bangalore 560102 Tel: 080 25722761<br/>
+                    Corp Office: # 51, KB Royal, R S Garden Layout, Bommasandra, Bangalore 560 099, Tel: 080 29766117<br/>
+                    <a href="http://www.mahendrahomes.com" target="">www.mahendrahomes.com</a>
+                </div>
+            </div>
+            <div class="content">
+                <apex:outputPanel >
+                    <div style="font-size:12px;">
+                        
+                        <table style="text-align:left;font-size:12px;padding-bottom:2px;width:100%" >
+                            <tr>
+                                <td colspan="2" valign="bottom" style="text-align:left;font-size:18px;">MAHENDRA HOMES PVT LTD</td>
+                                <td rowspan="2" style="text-align:right"><img src="{!$Resource.Mahendra_logo}" width="80px" height="40" /></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" valign="top" style="text-align:left;font-size:9px;">CIN-U70102KA2011PTCO60295</td>
+                            </tr>
+                            <tr>
+                                <td width="33%"></td>
+                                <td style="text-align:center"><u>DEMAND LETTER</u></td>
+                                <td width="33%" style="text-align:center"><strong>Date:</strong><apex:outputText value="{0,date,dd/MM/yyyy}"> <apex:param value="{!TODAY()}" /> </apex:outputText></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <strong>Customer ID: {!Demand_Raised__c.Booking__r.Name}</strong><br/>
+                                    <strong>{!Demand_Raised__c.Booking__r.salutation_Applicant1__c} {!Demand_Raised__c.Booking__r.First_Applicant_Name__c}</strong><br/>
+                                    
+                                    <!-- Output panel for second applicant -->
+                                    <apex:outputPanel rendered="{!NOT(ISBLANK(Demand_Raised__c.Booking__r.Second_Applicant_Name__c))}">
+                                        &amp;
+                                        <strong>{!Demand_Raised__c.Booking__r.salutation_Applicant2__c} {!Demand_Raised__c.Booking__r.Second_Applicant_Name__c}</strong><br/>
+                                    </apex:outputPanel>
+                                    
+                                    <br/>
+                                </td>
+
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <strong>
+                                        {!Demand_Raised__c.Booking__r.Communication_address__c}<br/>
+                                        Mobile No.: {!Demand_Raised__c.Booking__r.Mobile_Primary__c}<br/>
+                                        EMail ID: {!Demand_Raised__c.Booking__r.Email1__c}
+                                    </strong></td>
+                                <td></td>
+                            </tr>
+                        </table >                        
+                        
+                        <p><strong>Dear Sir/Madam,</strong></p>
+                        <p style="text-align:center;padding-bottom:2px"><strong>Sub: Demand Note on {!Demand_Raised__c.Current_Milestone__c}</strong></p>
+                        
+                        <p style="line-height:1.3;">We are pleased to inform you that, our project <strong>Mahendra AARYA</strong> has reached <strong>{!Demand_Raised__c.Milestone_Number__c}</strong> Milestone i.e. <strong>{!Demand_Raised__c.Current_Milestone__c}</strong> on <strong><apex:outputText value="{0,date,dd/MM/yyyy}"><apex:param value="{!Demand_Raised__c.Milestone_Completed_Date__c}" /></apex:outputText></strong>. As per clause 3 of Agreement for Sale , the purchaser is required to pay the final due amount as defined in Schedule G, which is <strong>{!Demand_Raised__c.Current_Milestone_Percentage__c}%</strong> of the total flat cost (<strong>{!Demand_Raised__c.Total_Percentage_till_Current_Milestone__c}%</strong> of total flat cost up to this stage).</p>
+                        <p style="line-height:1.3;">Total amount due towards your <strong>{!Demand_Raised__c.Booking__r.Block__r.Name}</strong> Flat No <strong>{!Demand_Raised__c.Booking__r.Plot__r.Name}</strong> in <strong>MAHENDRA AARYA</strong> Project, is <strong>Rs. <apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Demand_Raised__c.Grand_Total__c}" /> </apex:outputText>/-</strong> (<strong>Rupees {!Demand_Raised__c.Grand_Total_In_Words__c})</strong> Summary of payment is as below;</p>
+                        
+                        <table style="width:75%;font-size:12px;line-height:1;" border="1">
+                            <tr>
+                                <th style="text-align: center;" width="70%">Particulars</th>
+                                <th style="text-align: right;" width="30%">Amount(Rs.)</th>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Total Flat Cost</td>
+                                <td style="text-align: right;"><strong><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Demand_Raised__c.Total_Flat_Cost__c}" /> </apex:outputText></strong></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Total amount due as per previous milestone</td>
+                                <td style="text-align: right;"><strong><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Demand_Raised__c.Total_Amount_till_Current_Milestone__c}" /> </apex:outputText></strong></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Less: Total amount received against the due</td>
+                                <td style="text-align: right;"><strong><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Demand_Raised__c.Total_Paid_Till__c}" /> </apex:outputText></strong></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;"><strong>BALANCE DUE (if any)</strong></td>
+                                <td style="text-align: right;"><strong><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Demand_Raised__c.Previous_pendings__c}" /> </apex:outputText></strong></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Interest for delay in making the payment of previous installments</td>
+                                <td style="text-align: right;"><strong><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Demand_Raised__c.Interest_Delay_Till_Previous_Milestone__c}" /> </apex:outputText></strong></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Waive off interest (one time as exception considering your request)</td>
+                                <td style="text-align: right;"><strong><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!NULLVALUE(Demand_Raised__c.Booking__r.Total_Interest_Waive_Off__c, 0)}" /> </apex:outputText></strong></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Interest Paid</td>
+                                <td style="text-align: right;"><strong><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Demand_Raised__c.Total_Interest_Paid__c}" /> </apex:outputText></strong></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Present due on {!Demand_Raised__c.Current_Milestone__c} </td>
+                                <td style="text-align: right;"><strong><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Demand_Raised__c.Current_Demand_amount__c}" /> </apex:outputText></strong></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;"><strong>TOTAL AMOUNT PAYABLE</strong></td>
+                                <td style="text-align: right;"><strong><apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Demand_Raised__c.Grand_Total__c}" /> </apex:outputText></strong></td>
+                            </tr>
+                        </table>
+                        <table style="width:100%;font-size:12px;">
+                            <tr>
+                                <td colspan="2" style="padding-top:5px;text-align: left;">Request you to release the payment within 7 days from this demand note date. Remittance details are as below</td>
+                            </tr>
+                            <tr>
+                                <td width="30%" style="text-align: left;">Account Name</td>
+                                <td width="70%" style="text-align: left;">: MHPL RERA Designated Account for Aarya</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Escrow A/c No.</td>
+                                <td style="text-align: left;">: 1042000110172401</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">IFSC Code</td>
+                                <td style="text-align: left;">: KARB0000906</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left;">Bank Name &amp; Branch</td>
+                                <td style="text-align: left;">:Karnataka Bank LTD, Bommasandra, Bangalore.</td>
+                            </tr>
+                        </table>
+                        <p  style="line-height:1;">Please make the payment through RTGS/NEFT OR cheque/DD. We would like to bring to your kind notice that, as per clause 4.C of the agreement of sale any delay in the payment of instalment will lead to interest liability @ 1% per month.</p>
+                        <p  style="line-height:1;">Note: Kindly forward this demand note to your bank/FI to release the installment within due date to avoid interest liability (If Loan is Availed). Ensure to release all installments due within due dates to avoid interest. For any clarification please contact Mr.Haripavan -9686631145 / Ms.Kavitha on - 9845090926 <br/>Thanking you,</p>
+                        <!--<p>Yours </p>
+                        <p  style="line-height:1.2;">Sincerely,<br/>For M/s Mahendra Homes Pvt. Ltd.</p>
+                        <p><strong>Authorized Signatory</strong></p>-->
+                        <p>Encl: Photograph &amp; Valuation report</p>
+                    </div>
+                </apex:outputPanel>
+            </div>
+        </body>
+    </html>
+</apex:page>

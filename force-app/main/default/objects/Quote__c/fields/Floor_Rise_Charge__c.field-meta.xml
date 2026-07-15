@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Floor_Rise_Charge__c</fullName>
+    <formula>IF(
+    ISPICKVAL(Floor__c, &quot;G&quot;),
+    0,  /* For &quot;G&quot;, no calculation or return 0 or another value */
+    CASE(
+        Floor__c,
+        &quot;1&quot;, 15 * 0,
+        &quot;2&quot;, 15 * 0,
+        &quot;3&quot;, 15 * 0,
+        &quot;4&quot;, 15 * 0,
+        &quot;5&quot;, 15 * 5,
+        &quot;6&quot;, 15 * 6,
+        &quot;7&quot;, 15 * 7,
+        &quot;8&quot;, 15 * 8,
+        &quot;9&quot;, 15 * 9,
+        &quot;10&quot;, 15 * 10,
+        &quot;11&quot;, 15 * 11,
+        &quot;12&quot;, 15 * 12,
+        &quot;13&quot;, 15 * 13,
+        &quot;14&quot;, 15 * 14,
+        &quot;15&quot;, 15 * 15,
+        &quot;16&quot;, 15 * 16,
+        &quot;17&quot;, 15 * 17,
+        &quot;18&quot;, 15 * 18,
+        &quot;19&quot;, 15 * 19,
+        &quot;20&quot;, 15 * 20,
+        &quot;21&quot;, 15 * 21,
+        &quot;22&quot;, 15 * 22,
+        &quot;23&quot;, 15 * 23,
+        &quot;24&quot;, 15 * 24,
+        &quot;25&quot;, 15 * 25,
+        &quot;26&quot;, 15 * 26,
+        &quot;27&quot;, 15 * 27,
+        &quot;28&quot;, 15 * 28,
+        &quot;29&quot;, 15 * 29,
+        &quot;30&quot;, 15 * 30,
+        0 /* Default value if Floor picklist is not a number between 1 and 30 */
+    )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Floor Rise Charge Rate</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

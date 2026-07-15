@@ -1,0 +1,100 @@
+<apex:page standardController="Booking__c" extensions="TPAController" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false"  standardStylesheets="false" renderAs="PDF" >
+    <html>
+        <head>
+            <style type="text/css" media="print">
+                @page {
+                @top-center {
+                content: element(header);
+                }
+                @bottom-left {
+                content: element(footer);
+                }
+                }
+                div.header {
+                padding: 10px;
+                position: running(header);
+                }
+                div.footer {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+                }
+                .pagenumber:before {
+                content: counter(page);
+                }
+                .pagecount:before {
+                content: counter(pages);
+                }
+                div.header {
+                padding: 20px;
+                position: running(header);
+                margin-left: -200px;
+                }
+                div.footer {
+                padding: 10px;
+                position: running(footer);
+                font-size: 9px;
+                text-align:left;
+                
+                }
+                div.footer :first-child{
+                text-align:right;
+                }
+                
+                div.content, div.content p{
+                padding:0 20px;
+                line-height:1.5;
+                font-size:14px;
+                }
+                th, td {
+                padding: 5px;
+                }
+                p{
+                line-height:1;
+                padding:1px;
+                }
+                table, tr {
+                border: 1px solid black;
+                border-collapse: collapse;
+                }
+            </style> 
+        </head>
+        <body>
+            <div class="content" >
+                <apex:outputPanel >
+                    <div style="margin-top:14%;text-align:right">
+                        Date:<apex:outputText value="{0,date,dd/MM/yyyy}"> <apex:param value="{!TODAY()}" /> </apex:outputText>
+
+                    </div>
+                    <div style="padding-top:10px;width:25%">
+                        To<br/>
+                        M/s HDFC Bank Ltd
+                        No.51, Kasturba Road,
+                        Bangalore – 560 001
+                    </div>
+                    <div style="padding-top:30px;">
+                        Dear Sirs,
+                    </div>
+                    <div style="padding-top:20px;text-align:justify;text-indent: 3em;">
+                        This is to confirm that we have sold <strong>Flat No. {!Booking__c.Plot__r.Name}</strong> in the building called <strong>“MAHENDRA {!Booking__c.Project__c}”</strong> situated at Sy. Sy.No {!booking__c.Project1__r.Survey_Number__c} situated at {!booking__c.Project1__r.Project_Address__c} to <strong>{!Booking__c.salutation_Applicant1__c} {!Booking__c.First_Applicant_Name__c} &amp; {!Booking__c.salutation_Applicant2__c} {!Booking__c.Second_Applicant_Name__c}</strong> for a total consideration of <strong>Rs. <apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Booking__c.Total__c}" /> </apex:outputText>/-({!grandTotal}) out which Rs. <apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Booking__c.Total_received_Amount__c}" /> </apex:outputText>/- ({!totalReceivedAmount}) has been received by us and of the balance Rs.<apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Booking__c.Pending_Amount__c}" /> </apex:outputText>/- ({!pendingAmount})</strong> is due on <strong><apex:outputText value="{0,date,dd.MM.yyyy}"> <apex:param value="{!duedate}" /> </apex:outputText></strong>
+                    </div>
+                    <div style="padding-top:20px;text-align:justify;text-indent: 3em;">
+                        <strong> We have mortgaged the MAHENDRA AARYA project with Karnataka Bank. We hereby assure you that the said flat as well as the said building “MAHENDRA {!Booking__c.Project__c}” and the land appurtenant there to are not subject to any encumbrance, charge or liability of any kind whatsoever except the above-mentioned mortgage with Karnataka Bank and that the entire property is free and marketable. We further confirm that we have a clear legal and marketable title to the said property and every part thereof. We have obtained NOC from Karnataka Bank for the sale of this flat.</strong>
+                    </div>
+                    <div style="padding-top:20px;text-align:justify;text-indent: 3em;">
+                        We have no objection to your giving a loan of <strong>Rs. <apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Booking__c.Loan_Sanctioned_Amount__c}" /> </apex:outputText>/- ({!loanAmout})</strong> to the said <strong>{!Booking__c.salutation_Applicant1__c} {!Booking__c.First_Applicant_Name__c} &amp; {!Booking__c.salutation_Applicant2__c} {!Booking__c.Second_Applicant_Name__c}</strong> owners of the said flat and his/their mortgaging the said flat with you by way of security for repayment notwithstanding anything to the contrary contained in our agreement dated <strong><apex:outputText value="{0,date,dd/MM/yyyy}"><apex:param value="{!Booking__c.Sale_Agreement_Date__c}" /></apex:outputText></strong> with <strong>{!Booking__c.salutation_Applicant1__c} {!Booking__c.First_Applicant_Name__c} &amp; {!Booking__c.salutation_Applicant2__c} {!Booking__c.Second_Applicant_Name__c}</strong>.
+                    </div>
+                    <div style="padding-top:20px;text-align:justify;text-indent: 3em;">
+                        We also undertake to inform and give proper notice to the Co-operative Housing Society as and when formed, about the flat being mortgaged. We hereby undertake to forward the original title deed for the undivided share in the land duly registered directly to HDFC without parting the same with the allotee of the flat during the pendency of the loan under intimation to the borrower.
+                    </div>
+                    <div style="padding-top:50px;">
+                        Yours Faithfully
+                    </div>
+                    <div style="padding-top:40px;">
+                        <strong>for Mahendra Homes Private Limited</strong>
+                    </div>
+                </apex:outputPanel>
+            </div>
+        </body>
+    </html>
+</apex:page>

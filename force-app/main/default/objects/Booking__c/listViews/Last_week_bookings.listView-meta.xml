@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Last_week_bookings</fullName>
+    <columns>NAME</columns>
+    <columns>Project__c</columns>
+    <columns>Stage__c</columns>
+    <columns>Plot__c</columns>
+    <columns>Block__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>Total__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CREATED_DATE</field>
+        <operation>equals</operation>
+        <value>THIS_WEEK</value>
+    </filters>
+    <label>Last week bookings</label>
+</ListView>

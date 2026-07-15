@@ -1,0 +1,169 @@
+<apex:page controller="ndcResponseController" showHeader="false" sidebar="false" standardStylesheets="false">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+        <style>
+            :root {
+                --primary-color: #4a6cf7;
+                --success-color: #28a745;
+                --info-color: #17a2b8;
+                --text-color: #333;
+                --light-gray: #f8f9fa;
+                --white: #ffffff;
+                --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            }
+
+            body {
+                font-family: 'Poppins', sans-serif;
+                background-color: #f5f7ff;
+                color: var(--text-color);
+                line-height: 1.6;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+            }
+
+            .container {
+                width: 100%;
+                max-width: 600px;
+                padding: 2rem;
+                text-align: center;
+            }
+
+            .card {
+                background: var(--white);
+                border-radius: 12px;
+                box-shadow: var(--shadow);
+                padding: 2.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .header {
+                margin-bottom: 2rem;
+            }
+
+            .header h2 {
+                color: var(--primary-color);
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+
+            .header p {
+                color: #666;
+                font-size: 1rem;
+            }
+
+            .thank-you {
+                font-size: 1.2rem;
+                color: var(--success-color);
+                margin: 2rem 0;
+            }
+
+            .thank-you i {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+                display: block;
+            }
+
+            .form-group {
+                margin-bottom: 1.5rem;
+            }
+
+            .form-control {
+                width: 100%;
+                padding: 12px -1px;
+                font-size: 1rem;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+                font-family: inherit;
+            }
+
+            .form-control:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+                outline: none;
+            }
+
+            textarea.form-control {
+                min-height: 150px;
+                resize: vertical;
+            }
+
+            .btn {
+                display: inline-block;
+                background: var(--primary-color);
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                font-size: 1rem;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                font-weight: 500;
+                text-align: center;
+                width: 100%;
+            }
+
+            .btn:hover {
+                background: #3a5bd9;
+                transform: translateY(-2px);
+            }
+
+            .btn:active {
+                transform: translateY(0);
+            }
+
+            @media (max-width: 768px) {
+                .container {
+                    padding: 1rem;
+                }
+
+                .card {
+                    padding: 1.5rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <apex:form id="mainForm">
+                <apex:outputPanel rendered="{!NOT(IsSubmitted) && NOT(AlreadySubmitted)}">
+                    <div class="card">
+                        <div class="header">
+                            <h2>Submit Your Comment</h2>
+                            <p>Please share your feedback for the No Due Certificate</p>
+                        </div>
+                        <apex:inputTextarea value="{!comment}" styleClass="form-control" />
+                        <br/>
+                        <apex:commandButton value="Submit Comment" action="{!submit}" styleClass="btn" rerender="mainForm"/>
+                        
+                    </div>
+                </apex:outputPanel>
+
+                <apex:outputPanel rendered="{!IsSubmitted || AlreadySubmitted}">
+                    <div class="card">
+                        <div class="thank-you">
+                            <i class="fas fa-check-circle"></i>
+                            <h2>Thank You!</h2>
+                            <p>Your response has been successfully submitted.</p>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+            </apex:form>
+        </div>
+    </body>
+    </html>
+</apex:page>

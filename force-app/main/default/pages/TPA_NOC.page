@@ -1,0 +1,363 @@
+<apex:page standardController="Booking__c" extensions="TPAController" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false"  standardStylesheets="false" renderAs="PDF" >
+    <html>
+        <head>
+            <style type="text/css" media="print">
+                @page {
+                @top-center {
+                content: element(header);
+                }
+                @bottom-left {
+                content: element(footer);
+                }
+                }
+                div.header {
+                padding: 10px;
+                position: running(header);
+                }
+                div.footer {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+                }
+                .pagenumber:before {
+                content: counter(page);
+                }
+                .pagecount:before {
+                content: counter(pages);
+                }
+                div.header {
+                padding: 20px;
+                position: running(header);
+                margin-left: -200px;
+                }
+                div.footer {
+                padding: 10px;
+                position: running(footer);
+                font-size: 9px;
+                text-align:left;
+                
+                }
+                div.footer :first-child{
+                text-align:right;
+                }
+                
+                div.content, div.content p{
+                padding:0 20px;
+                line-height:1.5;
+                font-size:14px;
+                }
+                th, td {
+                padding: 5px;
+                }
+                p{
+                line-height:1;
+                padding:1px;
+                }
+                table, tr {
+                border: 1px solid black;
+                border-collapse: collapse;
+                }
+            </style> 
+        </head>
+        <body>
+            <div class="footer">
+                <div style="font-size: 12px;padding:5px;margin-top:-30px">
+                    <span style="text-align:right">Page <span class="pagenumber"/> | <span class="pagecount"/></span>
+                </div>
+            </div>
+            <div class="content" >
+                <apex:outputPanel >
+                    <div style="margin-top:100%;text-align:center">
+                        <strong>TRIPARTITE AGREEMENT</strong>
+                    </div>
+                    <div style="Page-break-before:always;text-align:justify;">
+                        <table style="text-align:center;line-height:1" width="100%">
+                            <tr>
+                                <td width="25%">{!Booking__c.First_Applicant_Name__c}</td>
+                                <td>{!Booking__c.Builder_Land_Owner_Name__c}</td>
+                                <td width="25%">-------------------------</td>
+                            </tr>
+                            <tr>
+                                <td>Borrower/s	</td>
+                                <td>Builder/Land Owner</td>
+                                <td>HDFC</td>
+                            </tr>
+                        </table>
+                        <div style="padding-top:10px;">
+                            The borrower whose name and address are stated in Item No.3 of the Schedule (hereinafter called the Borrower," which expression shall unless repugnant to the context otherwise requires, include his/her/their heirs, executors, administrators) of the First Part, (2) the builder/landowner whose name and address are stated in Item No.4 of the Schedule (hereinafter called "the Builder/Landowner," which expression shall unless repugnant to the context otherwise requires, include its/his/her/their heirs, executors, administrators) of the Second Part, AND Housing Development Finance Corporation Limited, a Company incorporated under the Companies Act, 1956, and having its registered office at Ramon House, H T Parekh Marg, 169, Backbay Reclamation, Church ate, Mumbai400 020 (hereinafter called "HDFC," which expression shall unless repugnant to the context otherwise requires, include its successors and assignees) of the Third Part.
+                        </div>
+                        <div style="padding-top:10px;">
+                            <strong>WHEREAS:</strong>
+                            <ol style="list-style-type: lower-alpha;">
+                                <li style="padding-top:10px;">The Builder/Land Owner is inter-alia a builder/developer/landowner engaged in the development/construction and/or sale of real estate project properties and is developing a multistoried residential/commercial project on the property morefully described in Item No.5 to the Schedule herein below (hereinafter referred to as the "Project Property").</li>
+                                <li style="padding-top:10px;">The Builder/Land Owner and the Borrower represent that the Builder/Land Owner has obtained all necessary approvals from the appropriate/planning authorities with respect to the Project Property. The Builder/Land Owner and the Borrower further represent that the Project Property is not subject to any encumbrance, charge, or liability of any kind whatsoever (save and except charge/mortgage created in favour of the Bank/Financial Institution as mentioned in Item No.6) and Builder/Land Owner has clear and marketable title and every part thereof. The Builder/Land Owner confirms that the Project has been registered under the provisions of the Real Estate (Regulation and Development) Act, 2016 and it is in compliant with the said Act and Rules thereon.</li>
+                                <li style="padding-top:10px;">The Borrower has identified the property on his/her/their own and is/are desirous of purchasing a flat/unit (more detailed in Item No.7 of the Schedule and hereinafter referred to as "the Unit") and has been allotted with the Unit for the said purpose of purchasing the Unit, the Borrower has entered into an Sale Agreement/Flat Buyer's Agreement with the Builder/Land Owner of such date as stipulated in Item No.8 of the Schedule.</li>
+                                <li style="padding-top:10px;">The Borrower has also deposited an amount as stipulated in Item No.10 of the Schedule, being the Borrowers own contribution amount towards part payment of the total sale consideration as stipulated in the payment schedule of Sale Agreement and as mentioned in Item No.9 herein below. The Borrower shall ensure to pay to the Builder his/her/their own contribution amount in full before requesting loan disbursement from HDFC. In case, if the Borrower's own contribution is not fully paid before first disbursement of the loan amount, the Borrower undertakes to complete payment of his/her/their own contribution as per the date stipulated herein below, but prior to requesting for further disbursement and/or registration of sale deed in favour of the Borrower.</li>
+                                <li style="padding-top:10px;">The Borrower has approached HDFC for a housing loan for the balance amount to be paid to Builder/Landowner, and HDFC has sanctioned an amount as specified in Item No.11 of the Schedule (hereinafter referred to as "the Loan") vide File Number as specified in Item No.12 of the Schedule vide its offer letter of such date as stipulated in Item No.13 of the Schedule. The Loan to be advanced to the Borrower by HDFC shall be subject to the Borrower's repayment capacity as assessed by HDFC and shall be secured by security interest on the Unit to be acquired in the Project in favour of HDFC. The Loan to be advanced to the Borrower by HDFC shall be repayable by the Borrower by way of Equated Monthly Installments (EMI). The date of commencement of EMI shall be the first day of the month following the month in which the disbursement of the Loan will have been completed and consequently the due date of payment of first EMI shall in such a case be the last day of the said following month. Till the commencement of EMI, the Borrower shall pay pre-EMI, which is the simple interest on the Loan amount disbursed calculated at the rate of interest as mentioned in the respective Loan Agreement of the Borrower.</li>
+                                <li style="padding-top:10px;">The Borrower has represented that the Builder/Land Owner is of his/her/their choice and that he/she/they have satisfied himself/herself/themselves with regard to integrity, capability for quality construction of the Builder/Landowner and the Builder's / Landowner's ability of timely completion and on time delivery of the Project.</li>
+                                <li style="padding-top:10px;">
+                                    The Borrower and Builder/Land Owner have requested HDFC to release the sanctioned loan subject to the completion of loan documentation by Borrower with HDFC.
+                                    <div style="padding-top:40px;">
+                                        <table style="text-align:center;line-height:1" width="100%">
+                                            <tr>
+                                                <td width="25%">{!Booking__c.First_Applicant_Name__c}</td>
+                                                <td>{!Booking__c.Builder_Land_Owner_Name__c	}</td>
+                                                <td width="25%">-------------------------</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Borrower/s	</td>
+                                                <td>Builder/Land Owner</td>
+                                                <td>HDFC</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+                                <li>
+                                    HDFC having agreed to the said offer, Borrower, Builder/Landowner and HDFC agree and covenant with each other as follows:
+                                    <ol style="list-style-type: lower-alpha;">
+                                        <li>The Borrower shall execute the required loan documentation with HDFC and such other documentation and comply with all terms and covenants thereon.</li>
+                                        <li style="padding-top:10px;">The Borrower shall ensure the Borrower's own contribution is fully paid to the Builder/Land Owner before requesting HDFC for loan disbursement.</li>
+                                        <li style="padding-top:10px;">HDFC will release the loan amount based on the demand raised by Builder/Landowner duly endorsed and authorised by Borrower in writing and based on progress of construction of the Project and on the terms and conditions agreed by the all three parties in this Tripartite Agreement.</li>
+                                        <li style="padding-top:10px;">Builder/Landowner undertakes to construct the Project within the stipulated time and in accordance with the approved plan and such other statutory norms governing the construction and completion of the Project.</li>
+                                        <li style="padding-top:10px;">Builder/Land Owner confirms that the Builder/Land Owner has taken note of the security interest created/to be created on the Unit by the Borrower in favour of HDFC and undertakes not to create any third party rights or security interest of any sort whatsoever on the Unit without the prior written consent of HDFC.</li>
+                                        <li style="padding-top:10px;">The Borrower and Builder/Landowner undertake the responsibility to register the sale deed of the Unit in favour of Borrower and ensure deposit of the original sale deed so registered in favour of Borrower to HDFC soon after the registration without parting the same to the Borrower or anyone else.</li>
+                                        <li style="padding-top:10px;">Builder/Landowner shall issue an No objection certificate for the loan availed by the Borrower.</li>
+                                        <li style="padding-top:10px;">Any event which leads to non depositing of original sale deed duly registered in favor of the Borrower to HDFC within the stipulated time as agreed under this Agreement or such extended time as authorized by HDFC, shall be an 'event of default' by the Borrower and the Builder/Landowner to HDFC under the loan agreement signed/to be signed by the Borrower and HDFC and the Sale Agreement/Flat Buyer's Agreement.</li>
+                                        <li style="padding-top:10px;">he Borrower and Builder/Landowner represent that there are no other scheme / arrangement entered into between the Borrower and Builder/Landowner with respect to the Unit.</li>
+                                    </ol>
+                                </li>
+                            </ol>
+                        </div>
+                        <div>
+                            NOW THIS AGREEMENT WITNESSES AS FOLLOWS:
+                            <ol style="list-style-type: lower-alpha;">
+                                <li >HDFC will pay/release the entire loan amount towards sale consideration of the Unit, upon a demand being raised by the Builder/Landowner duly endorsed and authorized by the Borrower in writing on the basis of a demand letter from Builder/Landowner and progress of construction of the Project and subject to the terms and conditions as stipulated in the loan agreement signed/to be signed by the Borrower and HDFC.</li>
+                                <li style="padding-top:10px;">It is agreed between the parties that HDFC should make the disbursement directly to the Builder/Landowner and such disbursement shall be considered as disbursement made to the Borrower, which Borrower acknowledges unconditionally.</li>
+                                <li style="padding-top:10px;">It is agreed between the parties that Builder/Landowner shall intimate the fact of completion of construction of the Unit to HDFC and Builder/Landowner undertakes to execute-register necessary sale deed in favour of Borrower and till such time, the Builder/Landowner shall retain the possession of the Unit as a trustee for and on behalf of HDFC. It is specifically agreed by the parties that the Builder/Landowner shall hand over possession of the Unit to the Borrower only on the day of execution and registration of sale deed and not before that.</li>
+                                <li style="padding-top:10px;">It is agreed and understood between the parties the original registered sale deed executed between the Borrower and the Builder/Landowner shall be deposited with HDFC within 7 days from the date of registration of the sale deed by the Builder/Landowner and it shall be the responsibility of the Borrower to ensure the same being deposited with HDFC within the stipulated time.</li>
+                                <li style="padding-top:10px;">The Borrower and/or Builder/Landowner shall not cancel/alter the allotment/booking/allocation of the Unit without obtaining a 'No Objection Certificate' from HDFC in that regard.</li>
+                                <li style="padding-top:10px;">Further, it is agreed that the Builder/Landowner shall on intimation by HDFC, on the occurrence of 'event of default' under the loan agreement (signed/to be signed by the Borrower with HDFC) by the Borrower during the currency of this agreement, shall take necessary steps to cancel the allotment and consequently cancel the Sale Agreement referred to above under intimation to HDFC.</li>
+                                <li style="padding-top:10px;">
+                                    In the event of cancellation of allotment/booking/allocation of the Unit by the Borrower or the Builder/Landowner for whatsoever reason, including but not limited to occurrence of 'event of default' under the loan agreement or differences or disputes of whatsoever nature between the parties, nonpayment of the remaining own contribution money or 
+                                    <div style="padding-top:40px;">
+                                        <table style="text-align:center;line-height:1" width="100%">
+                                            <tr>
+                                                <td width="25%">{!Booking__c.First_Applicant_Name__c}</td>
+                                                <td>{!Booking__c.Builder_Land_Owner_Name__c}</td>
+                                                <td width="25%">-------------------------</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Borrower/s	</td>
+                                                <td>Builder/Land Owner</td>
+                                                <td>HDFC</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    in the event of Builder/Landowner not executing-registering the sale deed in favour of the Borrower within the stipulated time or in an event. of litigation affecting the property/Project/Unit, the Builder undertakes to promptly and immediately refund the entire Unit sale consideration amount received by the Builder/Landowner (from both, Borrower and HDFC) to HDFC with interests thereon, notwithstanding whether the Unit is resold or not. Borrower hereby irrevocably authorizesBuilder/Landowner to directly pay the Unit sale consideration amount to HDFC without requiring any further consent or authorization for the same.
+                                </li>
+                                <li style="padding-top:10px;">Upon receipt of the Unit sale consideration amount from Builder/Landowner, HDFC shall after deducting the outstanding loan amount (with interests, charges thereon) due to HDFC towards closure of the Borrower's loan, refund the surplus, if any, to Builder/Landowner or Borrower as the case may be, to this effect Builder/Landowner would have taken necessary permissions from Borrower (including his/her legal heirs and successors, if applicable).</li>
+                                <li style="padding-top:10px;">The Borrower hereby confirms that he/she/they is/are aware that the income tax rebates, if any, will be available to him/her/them only after the completion of the Project (on issuance of occupancy certificate by the appropriate authority in that regard) and sale deed in registered in favour of the Borrower.</li>
+                                <li style="padding-top:10px;">The Borrower hereby confirms that he/she/they is/are have got the legal due diligence through his/her/their own lawyer and satisfied himself/herself/themselves about the title of the Property.</li>
+                                <li style="padding-top:10px;">Any dispute whatsoever, on account of delays, litigations, acquisitions, deviations, suspension, abandonment of the Project due to reasons including but not limited to violation, delay in getting possession, occupancy certificate, etc. will be taken up by the Borrower with Builder/Landowner directly and he/she/they confirm that he/she/they is/are solely responsible in that regard and the same shall not in any way affect the repayment or the payment of the EMI/pre-EMI towards the loan amount by the Borrower to HDFC.</li>
+                                <li style="padding-top:10px;">It is agreed by the Builder that under any eventualities, before execution and registration of the sale deed, if HDFC opts to proceed with the enforcement of security under laws including SARFAESI Act, the Builder shall provide all the assistance and execute all necessary deeds and documents to enable HDFC to take possession, to sell the property, to deal with the property in any manner HDFC deems fit and to realize the sale proceeds towards closure of the loan.</li>
+                                <li style="padding-top:10px;">Any notice/letters/other documents sent by HDFC to Borrower and Builder/Landowner shall be at the address stated in Item No.3 and 4 of the Schedule respectively or, in the event of change, as notified to HDFC in writing. The same shall be deemed to have been delivered when sent by post/courier, within 48 hours of dispatch by Registered Post/Courier. Any change in the address of Borrower/Builder/Landowner shall be duly notified in writing to HDFC within 7 days of such change.</li>
+                                <li style="padding-top:10px;">It is expressly agreed between Builder/Landowner and Borrower that this Agreement is made for the convenience and requirement and will no way affect the repayment of monthly installments to HDFC from time to time and performance of covenants as agreed and signed by Borrower herein with HDFC.</li>
+                                <li style="padding-top:10px;">It is expressly authorized by the Borrower that in the 'event of default' under any loan agreement signed/to be signed by the Borrower with HDFC or breach of any condition under this Agreement, HDFC is authorized to recover the loan amount with interests thereon through security cheque/s issued by the Borrower to HDFC not withstanding any other security.</li>
+                                <li style="padding-top:10px;">The Builder also confirms and undertakes that it shall submit to HDFC all documents for the Project as requested by HDFC and shall keep HDFC informed of the progress of the Project and shall obtain a clearance from HDFC before handing over possession of the Unit to the Borrower.</li>
+                                <li style="padding-top:10px;">The parties unequivocally agree that they waive off their rights to sue or to be sued in respect of any matter, claim or dispute arising out of in any way relating to this Agreement, at all places other the Branch office of HDFC from where the loan was disbursed</li>
+                                <li style="padding-top:10px;">
+                                    Borrower and the Builder/Landowner declares that this Agreement was duly read and understood by him/her/them
+                                    <div>
+                                        prior to affixing signatures hereunder.
+                                    </div>
+                                    <div style="padding:50px 0 ;">
+                                        <table style="text-align:center;line-height:1" width="100%">
+                                            <tr>
+                                               <td width="25%">{!Booking__c.First_Applicant_Name__c}</td>
+                                                <td>{!Booking__c.Builder_Land_Owner_Name__c}</td>
+                                                <td width="25%">-------------------------</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Borrower/s	</td>
+                                                <td>Builder/Land Owner</td>
+                                                <td>HDFC</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                        <div>
+                            <div style="text-align:center;"><strong>IN WITNESS WHEREOF the Borrower, Builder/Landowner and HDFC hereto have signed this Agreement:</strong></div>
+                            <table border="1" width="100%" style="font-weight:600">
+                                <tr>
+                                    <td width="5%" style="text-align:center;">1</td>
+                                    <td >
+                                        <div style="padding:10px 0 0 10px "> SIGNED AND DELIVERED BY THE within-named Borrower/s:</div>
+                                        <div style="padding:30px 0 60px 20px ">
+                                            (a) {!Booking__c.First_Applicant_Name__c} &amp; {!Booking__c.Second_Applicant_Name__c}
+                                        </div>
+                                    </td>
+                                    <td width="40%"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">2</td>
+                                    <td >
+                                        <div style="padding:10px 0 0 10px "> SIGNED AND DELIVERED BY THE within-named Builder/Landowner</div>
+                                        <div style="padding:10px 0 0 10px ">
+                                            M/s   Mahendra Homes Private Limited through its     Director/Authorized      Signatory
+                                        </div>
+                                        <div style="padding:10px 0 10px 10px ">
+                                            Mr. Malikarjuna M S
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">2</td>
+                                    <td >
+                                        <div style="padding:10px 0 20px 10px "> SIGNED AND DELIVERED BY THE within-named Builder/Landowner</div>
+                                        <div style="padding:10px 10px 50px 10px ">
+                                            Mr./Ms. ………………………………………., its Authorized Signatory.                                         </div>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                            <div style="padding:50px 0 ;">
+                                <table style="text-align:center;line-height:1" width="100%">
+                                    <tr>
+                                        <td width="25%">{!Booking__c.First_Applicant_Name__c}</td>
+                                        <td>{!Booking__c.Builder_Land_Owner_Name__c}</td>
+                                        <td width="25%">-------------------------</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Borrower/s	</td>
+                                        <td>Builder/Land Owner</td>
+                                        <td>HDFC</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <table width="100%" style="line-height:1" border="1">
+                                <tr>
+                                    <th colspan="4" style="text-align:center;">SCHEDULE</th>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:center;" width="10%">Sr. No.</th>
+                                    <th width="30%">Description</th>
+                                    <th colspan="2" >Particulars/ Details</th>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">1</td>
+                                    <td valign="center">Place</td>
+                                    <td colspan="2" valign="center"> {!Booking__c.Location__c}</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">2</td>
+                                    <td valign="center">Date (DD/MM/YYYY)</td>
+                                    <td colspan="2" valign="center"><apex:outputText value="{0,date,dd/MM/yyyy}"> <apex:param value="{!TODAY()}" /> </apex:outputText></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">3</td>
+                                    <td valign="center">Name &amp; address of the Borrower/s</td>
+                                    <td colspan="2" valign="center">{!Booking__c.salutation_Applicant1__c}&nbsp;{!Booking__c.First_Applicant_Name__c}, aged about {!Booking__c.Age__c} years , {!Booking__c.Relation_Details_Applicant1__c} {!Booking__c.Son_Daughter_Wife_of__c}<apex:outputPanel rendered="{!NOT(ISNULL(Booking__c.Second_Applicant_Name__c))}">&amp; {!Booking__c.Second_Applicant_Name__c}, aged about {!Booking__c.Age2__c} years, {!Booking__c.Relation_Details_Applicant2__c} {!Booking__c.Son_Daughter_Wife_of1__c}</apex:outputPanel>  residing at {!Booking__c.Communication_address__c}</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">4</td>
+                                    <td valign="center">Name &amp; address of the Builder/ Land Owner</td>
+                                    <td colspan="2" valign="center">M/S. Mahendra Homes Pvt. Ltd., No 51, 12th Main, 17th Cross, 6th Sector, H S R Layout, Bangalore – 560 102.</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">5</td>
+                                    <td valign="center">Project name &amp; property address</td>
+                                    <td colspan="2" valign="center">“{!Booking__c.Project1__r.Name}” Sy. No {!Booking__c.Project1__r.Survey_Number__c}, situated at {!Booking__c.Project1__r.Project_Address__c}</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">6</td>
+                                    <td valign="center">Bank/ FI to which the project has been mortgaged by the Builder/ Land Owner</td>
+                                    <td colspan="2" valign="center">{!Booking__c.Bank_Name__c}</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">7</td>
+                                    <td valign="center">Details of the Unit being purchased</td>
+                                    <td colspan="2" valign="center">Flat No. {!Booking__c.Plot__r.Name}, Block-"{!Booking__c.Plot__r.Block__c}",Tower-"{!Booking__c.Block__r.Name}" </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">8</td>
+                                    <td valign="center">Date of Sale Agreement/ Flat Buyer’s Agreement
+                                        (DD/MM/YYYY)</td>
+                                    <td colspan="2" valign="center"><apex:outputText value="{0,date,dd/MM/yyyy}"><apex:param value="{!Booking__c.Sale_Agreement_Date__c}" /></apex:outputText></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;" rowspan="2">9</td>
+                                    <td valign="center" rowspan="2">Total sale consideration (in words &amp; figures both)</td>
+                                    <td valign="center">Rs.<apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Booking__c.Total__c}" /> </apex:outputText>/-</td>
+                                    <td valign="center">({!grandTotal})</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;" rowspan="2">10</td>
+                                    <td rowspan="2" valign="center">Borrower/s own contribution amount paid before first disbursement</td>
+                                    <td valign="center">Rs. <apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Booking__c.Amount_By_Customer__c}" /> </apex:outputText>/-</td>
+                                    <td valign="center">({!customerAmount})</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;" rowspan="2">10 A</td>
+                                    <td valign="center" rowspan="2">Borrower/s balance own contribution amount to be paid</td>
+                                    <td valign="center">Rs. <apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Booking__c.Pending_Amount__c}" /> </apex:outputText>/-</td>
+                                    <td valign="center">({!pendingAmount})</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">10 B</td>
+                                    <td valign="center">Date of balance own contribution to be paid (DD/MM/YYYY)</td>
+                                    <td colspan="2" valign="center"><apex:outputText value="{0,date,dd/MM/yyyy}"><apex:param value="{!Booking__c.Date_of_balance_own_contribution_to_be_p__c}" /></apex:outputText></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">11</td>
+                                    <td valign="center">Loan Amount</td>
+                                    <td colspan="2" valign="center">Rs. <apex:outputText value="{0, number, ###,###,###}"><apex:param value="{!Booking__c.Loan_Sanctioned_Amount__c}" /> </apex:outputText>/- ({!loanAmout})</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">12</td>
+                                    <td valign="center">File No. </td>
+                                    <td colspan="2" valign="center"> {!Booking__c.File_Number__c}</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">13</td>
+                                    <td valign="center">Date of {!Booking__c.Bank__c} Offer Letter (DD/MM/YYYY)</td>
+                                    <td colspan="2" valign="center"><apex:outputText value="{0,date,dd/MM/yyyy}"><apex:param value="{!Booking__c.Date_Of_Offer_Letter__c}" /></apex:outputText></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div style="padding:60px 0 ;">
+                            <table style="text-align:center;line-height:1" width="100%">
+                                <tr>
+                                    <td width="25%">-------------------------</td>
+                                    <td>-------------------------</td>
+                                    <td width="25%">-------------------------</td>
+                                </tr>
+                                <tr>
+                                    <td>Borrower/s	</td>
+                                    <td>Builder/Land Owner</td>
+                                    <td>HDFC</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+            </div>
+        </body>
+    </html>
+</apex:page>

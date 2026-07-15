@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ticket_Type__c</fullName>
+    <label>Ticket Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>CRM Query</fullName>
+                <default>false</default>
+                <label>CRM Query</label>
+            </value>
+            <value>
+                <fullName>Field Query</fullName>
+                <default>false</default>
+                <label>Field Query</label>
+            </value>
+            <value>
+                <fullName>Billing Query</fullName>
+                <default>false</default>
+                <label>Billing Query</label>
+            </value>
+            <value>
+                <fullName>Painting</fullName>
+                <default>false</default>
+                <label>Painting</label>
+            </value>
+            <value>
+                <fullName>Tiling</fullName>
+                <default>false</default>
+                <label>Tiling</label>
+            </value>
+            <value>
+                <fullName>Electrical</fullName>
+                <default>false</default>
+                <label>Electrical</label>
+            </value>
+            <value>
+                <fullName>Plumbing</fullName>
+                <default>false</default>
+                <label>Plumbing</label>
+            </value>
+            <value>
+                <fullName>Masonry</fullName>
+                <default>false</default>
+                <label>Masonry</label>
+            </value>
+            <value>
+                <fullName>Doors &amp; windows</fullName>
+                <default>false</default>
+                <label>Doors &amp; windows</label>
+            </value>
+            <value>
+                <fullName>Flooring</fullName>
+                <default>false</default>
+                <label>Flooring</label>
+            </value>
+            <value>
+                <fullName>Fabrication (Steel work window grills)</fullName>
+                <default>false</default>
+                <label>Fabrication (Steel work window grills)</label>
+            </value>
+            <value>
+                <fullName>others</fullName>
+                <default>false</default>
+                <label>others</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

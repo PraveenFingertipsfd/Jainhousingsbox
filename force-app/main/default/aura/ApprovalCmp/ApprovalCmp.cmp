@@ -1,0 +1,75 @@
+<aura:component controller="BookingHandler"
+    implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader"
+    access="global">
+
+    <!-- Attributes -->
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="recordLoadError" type="String"/>
+    <aura:attribute name="BookingRecord" type="Object"/>
+    <aura:attribute name="CancellationComment" type="String"/>
+    <aura:attribute name="CancellationCharge" type="Decimal"/>
+
+    <aura:html tag="style">
+        .slds-modal__container{
+        } 
+        
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }
+        .slds-modal__content{
+        
+        height:unset !important;
+        max-height:unset !important;
+        }
+        .slds-modal__footer{
+        border-top-style: none !important;
+        }
+        .closeIcon{
+        display:none;
+        }
+        .slds-col{
+        margin-left:5px;
+        }
+    </aura:html >
+    <force:recordData aura:id="recordLoader"
+                      recordId="{!v.recordId}"
+                      fields="Id,Sale_Agreement_Completed__c"
+                      targetFields="{!v.BookingRecord}"
+                      recordUpdated="{!c.doInit}" 
+                      targetError="{!v.recordLoadError}"
+                      />
+    
+    <header class="slds-modal__header">
+        <lightning:buttonIcon iconName="utility:close"
+                              onclick="{! c.closeModel }"
+                              alternativeText="close"
+                              variant="bare-inverse"
+                              class="slds-modal__close"/>
+        <h2 id="modal-heading-01" class="slds-text-heading_small slds-hyphenate">Request for Booking Cancellation</h2>
+    </header>
+
+   
+     <div class="slds-p-around_medium cust-ht slds-text-align_left">
+
+        <!-- Comment Field -->
+        <lightning:textarea name="CancellationComment" label="Comment"
+                            value="{!v.CancellationComment}" required="true"
+                            messageWhenValueMissing="Please enter your comment" />
+
+        <!-- Cancellation Charge Field -->
+        <lightning:input type="number" name="CancellationCharge" label="Cancellation Charge"
+                         value="{!v.CancellationCharge}" min="0" step="0.01" required="true"
+                         messageWhenValueMissing="Please enter cancellation charge" />
+
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="slds-text-align_right slds-modal__footer slds-theme_default">
+        <lightning:button onclick="{!c.SaveMethod}" variant="brand" label="Approve" />
+        <lightning:button label="Cancel" onclick="{!c.closeModel}" />
+    </div>
+
+</aura:component>

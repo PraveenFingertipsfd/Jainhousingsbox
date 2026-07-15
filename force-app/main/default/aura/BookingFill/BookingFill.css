@@ -1,0 +1,62 @@
+.THIS .btnAccept {
+    background-color: forestgreen;
+    color: white;
+    border-radius: 5px;
+    /*padding: 0.5rem 1rem;*/
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.THIS .btnReject {
+    margin-right: 20px;
+    background-color: firebrick;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.THIS .btnback {
+    margin-right: 20px;
+    background-color: darkblue;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.THIS .btnAdd {
+    margin-left: 20px;
+    background-color: coral;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.THIS .btnCancel {
+    float: right;
+    height: 30px;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    font-size: small;
+}
+
+.THIS .formattedCurrency::before {
+    content: '₹ ';
+    margin-right: 2px;
+}
+.THIS .formattedCurrency lightning-formatted-number::before {
+    display: none; /* Hides default currency symbol */
+}
+
+.THIS .spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.6); /* semi-transparent white */
+    z-index: 9999; /* Ensure it's on top of everything */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

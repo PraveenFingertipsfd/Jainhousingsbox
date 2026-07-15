@@ -1,0 +1,150 @@
+<aura:component controller="AdditionalChargesMainController" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    
+    <lightning:notificationsLibrary aura:id="notifLib" />
+    
+    <aura:attribute name="additionalCharges" type="List" default="[]" />
+    <aura:attribute name="errorMessage" type="String" />
+    <aura:attribute name="showDemandPopup" type="boolean" default="false" />
+    <aura:attribute name="showReceiptPopup" type="boolean" default="false" />
+    <aura:attribute name="selectedRecordIds" type="List" default="[]" />
+    <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="baseURL" type="String"/>
+    <aura:attribute name="showSpinner" type="Boolean" default="false" />
+    <aura:attribute name="allChecked" type="Boolean" default="false" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="slds-p-bottom_medium">
+        <div class="slds-no-flex slds-float_right">
+            <lightning:buttonIcon iconName="utility:refresh"  alternativeText="Refresh" title="Refresh" onclick="{!c.handleRefresh}"/>
+            <lightning:button variant="brand" label="Raise Demand" title="Raise Demand" onclick="{! c.handleClickDemand }" />
+            <lightning:button class="slds-m-left_medium" variant="brand" label="Create Receipt" title="Create Receipt" onclick="{! c.handleClickReceipt }" />
+        </div>
+        <div class="slds-clear"></div>
+    </div>
+    <table aria-multiselectable="true" class="slds-table slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols" role="grid" aria-label="Example advanced table of Opportunities in actionable mode with row selected">
+        <thead>
+            <tr class="slds-line-height_reset">
+                <th class="slds-text-align_right slds-cell_action-mode" scope="col" style="width:3.25rem">
+                    <span id="column-group-header" class="slds-assistive-text">Choose a row</span>
+                    <div class="slds-th__action slds-th__action_form">
+                        <div class="slds-checkbox">
+                            <lightning:input type="checkbox" name="options" checked="{!v.allChecked}" onchange="{!c.toggleSelectAll}" />
+                        </div>
+                    </div>
+                </th>
+                <th aria-sort="none" class="slds-is-resizable slds-is-sortable slds-cell_action-mode" scope="col">
+                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                        <span class="slds-truncate" title="Additional Charge Id">Additional Charge Id</span>
+                    </div>
+                </th>
+                <th aria-sort="none" class="slds-is-resizable slds-is-sortable slds-cell_action-mode" scope="col">
+                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                        <span class="slds-truncate" title="Additional Charge Type">Additional Charge Type</span>
+                    </div>
+                </th>
+                <th aria-sort="none" class="slds-is-resizable slds-is-sortable slds-cell_action-mode" scope="col">
+                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                        <span class="slds-truncate" title="Status">Status</span>
+                    </div>
+                </th>
+                <th aria-sort="none" class="slds-is-resizable slds-is-sortable slds-cell_action-mode" scope="col">
+                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                        <span class="slds-truncate" title="GST%">GST%</span>
+                    </div>
+                </th>
+                <th aria-sort="none" class="slds-is-resizable slds-is-sortable slds-cell_action-mode" scope="col">
+                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                        <span class="slds-truncate" title="Amount">Total Amount</span>
+                    </div>
+                </th>
+                <th aria-sort="none" class="slds-is-resizable slds-is-sortable slds-cell_action-mode" scope="col">
+                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                        <span class="slds-truncate" title="Paid Amount">Paid Amount</span>
+                    </div>
+                </th>
+                <th aria-sort="none" class="slds-is-resizable slds-is-sortable slds-cell_action-mode" scope="col">
+                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                        <span class="slds-truncate" title="Pending Amount">Pending Amount</span>
+                    </div>
+                </th>
+                <th aria-sort="none" class="slds-is-resizable slds-is-sortable slds-cell_action-mode" scope="col">
+                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                        <span class="slds-truncate" title="Pending Amount">Approval Status</span>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:if isTrue="{!v.additionalCharges.length > 0}">
+            <aura:iteration items="{!v.additionalCharges}" var="charge" indexVar="index">
+                <tr aria-selected="false" class="slds-hint-parent">
+                    <td class="slds-text-align_right slds-cell_action-mode" role="gridcell" data-label="Select">
+                        <div class="slds-checkbox">
+                            <lightning:input type="checkbox" 
+                                             aura:id="checkboxAC"
+                                             id="{!charge.Id}"
+                                             name="{!index}" 
+                                             value="{!charge}"
+                                             checked="{!charge.checked}"
+                                             onchange="{!c.toggleCheckbox}"
+                                             disabled="{!OR(charge.Status_Dynamic__c == 'Paid',charge.Approval_Status__c !='Approved')}" 
+                                             />
+                        </div>
+                    </td>
+                    <th class="slds-cell_action-mode" scope="row">
+                        <div class="slds-truncate" title="{!charge.Name}">
+                            <a href="{!v.baseURL+'/lightning/r/Additional_Charges__c/' + charge.Id + '/view'}">{!charge.Name}</a>
+                        </div>
+                    </th>
+                    <td class="slds-cell_action-mode" role="gridcell">
+                        <div class="slds-truncate" title="{!charge.Additional_Charge_Type__c}">{!charge.Additional_Charge_Type__c}</div>
+                    </td>
+                    <td class="slds-cell_action-mode" role="gridcell">
+                        <div class="slds-truncate" title="{!charge.Status_Dynamic__c}">{!charge.Status_Dynamic__c}</div>
+                    </td>
+                    <td class="slds-cell_action-mode" role="gridcell">
+                        <div class="slds-truncate" title="{!charge.GST__c}">{!charge.GST__c}%</div>
+                    </td>
+                    <td class="slds-cell_action-mode" role="gridcell">
+                        <div class="slds-truncate" title="{!charge.Total_Additional_Charge__c}">{!charge.Total_Additional_Charge__c}</div>
+                    </td>
+                    <td class="slds-cell_action-mode" role="gridcell">
+                        <div class="slds-truncate" title="{!charge.Received_Amount__c}">{!charge.Total_Received_Amount__c}</div>
+                    </td>
+                    <td class="slds-cell_action-mode" role="gridcell">
+                        <div class="slds-truncate" title="{!charge.Pending_Amount__c}">{!charge.Pending_Amount__c}</div>
+                    </td>
+                    <td class="slds-cell_action-mode" role="gridcell">
+                        <div class="slds-truncate" title="{!charge.Approval_Status__c}">{!charge.Approval_Status__c}</div>
+                    </td>
+                </tr>
+                </aura:iteration>
+                <aura:set attribute="else">
+                    <tr>
+                        <td colspan="9">
+                            <div class="slds-align_absolute-center slds-p-top_x-large">
+                                <div class="slds-illustration slds-illustration_small ">
+                                    <div class="slds-text-longform">
+                                        <h3 class="slds-text-heading_medium">List is empty</h3>
+                                        <p class="slds-text-body_regular">No Additional Charge records found. Click refresh button to get the latest data</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </aura:set>
+            </aura:if>
+        </tbody>
+    </table>
+    <aura:if isTrue="{!v.showDemandPopup}">
+        <c:AdditionalChargeDemandPopup selectedRecords="{!v.selectedRecordIds}" showPoup="{!v.showDemandPopup}"></c:AdditionalChargeDemandPopup>
+    </aura:if>
+    <aura:if isTrue="{!v.showReceiptPopup}">
+        <c:AdditionalChargesReceiptPopup selectedRecords="{!v.selectedRecordIds}" showSpinner="{!v.showSpinner}" showPoup="{!v.showReceiptPopup}"></c:AdditionalChargesReceiptPopup>
+    </aura:if>
+    <aura:if isTrue="{!not(empty(v.errorMessage))}">
+        <p class="slds-text-color_error">{!v.errorMessage}</p>
+    </aura:if>
+    <lightning:spinner variant="brand" size="medium" alternativeText="Loading" aura:id="spinner" class="{!v.showSpinner ? '' : 'slds-hide'}"/>
+</aura:component>

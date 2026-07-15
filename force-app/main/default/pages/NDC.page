@@ -1,0 +1,62 @@
+<apex:page renderAs="pdf" standardController="Booking__c" extensions="NCDController" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false">
+    <html>
+        <head>
+            <style type="text/css" media="print">
+                @page {
+                size: A4;
+                font-family: Arial, sans-serif;
+              
+                }
+                
+                p {
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+                line-height: 1.8;
+                }
+                
+                .right-align {
+                text-align: right;
+                }
+                
+               
+            </style>
+        </head>
+        
+            <div style="padding-left:80px; padding-right:80px; padding-top:100px">
+                
+            
+            <p style="text-align:right">
+                
+                Date: <apex:outputText value="{0,date,MMMM d, yyyy}">
+    <apex:param value="{!TODAY()}" />
+</apex:outputText> </p>
+            
+            
+            <p>{!Booking__c.salutation_Applicant1__c} {!Booking__c.First_Applicant_Name__c}<br/>
+                {!Booking__c.Address__c}
+            </p>
+            
+            <div style="text-align:center; padding-top:30px"><u><strong>NO DUE CERTIFICATE</strong></u></div>
+            
+            <p>Dear Sir / Madam,</p>
+            
+                <p style="padding-left:100px; line-height:1.5">Sub: <strong></strong>Flat No. {!Booking__c.Flat_Actual_Number__c}, {!Floor} Floor in the project {!Booking__c.Project__c}, Chennai.</p>
+            
+            <p style="padding-top: 30px; line-height:2.5; text-align:justify">
+                We wish to inform you that we have received all the amounts in respect of Flat No.{!Booking__c.Flat_Actual_Number__c}, Block –  {!Booking__c.Plot__r.Name},
+                {!floor} Floor, booked in the Project <strong>{!Booking__c.Project__c}</strong> from you.
+                Further, we hereby certify that the entire amount has been received and there is no amount due
+                to be received whatsoever in any manner towards the above referred flat.
+            </p>
+            
+            <p>Thanking you,</p>
+            
+            <p>Yours faithfully,<br/>
+                For <strong>Jain Housing</strong>,
+            </p>
+            
+            <p style="margin-top: 20px;">Manager - CRM</p>
+                </div>
+        
+    </html>
+</apex:page>

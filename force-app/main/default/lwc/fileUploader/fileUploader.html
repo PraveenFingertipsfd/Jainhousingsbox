@@ -1,0 +1,10 @@
+<template>
+    <lightning-file-upload
+        label={label}
+        name="fileUploader"
+        accept=".pdf,.png,.jpg,.jpeg"
+        record-id={parentRecordId}
+        onuploadfinished={handleUploadFinished}
+        multiple=false>
+    </lightning-file-upload>
+</template>

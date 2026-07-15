@@ -1,0 +1,226 @@
+<aura:component controller="SwappingUnitController" 
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionwithoutHeader" access="global"  >
+    <aura:attribute name="plots" type="object[]" default="[]" access="global"/>
+    <aura:attribute name="Booking" type="object"  default="{}"/>
+    <aura:attribute name="swapBooking" type="Booking__c"/>
+    <aura:attribute name="OppRecord" type="object[]" default="[]"/>
+    <aura:attribute name="matchplots" type="Object[]" default="[]"/>
+    <aura:attribute name="searchText1" type="string" default=""/>
+    <aura:attribute name="showCostSheet" type="Boolean" default="False" />
+    <aura:attribute name="Showfields" type="Boolean" default="False" />
+    <aura:attribute name="quoteId" type="string" default=""/>
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="projectName" type="String" />
+    <aura:attribute name="unitQuery" type="String"/>
+    <aura:attribute name="flatNumber" type="String" />
+    <aura:attribute name="FlatCost" type="Decimal" default="0.00"/>
+    <aura:attribute name="GrandTotal" type="Decimal"/>
+    <aura:attribute name="oppPlot" type="Booking__c"  default="{}"/>
+    <aura:attribute name="paymentType" type="String" />
+    <aura:attribute name="spinner" type="boolean" default="false"/>
+    <aura:attribute name="paymentTypePicklist" type="String[]" />
+    <aura:attribute name="today" type="Date" />
+    <aura:attribute name="RecTypeId" type="String"/>
+    <aura:attribute name="currentUnit" type="String"/>
+    <aura:attribute name="showNextCmp" type="boolean" default="false" />
+    <aura:attribute name="showPaymentSchCmp" type="Boolean" default="false" />
+    <aura:attribute name="paymentSchedules" type="Payment_schedule__c[]"/>
+    <aura:attribute name = "CustompaymentSchedules" type="object[]"/>
+    <aura:attribute name="RecivedAmountTotal" type="Decimal" default="0.00"/>
+    <aura:attribute name="totalPercent" type="Decimal" default="0.00"/>
+    <aura:attribute name="GrandTotalwithGST" type="Decimal" default="0.00"/>
+    <aura:handler name="change" value="{!v.selectedUnitId}" action="{!c.handleSelectUnit}"></aura:handler>
+    <aura:handler name="change" value="{!v.searchText1}" action="{!c.searchText1}"></aura:handler>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"></aura:handler>
+    
+    <aura:attribute name="Swap_Solar_Charges" type="Decimal"/>
+    <aura:attribute name="Swap_Extra_Covered_Parking_Slots" type="Integer"/>
+    <aura:attribute name="Swap_Extra_Covered_Parking_Charges" type="Decimal"/>
+    
+    <aura:html tag="style">
+        .slds-modal__container{ 
+        } 
+        
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }
+        .slds-modal__content{
+        
+        height:unset !important;
+        max-height:unset !important;
+        }
+        
+        .closeIcon{
+        display:none;
+        }
+        .slds-col{
+        margin-left:5px;
+        }
+    </aura:html >
+    
+    <header class="slds-modal__header">
+        <lightning:buttonIcon iconName="utility:close"
+                              onclick="{! c.closeModel }"
+                              alternativeText="close"
+                              variant="bare-inverse"
+                              class="slds-modal__close"/>
+        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Swap Unit</h2>
+    </header>
+    <div class="slds-p-around_medium cust-ht">
+        <div class="slds-box">Current unit: {!v.currentUnit}</div>
+        <div class="slds-form slds-p-horizontal_small" role="list">
+            <div class="slds-form__row">
+                <div class="slds-form__item" role="listitem">
+                    <div class="slds-form-element slds-form-element_stacked">
+                        <c:Global_Lookup_Custom objectName="Plot__c" fieldName="Name" label="Unit" iconName="custom:custom32" query="{!v.unitQuery}" additionalFields="Status__c,Project__c" selectedId="{!v.selectedUnitId}"></c:Global_Lookup_Custom>
+                        <lightning:input aura:id="field" messageWhenValueMissing="Select fill this field" name="Unit__c"  disabled="false" required="true" formatter="text" label="Associated Unit"  value="{!v.Booking.Swap_Unit__c}" class="slds-assistive-text" />
+                    </div>
+                </div>
+                <div class="slds-form__item" role="listitem">
+                    <div class="slds-form-element slds-form-element_stacked">
+                        <label class="slds-form-element__label" for="stacked-location-latitude-01">Project</label>
+                        <div class="slds-form-element__control">
+                            <input type="text" id="stacked-location-latitude-01" class="slds-input" value="{!v.Booking.Project__c}" disabled="true" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item" role="listitem">
+                    <div class="slds-form-element slds-form-element_stacked">
+                        <label class="slds-form-element__label" for="stacked-location-latitude-01">Tower</label>
+                        <div class="slds-form-element__control">
+                            <input type="text" id="stacked-location-latitude-01" class="slds-input" value="{!v.Booking.Swap_Tower__c}" disabled="true" />
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-form__item" role="listitem">
+                    <div class="slds-form-element slds-form-element_stacked">
+                        <label class="slds-form-element__label" for="stacked-location-latitude-01">Block</label>
+                        <div class="slds-form-element__control">
+                            <input type="text" id="stacked-location-latitude-01" class="slds-input" value="{!v.Booking.Swap_Block__c}" disabled="true" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item" role="listitem">
+                    <div class="slds-form-element slds-form-element_stacked">
+                        <label class="slds-form-element__label" for="stacked-location-latitude-01">Floor</label>
+                        <div class="slds-form-element__control">
+                            <input type="text" id="stacked-location-latitude-01" class="slds-input" value="{!v.Booking.Swap_Floor__c}" disabled="true" />
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-form__item" role="listitem">
+                    <div class="slds-form-element slds-form-element_stacked">
+                        <label class="slds-form-element__label" for="stacked-location-latitude-01">Price Per Sq.Ft</label>
+                        <div class="slds-form-element__control">
+                            <input type="text" id="stacked-location-latitude-01" class="slds-input" value="{!v.Booking.Swap_Price_Per_Sq_Ft__c}" disabled="true" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item" role="listitem">
+                    <div class="slds-form-element slds-form-element_stacked">
+                        <label class="slds-form-element__label" for="stacked-location-latitude-01">Floor Rise</label>
+                        <div class="slds-form-element__control">
+                            <input type="text" id="stacked-location-latitude-01" class="slds-input" value="{!v.Booking.Swap_Floor_Rise__c}" disabled="true" />
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-form__item" role="listitem">
+                    <div class="slds-form-element slds-form-element_stacked">
+                        <label class="slds-form-element__label" for="stacked-location-latitude-01">Premium Charges</label>
+                        <div class="slds-form-element__control">
+                            <input type="text" id="stacked-location-latitude-01" class="slds-input" value="{!v.Booking.Swap_Premium_charges__c}" disabled="true" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item" role="listitem">
+                    <div class="slds-form-element slds-form-element_stacked">
+                        <label class="slds-form-element__label" for="stacked-location-latitude-01">Other Charges</label>
+                        <div class="slds-form-element__control">
+                            <input type="text" id="stacked-location-latitude-01" class="slds-input" value="{!v.Booking.Swap_Other_Charges__c}" disabled="true" />
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-form__item" role="listitem">
+                    <div class="slds-form-element slds-form-element_stacked">
+                        <label class="slds-form-element__label" for="stacked-location-latitude-01">Covered Park Parking</label>
+                        <div class="slds-form-element__control">
+                            <input type="text" id="stacked-location-latitude-01" class="slds-input" value="{!v.Booking.Swap_Covered_Park_Parking__c}" disabled="true" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__row">
+        <div class="slds-form__item" role="listitem">
+            <div class="slds-form-element slds-form-element_stacked">
+                <div class="slds-form-element__control">
+                    <lightning:input type="number" value="{!v.Swap_Extra_Covered_Parking_Slots}" label="Extra Covered Parking Slots" />
+                </div>
+            </div>
+        </div>
+
+        <div class="slds-form__item" role="listitem">
+            <div class="slds-form-element slds-form-element_stacked">
+                <div class="slds-form-element__control">
+                    <lightning:input type="number" step="0.01" value="{!v.Swap_Extra_Covered_Parking_Charges}" label="Extra Covered Parking Charges"/>
+                </div>
+            </div>
+        </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item" role="listitem">
+                    <div class="slds-form-element slds-form-element_stacked">
+                        <div class="slds-form-element__control">
+                            <lightning:input type="number" step="0.01" value="{!v.Swap_Solar_Charges}" label="Solar Charges" />
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-form__item" role="listitem">
+                    <div class="slds-form-element slds-form-element_stacked">
+                        <label class="slds-form-element__label" for="stacked-location-latitude-01">GST %</label>
+                        <div class="slds-form-element__control">
+                            <input type="text"  class="slds-input" value="{!v.Booking.Swap_GST__c}" disabled="true" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-form__row">
+                <div class="slds-form__item" role="listitem">
+                    <div class="slds-form-element slds-form-element_stacked">
+                        <label class="slds-form-element__label" for="stacked-location-latitude-01">Funding Type</label>
+                        <div class="slds-form-element__control">
+                            <c:CustomPicklistGlobal fieldAPIname="Swap_Funding_Type__c" objAPIName="booking__c" selectedValue="{!v.Booking.Swap_Funding_Type__c}"/>
+                            <input type="text" id="stacked-location-latitude-01"  class="slds-input slds-assistive-text" value="{!v.Booking.Swap_Funding_Type__c}" disabled="true" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="slds-modal__footer">
+        <div class="slds-grid slds-grid_align-end slds-text-align_right slds-p-right_medium slds-p-bottom_small">
+            <span class="slds-p-horizontal_medium"><b>Grand Total :</b><span class="slds-p-horizontal_small">₹{!v.GrandTotal}</span></span>
+            <span class="slds-p-horizontal_medium"><b>Grand Total With Tax :</b><span class="slds-p-horizontal_small">₹{!v.GrandTotalwithGST}</span></span>
+        </div>      
+        <lightning:button  label="Close" title="Brand action" onclick="{!c.closeModel}" />
+        <lightning:button  variant="brand" label="Save" title="Brand action" onclick="{!c.doSave}" />
+    </div>
+    
+    <div>
+        <aura:if isTrue="{!v.spinner}">
+            <lightning:spinner class="spins" size="large" variant="brand" alternativeText="Loading" />
+        </aura:if>
+    </div>
+    
+</aura:component>

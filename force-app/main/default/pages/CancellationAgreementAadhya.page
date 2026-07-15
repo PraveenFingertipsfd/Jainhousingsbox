@@ -1,0 +1,285 @@
+<apex:page renderAs="pdf" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false">
+    
+    <head>
+        <style type="text/css" media="print">
+            @page {
+            size: A4;
+            margin-bottom:40px;
+            
+            
+            
+            }
+            body {
+            font-family: calibri, sans-serif;
+            
+            line-height: 2;
+            }
+            
+            
+            strong{
+            font-weight:550;
+            }
+        </style>
+        
+    </head>
+    <div style=" padding-top:60px;  padding:60px; font-size: 13px;">
+        
+        
+        
+        <p style="text-align:center">
+            <Strong><u>CANCELLATION AGREEMENT</u></Strong> 
+        </p>
+        
+        
+        
+        <p style="text-align:justify">
+            THIS <strong>CANCELLATION AGREEMENT</strong> is executed at Chennai on this the ______ day of _______, 2025,  
+        </p>
+        
+        
+        
+        <p style="text-align:center">
+            <Strong> BY  </Strong> 
+        </p>
+        
+        
+        
+        <p style="text-align:justify">
+            <strong> M/s. JAIN HOUSING LLP, (PAN: AAOFJ0016H)</strong>  a Limited Liability Partnership firm, registered under the Limited Liability Partnership Act, 2008, having its registered office at No.98/99, Habibullah Road, T. Nagar, Chennai – 600017, represented by its Authorized signatory <strong> Mr. CHENARAM SENI</strong> (AADHAAR:<strong> 4318 8506 6098</strong>), S/o. Mr. Ridharamji, aged about 52 years, (duly authorized vide Board Resolution dated 04-03-2025) residing at No.167A/F10, Jains Eiffel Garden, Arcot Road, Vadapalani, Chennai- 600 026 hereinafter referred to as the <strong>“VENDOR/PROMOTER” </strong>  
+        </p>
+        
+        
+        
+        <p style="text-align:center">
+            <Strong>TO AND IN FAVOUR OF   </Strong> 
+        </p>
+        
+        
+        
+        <p style="text-align:justify">
+            Mr./Mrs. ______________, (Aadhar No. _____________) (PAN ________________) son/ daughter/ wife of ______________aged about ______ years, residing at ________________________  hereinafter called the <strong>“ALLOTTEE/PURCHASER”  </strong>
+        </p>
+        
+        
+        <p style="text-align:justify">
+            The terms “PROMOTER” and “ALLOTTEE” shall, wherever the context so requires mean and include their legal heirs, representatives, administrators, successors, successors in title, successors in interest and assigns. 
+        </p>
+        
+        
+        
+        
+        <p style="text-align:justify">
+            <strong>WHEREAS</strong>  the Vendor/Promoter is the absolute owner of the property measuring an extent of 2 Acres [8040 Sq. mt. as per Patta]   in Old S.No. 410, New S.No. 410/1A1A presently T.S. No.3, Ward- A, Block- 13, situated at Nookampalayam Link Road, Semmancherry Village, (formerly Ganapathy Syndicate Colony, Tambaram Taluk), Sholinganallur Taluk, Chennai District, more fully described in the Schedule “A” hereunder, having purchased the same from M/s. SMT Property Developers Pvt. Ltd., vide Sale Deed dated 27.02.2023 registered as Doc. No. 3724/2023 in the office of the Sub Registrar at Neelankarai. 
+        </p>
+        
+        
+        
+        <p style="text-align:justify">
+            <strong>WHEREAS</strong>, the Vendor /Promoter has set apart an extent of 426.00 Sq.mt. or 4585.46 Sq.ft. in Old S.No. 410, New S.No. 410/1A1A presently T.S. No.3, Ward- A, Block- 13, to be gifted towards establishment of a Substation to the Tamil Nadu Electricity Board (TNEB). 
+        </p>
+        
+        
+        
+        
+        <p style="text-align:justify">
+            <strong>WHEREAS,</strong>  the Vendor/Promoter after deducting an extent of 426.00 Sq.mt. or 4585.46 Sq.ft. in Old S.No. 410, New S.No. 410/1A1A presently T.S. No.3, Ward- A, Block- 13, the Vendor/Promoter became vested with an extent of 7614 Sq.mt or 81957.54 Sq.ft. comprised in Old S.No. 410, New S.No. 410/1A1A presently T.S. No.3, Ward- A, Block- 13, situated at Nookampalayam Link Road,Semmancherry  Village, (formerly Ganapathy Syndicate Colony, Tambaram Taluk), Sholinganallur Taluk, Chennai District, more fully described in the Schedule “B” hereunder. 
+        </p>
+        
+        <p style="text-align:justify">
+            <strong>WHEREAS</strong>  the Vendor/Promoter had obtained requisite sanctions, authorizations, consents, no objections, permissions and approvals from the appropriate authorities for construction and development of the Project vide<strong> Planning Permit No.15617 PP/HRB/09/2024/A to G dated 05/07/2024</strong> and <strong>Building Permit No. CEBA/WDCN15/00431/2024 </strong>dated 31/07/2024 duly issued by Greater Chennai Corporation/Local-body; 
+        </p>
+        
+        <p style="text-align:justify">
+            <strong>WHEREAS</strong> the VENDOR/PROMOTER has registered the project under the provisions of the Act with <strong>Real Estate Regulatory Authority at Chennai on 29.10.2024 under Registration No. TN/29/Building/0514/2024  </strong>
+        </p>
+        
+        <p style="text-align:justify">
+            <strong>THUS</strong> the Vendor/Promoter is in absolute possession and enjoyment of the above said land more fully described in Schedule “B” hereunder.
+        </p>
+        
+        <p style="text-align:justify">
+            <strong>WHEREAS</strong>  the Allottee/Purchaser desirous of purchasing one residential flat No_____ having super built up area of _________Sq.ft of the building and corresponding common rights in stair case, common veranda other common facilities and amenities and approached the Vendors/ Promoter and had entered into an Agreement for Sale with the VENDOR/PROMOTER on ___________ towards purchase of an Undivided Share of _____________ Sq.ft. out of Schedule B property more fully described in Schedule C thereof, and the Allottee/Purchaser has agreed to purchase the same for a total sale consideration of Rs.___________________ /- (Rupees _____________________ only). 
+        </p>
+        
+        <p style="text-align:justify">
+            <strong>WHEREAS</strong> the Allottee/Purchaser has paid a sum of Rs._________/- (Rupees ___________ Only) out of the aforesaid sale consideration towards purchase of Schedule “C” mentioned property. 
+        </p>
+        
+        <p style="text-align:justify">
+            <strong>WHEREAS,</strong>  due to various reasons, the <strong>ALLOTTEE/PURCHASER</strong> has requested the <strong>PROMOTER</strong> to cancel the above mentioned Agreement for Sale dated _________, and the parties have mutually agreed to the same under the following terms and conditions.   
+        </p>
+        
+        <div style="page-break-after:always"> </div>
+        
+        <p>
+            <strong>NOW THIS DEED OF CANCELLATION OF AGREEMENT WITNESSES THAT: </strong>
+        </p>
+        
+        <tr>
+            <td style="vertical-align:top">1.</td>
+            <td style="Padding-left:3px; text-align:justify">In consideration of the above recitals and in consideration of the mutual rights and obligations as set out herein, the parties have cancelled all arrangements, documents, deeds and writings originally intended to the effect that the Allottees/Purchaser were to purchase an undivided_________Sq.ft., in the entire Schedule B Property and  apartment bearing No._________ having super built up area of _____ Sq.ft on the ________ Floor of Block No.________ and Car Parking (Open/Covered/Combined Covered) together with the right to ingress and egress through the common areas, roadways and pathways, to use the common facilities and amenities in the property, more fully described in the Schedule C hereunder.  </td>
+        </tr>
+        
+        <tr>
+            <td style="vertical-align:top">2.</td>
+            <td style="Padding-left:3px; text-align:justify">The parties confirm that the Agreement for Sale dated _____, hereby stands cancelled and defaced. </td>
+        </tr>
+        
+        <tr>
+            <td style="vertical-align:top">3.</td>
+            <td style="Padding-left:3px; text-align:justify">The Promoter, after deduction of cancellation charges, has  refunded a sum of <strong>Rs.</strong>________/- (<strong>Rupees</strong> __________ <strong>Only</strong>) to the Allottee/Purchaser as full and final Settlement towards the release and relinquishment of all his rights, interest, title, claim howsoever arising over the Schedule C mentioned property.  </td>
+        </tr>
+        
+        
+        
+        <p style="text-align: center;">
+            <strong>(OR) </strong>
+            
+        </p>
+        
+        
+        
+        <div style="padding-top:10px">     
+        </div>
+        
+        
+        <tr>
+            <td style="vertical-align:top; padding-left:20px">3.</td>
+            <td style="Padding-left:5px; text-align:justify">The Promoter, after deduction of cancellation charges, has agreed to refund a sum of <strong>Rs.</strong>________/- (<strong>Rupees</strong> __________ <strong>Only</strong>) to the Allottee/Purchaser in the following manner: </td>
+        </tr>
+        
+        <tr>
+            <td style="vertical-align:top; padding-left:20px">i).</td>
+            <td style="Padding-left:20px; text-align:justify">Rs.___________________/- (Rupees __________Only) by way of Demand Draft bearing No. ______________, dated _______________, drawn on __________ Bank Ltd, _________ Branch, Chennai-17, on the day of signing this Agreement. </td>
+        </tr>
+        
+        <tr>
+            <td style="vertical-align:top; padding-left:20px">ii).</td>
+            <td style="Padding-left:20px; text-align:justify">Rs.___________________/- (Rupees __________Only) within ________  Days/Months from the day of signing the Cancellation Agreement. </td>
+        </tr>
+        
+        <tr>
+            <td style="vertical-align:top; padding-left:20px"></td>
+            <td style="Padding-left:5px; text-align:justify">The aforesaid refund amount shall be treated as full and final Settlement towards the release and relinquishment of all his rights, interest, title, claim howsoever arising over the Schedule C mentioned property. </td>
+        </tr>
+        
+        <tr>
+            <td style="vertical-align:top; ">4.</td>
+            <td style="Padding-left:5px; text-align:justify">From the date of signing this Cancellation Agreement, the Promoter shall be entitled to nominate any other purchaser for the purchase of the land and for the Purchase of Schedule-C mentioned property without any rights or obligations of the Allottee/Purchaser.  </td>
+        </tr>
+        
+        <tr>
+            <td style="vertical-align:top; padding-left:20px">5.</td>
+            <td style="Padding-left:5px; text-align:justify">The Allottee/Purchaser hereby acknowledges that the full refund amount of Rs. ______/- (Rupees __________ Only), has been received from the Promoter. Accordingly, the Allottee/Purchaser confirms that all their rights, title, interest or manner whatsoever in the said Flat, Car park, amenities, facilities, deposits and all other claims of the Allottee/Purchaser towards the Schedule C property shall stand abandoned in favour of the Promoter together with the rights to nominate any other person for purchase/acquisition of the same.  </td>
+        </tr>
+        
+        <p style="text-align: center;">
+            <strong>(OR) </strong>
+            
+        </p>
+        
+        <tr>
+            <td style="vertical-align:top; padding-left:20px">5.</td>
+            <td style="Padding-left:5px; text-align:justify">The Allottee confirms that on payment of remaining refund amount, all their rights, title, interest or manner whatsoever in the said Flat, Car park, amenities, facilities, deposits and all other claims of the Allottee/Purchaser towards the Schedule C property shall stand abandoned in favour of the Promoter together with the rights to nominate any other person for purchase/acquisition of the same.  </td>
+        </tr>
+        
+        <tr>
+            <td style="vertical-align:top; ">6.</td>
+            <td style="Padding-left:5px; text-align:justify">Copies of all documents exchanged or executed between the parties shall be automatically voided without further action on the part of the parties.   </td>
+        </tr>
+        
+        <tr>
+            <td style="vertical-align:top; ">7.</td>
+            <td style="Padding-left:5px; text-align:justify">The Allottee/Purchaser shall co-operate and execute any other document/s as may be required by the Promoter in this regard.  </td>
+        </tr>
+        
+        <div style="page-break-after:always"> </div>
+        
+        <p style="text-align:center">
+            <strong><u>SCHEDULE –A </u></strong>
+        </p>
+        <p style="text-align:center">
+            (Description of the Total Land) 
+        </p>
+        <p style="text-align:justify">
+            All that piece and parcel of the land admeasuring an extent of 2 Acres [ 8040 Sq. mt. as per Patta]  in Old Survey No. 410, New Survey No. 410/1A1A presently T.S. No.3, Ward-A, Block-13, situated at Nukkampalayam Link Road, Chemmancherry Village, (formerly Ganapathy Syndicate Colony, Tambaram Taluk), Presently Sholinganallur Taluk, Chennai District and bounded on the: </p>
+        <span style="padding-left:70px">North By   :  Nukkampalayam Link Road</span><br/>
+        <span style="padding-left:70px">South By  :  S.No.410/1A1B, T.S.No. 5 </span>  <br/>
+        
+        <span style="padding-left:70px">East By    :  Common private passage in S.No.410/1A1C  </span> <br/>
+        
+        <span style="padding-left:70px">West By   :  S.No.410/1A2 </span><br/> 	
+        
+        
+        <p style="text-align:justify">
+            Situated within the Registration District of Chennai South and Sub Registration District of Neelankarai.  
+        </p>
+        
+        <div style="padding-top:50px"> </div>
+        
+        
+        <p style="text-align:center">
+            <strong><u>SCHEDULE –  B </u></strong>
+        </p>
+        <p style="text-align:center">
+            (Description of Total land in the hands of the Vendor after deducting Substation Portion) 
+        </p>
+        <p style="text-align:justify">
+            All the piece and parcel of vacant land measuring an extent of 7614 Sq.mt. or 81957.54 Sq.ft. comprised in Old Survey No. 410, New Survey No. 410/1A1A presently T.S. No.3, Ward-A, Block-13, situated at Nukkampalayam Link Road, Chemmancherry Village, (formerly Ganapathy Syndicate Colony, Tambaram Taluk), Presently Sholinganallur Taluk, Chennai District and bounded on the: 
+        </p>
+        
+        
+        <span style="padding-left:70px"> North By   :  Nukkampalayam Link Road and portion earmarked for substation.</span>  <br/>
+        
+        <span style="padding-left:70px">South By  :  S.No.410/1A1B, T.S.No. 5</span> <br/>
+        
+        <span style="padding-left:70px">East By    :  Common private passage in S.No.410/1A1C </span> <br/>
+        
+        <span style="padding-left:70px">West By   :  S.No.410/1A2 </span><br/>
+        
+        <p >
+            Situated within the Registration District of Chennai South and Sub Registration District of Neelankarai.  
+        </p>
+        
+        <div style="page-break-after:always"> </div>
+        
+        
+        
+        <p style="text-align:center">
+            <strong><u>SCHEDULE –  C  </u></strong>
+        </p>
+        <p style="text-align:center">
+           (Description of Apartment to be conveyed as per the Agreement for Sale ) 
+        </p>
+        <p style="text-align:justify">
+           Flat/Apartment bearing No.______, having carpet area of ______ square feet (_____sq.mtrs.) Total Area of _______ Sq.ft (_____sq.mtrs.)( comprising of carpet area + wall thickness &amp; balcony + proportionate share in common areas) in the _____Floor of Block No._____, of the residential apartment project known as JAINS AADHYA together with ________ Sq.ft. of undivided share of land out of Schedule B Property along with ____  No. of Covered/Open/Combined Covered Car parking Slot bearing No.______ in ________ Floor of the Block No._______..  
+        </p>
+        
+    </div>
+    <div style="padding-left:45px; padding-right:45px;  text-align:justify; font-size: 13px; ">
+        <strong>IN WITNESS WHEREOF THE PARTIES HERETO HAVE SET THEIR HANDS AND SIGNED ON THIS CANCELLATION AGREEMENT ON THE DAY MONTH AND YEAR FIRST ABOVE WRITTEN IN THE PRESENCE OF  </strong>
+        <div style="padding-top:80px"> </div>
+        
+        
+        
+        <p>
+            <strong>VENDOR/PROMOTER</strong>	<span style="padding-left:50px"><strong>ALLOTTEE[S]/PURCAHSER</strong></span>
+        </p>
+        <div style="padding-top:20px"> </div>
+        <p>
+            
+            <strong><u>WITNESSES: </u></strong>
+        </p>
+        <tr>
+            <td>1.</td>
+            <td></td>    
+        </tr>
+        
+        <tr>
+            <td>2.</td>
+            <td></td>    
+        </tr>
+        
+    </div>
+    
+</apex:page>

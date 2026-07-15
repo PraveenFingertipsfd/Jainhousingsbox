@@ -1,0 +1,255 @@
+<apex:page controller="customReportController" cache="true" contentType="{!IF(isExport, 'application/vnd.ms-excel#report.xls', 'text/html')}">
+    <apex:slds />
+     <style>
+        .table-container {
+            max-height: 600px; 
+            overflow-y: auto; 
+            border: 1px solid #ccc; 
+            font-size: 16px;
+            overflow-x: auto;
+        }
+        .tableHeader,.dataRow  {
+            position: sticky; 
+            top: 0; 
+            background: white; 
+            z-index: 100; 
+            background-color: yellow;
+        }
+        table {
+            width: 100%; 
+            border-collapse: collapse; 
+        }
+        th, td {
+            padding: 8px; 
+            text-align: left; 
+            border: 1px solid #ddd; 
+        }
+        .td-content {
+            white-space: nowrap;
+            font-size: 20px;
+            padding:25px;
+        }
+    </style>
+    
+    <div class="table-container">
+        <div class="header">
+            CUSTOM PROJECT REPORT
+        </div>
+        
+        <!-- Form for filtering the project -->
+        <apex:form id="filterForm">
+            <apex:pageBlock >
+             <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 10px;">
+        <div style="display: flex; justify-content: space-between; width: 100%; max-width: 250px;">
+            <apex:selectList value="{!selectedProjectId}" size="1">
+                <apex:selectOptions value="{!projectOptions}" />
+            </apex:selectList>&nbsp;&nbsp;
+            <apex:outputPanel id="towersWrapper" style="flex: 1;">
+                <apex:selectList value="{!selectedTowerId}" size="1">
+                    <apex:selectOptions value="{!towerOptions}" />
+                </apex:selectList>
+            </apex:outputPanel>
+                 </div>
+                 
+                 <div style="display: flex; justify-content: center; align-items: center; margin-top: 5px;">
+                     <apex:commandButton id="buttonss" value="Get Towers" action="{!getTowers}" reRender="towersWrapper" style="margin-right: 10px;" />
+                     <apex:commandButton value="Filter" action="{!filterByProject}" reRender="tableWrapper" />
+                 </div>
+                 
+                 <apex:outputPanel id="messagePanel" style="color: red; margin-top: 10px;">
+                     <apex:outputText value="{!filterMessage}"/>
+                 </apex:outputPanel>
+                </div>
+            </apex:pageBlock>
+        </apex:form>
+
+<br/>
+
+<!-- Export Button -->
+<apex:form id="f1">
+    <div style="display: flex; justify-content: center;">
+        <apex:pageBlock >
+            <apex:commandButton id="button" value="Export" action="{!getExport}" reRender=""/>
+        </apex:pageBlock>
+    </div>
+</apex:form>
+        <!-- OutputPanel to wrap the table for rerendering -->
+         <apex:variable var="serialNo" value="{!0}" />
+        <apex:outputPanel id="tableWrapper">
+            <table style="padding:10px;">
+                <tr class="tableHeader">
+                    <td><div class="td-content">Sr.No</div></td>
+                    <td><div class="td-content">Booking ID</div></td>
+                    <td><div class="td-content">Registration No.</div></td>
+                    <td><div class="td-content">Date of Booking</div></td>
+                    <td><div class="td-content">Welcome mail sent date</div></td>
+                    <td><div class="td-content">Applicants Name</div></td>
+                    <td><div class="td-content">Tower</div></td>
+                    <td><div class="td-content">Block</div></td>
+                    <td><div class="td-content">Flat No.</div></td>
+                    <td><div class="td-content">Floor No.</div></td>
+                    <td><div class="td-content">Area</div></td>
+                    <td><div class="td-content">BHK Type</div></td>
+                    <td><div class="td-content">Rate</div></td>
+                    <td><div class="td-content">Basic Price</div></td>
+                    <td><div class="td-content">Other Charges</div></td>
+                    <td><div class="td-content">PLC</div></td>
+                    <td><div class="td-content">GST</div></td>
+                    <td><div class="td-content">Actual Flat Cost</div></td>
+                    <td><div class="td-content">Total Receivable</div></td>
+                    <td><div class="td-content">Total Received</div></td>
+                    <td><div class="td-content">Balance Receivable</div></td>
+                    <td><div class="td-content">Outstanding Amount against Flat Cost</div></td>
+                    <td><div class="td-content">Agreement Status</div></td>
+                    <td><div class="td-content">Agreement Date</div></td>
+                    <td><div class="td-content">Registration Date</div></td>
+                    
+                    <!-- Dynamic Payment Schedule Headers -->
+                    <apex:repeat value="{!paymentScheduleHeaders}" var="schedule" >
+                        <td><div class="td-content">{!schedule.paymentScheduleName} - Amount Demand</div></td>
+                        <td><div class="td-content">{!schedule.paymentScheduleName} - Amount Received</div></td>
+                        <td><div class="td-content">{!schedule.paymentScheduleName} - Balance</div></td>
+                    </apex:repeat>
+                    
+                    <td><div class="td-content">Loan Account No</div></td>
+                    <td><div class="td-content">Verify</div></td>
+                    <td><div class="td-content">Loan Bank &amp; Branch</div></td>
+                    <td><div class="td-content">Interest Rate/Tenure</div></td>
+                    <td><div class="td-content">Sanction Amount</div></td>
+                    <td><div class="td-content">Sanction Date</div></td>
+                    <td><div class="td-content">Disbursed Amount</div></td>
+                    <td><div class="td-content">Balance Disbursed Amount</div></td>
+                    <td><div class="td-content">Self Received</div></td>
+                    <td><div class="td-content">File No</div></td>
+                    <td><div class="td-content">Bank Employee &amp; Contact No</div></td>
+                    <td><div class="td-content">Remark</div></td>
+                </tr>
+                
+                <apex:repeat value="{!dataList}" var="dataWrapper" >
+                    <tr>
+                        <td><div class="td-content">{!dataWrapper.serialNumber}</div></td>
+                        <td><div class="td-content">{!dataWrapper.booking.Name}</div></td> 
+                        <td><div class="td-content">{!dataWrapper.booking.Registration_Number__c}</div></td>
+                        <td><div class="td-content"><apex:outputText value="{0, DATE, dd'-'MM'-'yyyy}"><apex:param value="{!dataWrapper.booking.Date_of_Booking__c}" /></apex:outputText></div></td>
+                        <td><div class="td-content"><apex:outputText value="{0, DATE, dd'-'MM'-'yyyy}"><apex:param value="{!dataWrapper.booking.Welcome_Mail_Sent_Time__c}" /></apex:outputText></div></td>
+                        <td><div class="td-content">{!dataWrapper.booking.First_Applicant_Name__c}</div></td>
+                        <td><div class="td-content">{!dataWrapper.booking.Tower_Name__c}</div></td>
+                        <td><div class="td-content">{!dataWrapper.booking.Block1__c}</div></td>
+                        <td><div class="td-content">{!dataWrapper.booking.Unit_NumberFor__c}</div></td>
+                        <td><div class="td-content">{!dataWrapper.booking.FloorNo__c}</div></td>
+                        <td><div class="td-content"><apex:outputText value="{0,number}"><apex:param value="{!dataWrapper.booking.Super_Built_up_area_NE__c}" /></apex:outputText></div></td>
+                        <td><div class="td-content">{!dataWrapper.booking.BHK_Type__c}</div></td>
+                        <td><div class="td-content"><apex:outputText value="{0,number}"><apex:param value="{!dataWrapper.booking.Price_per_sqft__c}" /></apex:outputText></div></td>
+                        <td><div class="td-content"><apex:outputText value="{0,number}"><apex:param value="{!dataWrapper.booking.Basic_Price__c}" /></apex:outputText></div></td>
+                        <td><div class="td-content"><apex:outputText value="{0,number}"><apex:param value="{!dataWrapper.booking.Total_Other_Charges__c}" /></apex:outputText></div></td>
+                        <td><div class="td-content"><apex:outputText value="{0,number}"><apex:param value="{!dataWrapper.booking.Total_Premium_Location_Charges__c}" /></apex:outputText></div></td>
+                        <td><div class="td-content"><apex:outputText value="{0,number}"><apex:param value="{!dataWrapper.booking.GST_Amount__c}" /></apex:outputText></div></td>
+                        <td><div class="td-content"><apex:outputText value="{0,number}"><apex:param value="{!dataWrapper.booking.Total__c}" /></apex:outputText></div></td>
+                        <td><div class="td-content"><apex:outputText value="{0,number}"><apex:param value="{!dataWrapper.booking.Total__c}" /></apex:outputText></div></td>
+                        <td><div class="td-content"><apex:outputText value="{0,number}"><apex:param value="{!dataWrapper.booking.Total_received_Amount__c}" /></apex:outputText></div></td>
+                        <td><div class="td-content"><apex:outputText value="{0,number}"><apex:param value="{!dataWrapper.booking.Pending_Amount__c}" /></apex:outputText></div></td>
+                        <td><div class="td-content"><apex:outputText value="{0,number}"><apex:param value="{!dataWrapper.booking.Pending_Amount__c}" /></apex:outputText></div></td>
+                        <td><div class="td-content">{!dataWrapper.booking.Sale_Agreement_Completed__c}</div></td>
+                        <td><div class="td-content"><apex:outputText value="{0, DATE, dd'-'MM'-'yyyy}"><apex:param value="{!dataWrapper.booking.Sale_Agreement_Date__c}" /></apex:outputText></div></td>
+                        <td><div class="td-content"><apex:outputText value="{0, DATE, dd'-'MM'-'yyyy}"><apex:param value="{!dataWrapper.booking.Registration_Date__c}" /></apex:outputText></div></td>
+                        
+                        <!-- Payment Schedule Data -->
+                        <apex:repeat value="{!paymentScheduleHeaders}" var="schedule">
+                            <!-- For each header, display the corresponding payment schedule data -->
+                            <td><div class="td-content">
+                                <apex:repeat value="{!dataWrapper.paymentSchedules}" var="paymentSchedule">
+                                    <!-- Match header with data -->
+                                    <apex:outputText rendered="{!schedule.paymentScheduleSNo == paymentSchedule.S_No__c}">
+                                        <apex:outputText value="{0,number}"><apex:param value="{!paymentSchedule.Total_Demand_Raised_Amount__c}" /></apex:outputText>
+                                    </apex:outputText>
+                                </apex:repeat>
+                                </div></td>
+                            <td><div class="td-content">
+                                <apex:repeat value="{!dataWrapper.paymentSchedules}" var="paymentSchedule">
+                                    <apex:outputText rendered="{!schedule.paymentScheduleSNo == paymentSchedule.S_No__c}">
+                                        <apex:outputText value="{0,number}"><apex:param value="{!paymentSchedule.Received_Amount1__c}" /></apex:outputText>
+                                    </apex:outputText>
+                                </apex:repeat>
+                                </div></td>
+                            <td><div class="td-content">
+                                <apex:repeat value="{!dataWrapper.paymentSchedules}" var="paymentSchedule">
+                                    <apex:outputText rendered="{!schedule.paymentScheduleSNo == paymentSchedule.S_No__c}">
+                                        <apex:outputText value="{0,number}"><apex:param value="{!paymentSchedule.Pending_Amount__c}" /></apex:outputText>
+                                    </apex:outputText>
+                                </apex:repeat>
+                                </div></td>
+                        </apex:repeat>
+                        
+                        <td><div class="td-content">{!dataWrapper.booking.Loan_Account_Number__c}</div></td>
+                        <td><div class="td-content"></div></td>
+                        <td><div class="td-content">{!dataWrapper.booking.Bank__c}</div></td>
+                        <td><div class="td-content"></div></td>
+                        <td><div class="td-content"><apex:outputText value="{0,number}"><apex:param value="{!dataWrapper.booking.Loan_Sanctioned_Amount__c}" /></apex:outputText></div></td>
+                        <td><div class="td-content"><apex:outputText value="{0, DATE, dd'-'MM'-'yyyy}"><apex:param value="{!dataWrapper.booking.Loan_Expected_Date__c}" /></apex:outputText></div></td>
+                        <td><div class="td-content"><apex:outputText value="{0,number}"><apex:param value="{!dataWrapper.booking.Loan_Sanctioned_Amount__c}" /></apex:outputText></div></td>
+                        <td><div class="td-content"></div></td>
+                        <td><div class="td-content"></div></td>
+                        <td><div class="td-content">{!dataWrapper.booking.Loan_Account_Number__c}</div></td>
+                        <td><div class="td-content">{!dataWrapper.booking.Bank_CO_Ordinator__c}</div></td>
+                        <td><div class="td-content">{!dataWrapper.booking.Remarks__c}</div></td>
+                    </tr>
+                </apex:repeat>
+                <!-- You can now add data rows dynamically if needed -->
+                <tr>
+                    <td><div class="td-content">TOTAL</div></td>
+                        <td><div class="td-content"></div></td> 
+                        <td><div class="td-content"></div></td>
+                        <td><div class="td-content"></div></td>
+                        <td><div class="td-content"></div></td>
+                    <td><div class="td-content"></div></td>
+                        <td><div class="td-content"></div></td>
+                        <td><div class="td-content"></div></td>
+                        <td><div class="td-content"></div></td>
+                        <td><div class="td-content"></div></td>
+                        <td><div class="td-content"></div></td>
+                        <td><div class="td-content"></div></td>
+                        <td><div class="td-content"></div></td>
+                        <td><div class="td-content"></div></td>
+                        <td><div class="td-content"></div></td>
+                        <td><div class="td-content"></div></td>
+                        <td><div class="td-content"></div></td>
+                        <td><div class="td-content"><apex:outputText value="{0,number}"><apex:param value="{!totalFlatCost}" /></apex:outputText></div></td>
+                        <td><div class="td-content"><apex:outputText value="{0,number}"><apex:param value="{!totalReceivable}" /></apex:outputText></div></td>
+                        <td><div class="td-content"><apex:outputText value="{0,number}"><apex:param value="{!totalReceived}" /></apex:outputText></div></td>
+                        <td><div class="td-content"><apex:outputText value="{0,number}"><apex:param value="{!totalBalanaceReceivable}" /></apex:outputText></div></td>
+                    <td><div class="td-content"><apex:outputText value="{0,number}"><apex:param value="{!totalOutstanding}" /></apex:outputText></div></td>
+                    <td><div class="td-content"></div></td>
+                    <td><div class="td-content"></div></td>
+                    <td><div class="td-content"></div></td>
+                    <apex:repeat value="{!paymentScheduleHeaders}" var="schedule">
+                        <!-- For each header, display the corresponding payment schedule data -->
+                        <td><div class="td-content">
+                            <apex:repeat value="{!paymentScheduleTotals}" var="paymentSchedule">
+                                <!-- Match header with data -->
+                                <apex:outputText rendered="{!schedule.paymentScheduleSNo == paymentSchedule.paymentScheduleName}">
+                                    <apex:outputText value="{0,number}"><apex:param value="{!paymentSchedule.totalDemandAmount}" /></apex:outputText>
+                                </apex:outputText>
+                            </apex:repeat>
+                            </div></td>
+                        <td><div class="td-content">
+                            <apex:repeat value="{!paymentScheduleTotals}" var="paymentSchedule">
+                                <apex:outputText rendered="{!schedule.paymentScheduleSNo == paymentSchedule.paymentScheduleName}">
+                                    <apex:outputText value="{0,number}"><apex:param value="{!paymentSchedule.receivedAmount}" /></apex:outputText>
+                                </apex:outputText>
+                            </apex:repeat>
+                            </div></td>
+                        <td><div class="td-content">
+                            <apex:repeat value="{!paymentScheduleTotals}" var="paymentSchedule">
+                                <apex:outputText rendered="{!schedule.paymentScheduleSNo == paymentSchedule.paymentScheduleName}">
+                                    <apex:outputText value="{0,number}"><apex:param value="{!paymentSchedule.pendingAmount}" /></apex:outputText>
+                                </apex:outputText>
+                            </apex:repeat>
+                            </div></td>
+                    </apex:repeat>
+                    
+                </tr>
+            </table>
+        </apex:outputPanel>
+        <br/>
+    </div>
+</apex:page>

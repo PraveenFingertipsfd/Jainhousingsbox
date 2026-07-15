@@ -1,0 +1,160 @@
+<apex:page standardController="Receipt__c" extensions="ReceiptVFPController" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false"  standardStylesheets="false" renderAs="PDF" >
+    <html>
+        <head>
+            <style type="text/css" media="print">
+                @page {
+                @top-center {
+                content: element(header);
+                }
+                @bottom-left {
+                content: element(footer);
+                }
+                }
+                div.header {
+                padding: 10px;
+                position: running(header);
+                }
+                div.footer {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+                }
+                .pagenumber:before {
+                content: counter(page);
+                }
+                .pagecount:before {
+                content: counter(pages);
+                }
+                div.header {
+                padding: 20px;
+                position: running(header);
+                margin-left: -200px;
+                }
+                div.footer {
+                padding: 10px;
+                position: running(footer);
+                font-size: 9px;
+                text-align:left;
+                
+                }
+                div.footer :first-child{
+                text-align:right;
+                }
+                
+                div.content, div.content p{
+                padding:0 20px;
+                line-height:1.5;
+                font-size:14px;
+                }
+                th, td {
+                padding: 5px;
+                }
+                p{
+                line-height:1;
+                padding:1px;
+                }
+                table, tr {
+                border: 1px solid black;
+                border-collapse: collapse;
+                }
+            </style> 
+        </head>
+        <body>
+            <div class="content" >
+                <apex:outputPanel >
+                    <div style="border-style:solid;border-width:1px;">
+                        <table width="100%" style="line-height:1.1;" >
+                            <tr>
+                                <td colspan="2" style="text-align:left;padding:20px 3px"> <strong>MAHENDRA HOMES PVT LTD<br/>
+                                    GST No: 29AAHCM5688C1Z3</strong></td>
+                                <td style="text-align:right"><img src="{!$Resource.Mahendra_logo}" width="80px" height="40" /></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="line-height:1;text-align:center;border-style:solid;border-width:1px;">
+                                    <strong>RECEIPT</strong>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align:left;padding-top:20px;"><Strong>Receipt No.: {!Receipt__c.Name}</Strong></td>
+                                <td style="text-align:right;padding-top:20px;">
+                                    <apex:outputLabel value="Dated:" />
+                                    <apex:outputText value="{0,date,dd MMMM yyyy}">
+                                        <apex:param value="{!Receipt__c.Receipt_date__c}" />
+                                    </apex:outputText>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="text-align:left"><Strong>Customer ID: {!Receipt__c.Booking__r.Name}</Strong></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="text-align:left"><Strong>Issued by: {!Receipt__c.Finance_User__r.Name}</Strong></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="text-align:left">Received with thanks from</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="text-align:left"><Strong>Applicant Name: {!Receipt__c.Booking__r.salutation_Applicant1__c} {!Receipt__c.Booking__r.First_Applicant_Name__c} {!Receipt__c.Booking__r.Relation_Details_Applicant1__c} {!Receipt__c.Booking__r.Son_Daughter_Wife_of__c}</Strong></td>
+                            </tr>
+                            <tr>
+                                <td><Strong>{!Receipt__c.Booking__r.salutation_Applicant2__c} {!Receipt__c.Booking__r.Second_Applicant_Name__c} {!Receipt__c.Booking__r.Relation_Details_Applicant2__c} {!Receipt__c.Booking__r.Son_Daughter_Wife_of1__c}</Strong></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="text-align:left"><Strong>Flat No.:</Strong> {!Receipt__c.Booking__r.Plot__r.Block__c} {!Receipt__c.Booking__r.Plot__r.Name}, {!Receipt__c.Payment_Location__c}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="text-align:left"><Strong>Mob. No.:</Strong> {!Receipt__c.Booking__r.Mobile_Primary__c}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="text-align:left"><Strong>PAN:</Strong> {!Receipt__c.Booking__r.PAN_Number1__c}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="text-align:left;padding-top:50px;">A sum of Rs. <Strong> <apex:outputText value="{0, number, ###,###,###.##}"><apex:param value="{!Receipt__c.Total_Received_Amount__c}" /></apex:outputText>/- (Rupees {!Total_Received_Amount_In_Words} )</Strong></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="text-align:left;padding-bottom:20px;">On account of Against Unit No.<Strong>"{!Receipt__c.Booking__r.Plot__r.Name}"</Strong> with Area <Strong>{!Receipt__c.Booking__r.Super_Built_up_area_NE__c} Sq.Ft</Strong>. on <Strong>{!FloorNumber} Floor</Strong> at <Strong>"{!Receipt__c.Booking__r.Block__r.Name}"</Strong> in Project <Strong>"{!Receipt__c.Booking__r.Project1__r.Name}"</Strong>, <Strong>{!Receipt__c.Booking__r.Project1__r.Project_Address__c}</Strong>.</td>
+                            </tr>
+                            <tr  style="background:#c0c0c0">
+                                <th style="text-align:center;border-style:solid;border-width:1px;" width="30%">Ref. No.</th>
+                                <th style="text-align:center;border-style:solid;border-width:1px;" width="30%">Date</th>
+                                <th style="text-align:center;border-style:solid;border-width:1px;" width="40%">Total Amount</th>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center;border-style:solid;border-width:1px;">
+                                     <apex:outputText value="{!transactionId}" />
+                                </td>                                
+                                <td style="text-align:right;padding-top:20px;">
+                                    <apex:outputLabel value="Dated:" />
+                                    <apex:outputText value="{0,date,dd MMMM yyyy}">
+                                        <apex:param value="{!Receipt__c.Receipt_date__c}" />
+                                    </apex:outputText>
+                                </td>
+                                <td style="text-align:center;border-style:solid;border-width:1px;"> <apex:outputText value="{0, number, ###,###,###.##}"><apex:param value="{!Receipt__c.Total_Received_Amount__c}" /></apex:outputText>/-</td>
+                            </tr>
+                            <tr style="background:#c0c0c0">
+                                <td colspan="2" style="text-align:right;border-style:solid;border-width:1px;"><Strong>Total</Strong></td>
+                                <td  style="text-align:center;border-style:solid;border-width:1px;"><Strong> <apex:outputText value="{0, number, ###,###,###.##}"><apex:param value="{!Receipt__c.Total_Received_Amount__c}" /></apex:outputText>/-</Strong></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="border-bottom: 1px solid black;"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"> For <Strong> MAHENDRA HOMES PVT LTD</Strong></td>
+                                <td style="text-align:right">
+                                    <h3><span style="border-style: double;padding:3px" >Rs.  <apex:outputText value="{0, number, ###,###,###.##}"><apex:param value="{!Receipt__c.Total_Received_Amount__c}" /></apex:outputText>/-</span></h3>
+                                </td>
+                            </tr>
+                        </table>
+                        <ul style="text-align:left;font-size:10px;padding-top:30px;">
+                            <li>This receipt is subject to realization of cheque/draft.</li>
+                            <li>The receipts are not transferable without written consent of the company.</li>
+                            <li>The final payment has to be made prior to the registration.</li>
+                            <li>This is computer generated receipt, signature is not required.</li>
+                        </ul>
+                        
+                        
+                    </div>
+                </apex:outputPanel>
+            </div>
+        </body>
+    </html>
+</apex:page>

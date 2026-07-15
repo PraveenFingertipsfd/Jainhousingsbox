@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Problem_Type__c</fullName>
+    <label>Problem Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Civil Work Issues</fullName>
+                <default>false</default>
+                <label>Civil Work Issues</label>
+            </value>
+            <value>
+                <fullName>Painting Issues</fullName>
+                <default>false</default>
+                <label>Painting Issues</label>
+            </value>
+            <value>
+                <fullName>Carpentry Issues</fullName>
+                <default>false</default>
+                <label>Carpentry Issues</label>
+            </value>
+            <value>
+                <fullName>Electrical Issues</fullName>
+                <default>false</default>
+                <label>Electrical Issues</label>
+            </value>
+            <value>
+                <fullName>Plumbing Issues</fullName>
+                <default>false</default>
+                <label>Plumbing Issues</label>
+            </value>
+            <value>
+                <fullName>Flooring/Tiling Issues</fullName>
+                <default>false</default>
+                <label>Flooring/Tiling Issues</label>
+            </value>
+            <value>
+                <fullName>False Ceiling Issues</fullName>
+                <default>false</default>
+                <label>False Ceiling Issues</label>
+            </value>
+            <value>
+                <fullName>Sanitaryware Fittings Issues</fullName>
+                <default>false</default>
+                <label>Sanitaryware Fittings Issues</label>
+            </value>
+            <value>
+                <fullName>Door &amp; Window Alignment Issues</fullName>
+                <default>false</default>
+                <label>Door &amp; Window Alignment Issues</label>
+            </value>
+            <value>
+                <fullName>Water Leakage/Seepage Issues</fullName>
+                <default>false</default>
+                <label>Water Leakage/Seepage Issues</label>
+            </value>
+            <value>
+                <fullName>Hardware Fittings Issues</fullName>
+                <default>false</default>
+                <label>Hardware Fittings Issues</label>
+            </value>
+            <value>
+                <fullName>Glass/Glazing Issues</fullName>
+                <default>false</default>
+                <label>Glass/Glazing Issues</label>
+            </value>
+            <value>
+                <fullName>Masonry/Plaster Issues</fullName>
+                <default>false</default>
+                <label>Masonry/Plaster Issues</label>
+            </value>
+            <value>
+                <fullName>Wall Cracks/Settlement Issues</fullName>
+                <default>false</default>
+                <label>Wall Cracks/Settlement Issues</label>
+            </value>
+            <value>
+                <fullName>Balcony/Handrail Issues</fullName>
+                <default>false</default>
+                <label>Balcony/Handrail Issues</label>
+            </value>
+            <value>
+                <fullName>Staircase/Common Area Issues</fullName>
+                <default>false</default>
+                <label>Staircase/Common Area Issues</label>
+            </value>
+            <value>
+                <fullName>Lift Lobby/Service Area Issues</fullName>
+                <default>false</default>
+                <label>Lift Lobby/Service Area Issues</label>
+            </value>
+            <value>
+                <fullName>Exterior/Facade Issues</fullName>
+                <default>false</default>
+                <label>Exterior/Facade Issues</label>
+            </value>
+            <value>
+                <fullName>Terrace/Waterproofing Issues</fullName>
+                <default>false</default>
+                <label>Terrace/Waterproofing Issues</label>
+            </value>
+            <value>
+                <fullName>Ventilation/Exhaust Issues</fullName>
+                <default>false</default>
+                <label>Ventilation/Exhaust Issues</label>
+            </value>
+            <value>
+                <fullName>Fire Safety Compliance Issues</fullName>
+                <default>false</default>
+                <label>Fire Safety Compliance Issues</label>
+            </value>
+            <value>
+                <fullName>Cleaning/Finishing Issues</fullName>
+                <default>false</default>
+                <label>Cleaning/Finishing Issues</label>
+            </value>
+            <value>
+                <fullName>Fixture Installation Issues</fullName>
+                <default>false</default>
+                <label>Fixture Installation Issues</label>
+            </value>
+            <value>
+                <fullName>Labeling/Signage Issues</fullName>
+                <default>false</default>
+                <label>Labeling/Signage Issues</label>
+            </value>
+            <value>
+                <fullName>General Maintenance Issues</fullName>
+                <default>false</default>
+                <label>General Maintenance Issues</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

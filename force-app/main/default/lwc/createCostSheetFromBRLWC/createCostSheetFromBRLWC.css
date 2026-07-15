@@ -1,0 +1,24 @@
+.custom-disabled-text:disabled {
+    color: #000 !important;
+    opacity: 1 !important;
+    background-color: #f3f2f2; /* Optional */
+}
+
+.highlight-serial {
+  background: #e58c14;
+  color: #fff;
+  text-align: center;
+  border-radius: 20px;
+  font-weight: 700;
+}
+
+.highlight-serial1 {
+  font-weight: 700;
+  color: #fff;
+  background-color: #f39c12; /* orange/yellow */
+  border-radius: 6px;
+  padding: 2px 8px;
+  display: inline-block;
+  min-width: 2.2rem;
+  
+}

@@ -486,6 +486,13 @@ update bkrq;*/
         if (!toUpdate.isEmpty()) {
             update toUpdate;
         }
+
+        // Send Registration Feedback WhatsApp (parallel to email) for emailed bookings
+        List<Id> feedbackBookingIds = new List<Id>();
+        for (Booking__c bk : toUpdate) {
+            feedbackBookingIds.add(bk.Id);
+        }
+        WhatsAppTemplates.sendTemplateForBookings('Registration_Feedback_WhatsApp', feedbackBookingIds);
     }
 
     private static Boolean isValidEmail(String email) {

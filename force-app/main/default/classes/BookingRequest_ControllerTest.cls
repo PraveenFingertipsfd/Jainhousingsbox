@@ -41,17 +41,29 @@ public class BookingRequest_ControllerTest {
     static void test_sendBookingRequest() {
         Plot__c plt = createPlotRecord();
 
+        Test.setMock(HttpCalloutMock.class, new BookingRequestWAMock());
+
         Test.startTest();
         String result = BookingRequest_Controller.send_Booking_Request(
             plt.Id,
             'customer@example.com',
-            500000
+            500000,
+            '9876543210'
         );
         Test.stopTest();
 
         System.assertEquals('Success', result);
         Plot__c updatedPlot = [SELECT Status__c FROM Plot__c WHERE Id = :plt.Id];
         System.assertEquals('Blocked', updatedPlot.Status__c);
+    }
+
+    private class BookingRequestWAMock implements HttpCalloutMock {
+        public HttpResponse respond(HttpRequest req) {
+            HttpResponse res = new HttpResponse();
+            res.setStatusCode(200);
+            res.setBody('{"code":"200","status":"SUCCESS"}');
+            return res;
+        }
     }
 
     @isTest

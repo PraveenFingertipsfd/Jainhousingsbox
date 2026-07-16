@@ -227,10 +227,12 @@ saleAgreementToEmail.add(booking);
                     update bookingsForStatusUpdate;
                 }
                 
-                //Send email 
+                //Send email
                 if (!saleAgreementToEmail.isEmpty()) {
                     //BookingTriggerHelper.sendAgreementApprovalEmailToCustomer(saleAgreementToEmail);
                     System.enqueueJob(new SendSaleAgreementEmailQueueable(new List<Id>(saleAgreementToEmail)));
+                    // Send Sale Agreement WhatsApp (parallel to email)
+                    WhatsAppTemplates.sendTemplateForBookings('Sale_Agreement_WhatsApp', new List<Id>(saleAgreementToEmail));
                 }
                 
                 

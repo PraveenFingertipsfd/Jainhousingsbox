@@ -1,11 +1,12 @@
 public without sharing class BookingRequest_Controller {
     @AuraEnabled
-    public static string send_Booking_Request(string recordId, string EmailId, Integer BlockedPrice){
-        
+    public static string send_Booking_Request(string recordId, string EmailId, Integer BlockedPrice, string MobileNo){
+
         try{
             Booking_Request__c bk = new Booking_Request__c();
             bk.Unit__c = recordId;
             bk.Email__c = EmailId;
+            bk.Mobile__c = MobileNo;
             bk.Blocked_Price__c = BlockedPrice;
             bk.Email_Sent_Date_Time__c = system.now();
             insert bk;
@@ -40,9 +41,12 @@ public without sharing class BookingRequest_Controller {
             semail.setSubject('Welcome to Jain Housing – Let\'s Get Started on Your Dream Home!');
             semail.setToAddresses(new String[]{email});
             semail.setHtmlBody(htmlBody);
-            message.add(semail);  
+            message.add(semail);
             Messaging.sendEmail(message);
-                        
+
+            // Send Booking Request WhatsApp (parallel to email)
+            WhatsAppTemplates.sendTemplateToNumbers('Booking_Request_WhatsApp', new List<String>{ MobileNo });
+
             return 'Success';
         }
         catch(exception e){

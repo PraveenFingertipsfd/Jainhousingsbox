@@ -1,5 +1,6 @@
 <aura:component controller="BookingRequest_Controller" implements="force:lightningQuickActionwithoutheader,force:appHostable,force:hasRecordId" access="global" >
     <aura:attribute name="Email" type="string"/>
+    <aura:attribute name="Mobile" type="string"/>
     <aura:attribute name="IsPSAUnit" type="Boolean" default="false"/>
     <aura:attribute name="IsButtondisable" type="Boolean"/>
     <aura:attribute name="BlockedPrice" type="double"/>
@@ -39,6 +40,7 @@
                 <lightning:messages />
                 <p>
                     <lightning:input type="Email" label ="Customer's Email Address" value="{!v.Email}" aura:id="EmailAddress" required='true'/>
+                    <lightning:input type="tel" label ="Customer's Mobile Number" value="{!v.Mobile}" aura:id="MobileNumber" required='true'/>
                     <aura:if isTrue="{!v.IsPSAUnit}">
                         <lightning:input type="number" label ="Blocked Price" value="{!v.BlockedPrice}" aura:id="UnitBlockedPrice" required='{!v.IsPSAUnit}'/>
                     </aura:if>

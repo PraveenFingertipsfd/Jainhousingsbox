@@ -77,7 +77,7 @@ public with sharing class CostSheetController {
             return false;
         }
         
-        Booking_Request__c brq = [select id,IsResponded__c,Unit__c,Email__c from Booking_Request__c where Id =: cosht.Booking_Request__c limit 1];
+        Booking_Request__c brq = [select id,IsResponded__c,Unit__c,Email__c,Mobile__c from Booking_Request__c where Id =: cosht.Booking_Request__c limit 1];
         string CusEmail = brq.Email__c;
         system.debug(CusEmail);
         if(CusEmail == null || CusEmail == ''){
@@ -109,7 +109,10 @@ public with sharing class CostSheetController {
         semail.setToAddresses(new String[]{CusEmail});
         semail.setHtmlBody(htmlBody);
         Messaging.sendEmail(new  list<Messaging.SingleEmailMessage>{semail});
-        
+
+        // Send Cost Sheet WhatsApp (parallel to email)
+        WhatsAppTemplates.sendTemplateToNumbers('Cost_Sheet_WhatsApp', new List<String>{ brq.Mobile__c });
+
         return true;
     }
     

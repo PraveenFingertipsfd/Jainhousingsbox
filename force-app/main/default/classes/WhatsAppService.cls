@@ -44,7 +44,10 @@ public class WhatsAppService {
 
         requestBody.put('message', message);
 
-        return sendRequest(JSON.serialize(requestBody));
+        String inputParams = 'to=' + toNumber + '; template=' + templateName
+            + '; placeholders=' + JSON.serialize(placeholders);
+
+        return sendRequest(JSON.serialize(requestBody), 'WhatsApp Template', inputParams);
     }
 
     // Send a plain text WhatsApp message (within 24hr session window)
@@ -64,11 +67,15 @@ public class WhatsAppService {
         message.put('text', textMsg);
         requestBody.put('message', message);
 
-        return sendRequest(JSON.serialize(requestBody));
+        String inputParams = 'to=' + toNumber + '; text=' + textMsg;
+
+        return sendRequest(JSON.serialize(requestBody), 'WhatsApp Text', inputParams);
     }
 
-    // Core HTTP request method - Pinnacle/Adz Network Media API format
-    private static String sendRequest(String jsonBody) {
+    // Core HTTP request method - Pinnacle/Adz Network Media API format.
+    // Every outcome (success or error) is buffered via ApexLogUtil; the caller
+    // is responsible for calling ApexLogUtil.flush() after all callouts finish.
+    private static String sendRequest(String jsonBody, String requestType, String inputParams) {
         String endpoint = BASE_URL + '/api/v1/sendmessage';
 
         HttpRequest req = new HttpRequest();
@@ -80,32 +87,44 @@ public class WhatsAppService {
         req.setBody(jsonBody);
         req.setTimeout(30000);
 
-        Http http = new Http();
-        HttpResponse res = http.send(req);
-
-        String responseBody = res.getBody();
-        Integer statusCode = res.getStatusCode();
-        System.debug('WhatsAppService Response [' + statusCode + ']: ' + responseBody);
-
-        if (statusCode != 200 && statusCode != 201) {
-            System.debug('WhatsAppService HTTP Error: ' + statusCode);
-            return null;
-        }
-
-        // Parse response for error codes
         try {
-            Map<String, Object> responseMap = (Map<String, Object>) JSON.deserializeUntyped(responseBody);
-            String code = String.valueOf(responseMap.get('code'));
-            if (code != '200') {
-                String errorMsg = (String) responseMap.get('message');
-                System.debug('WhatsAppService Error: ' + code + ' - ' + errorMsg);
+            Http http = new Http();
+            HttpResponse res = http.send(req);
+
+            String responseBody = res.getBody();
+            Integer statusCode = res.getStatusCode();
+            System.debug('WhatsAppService Response [' + statusCode + ']: ' + responseBody);
+
+            if (statusCode != 200 && statusCode != 201) {
+                System.debug('WhatsAppService HTTP Error: ' + statusCode);
+                ApexLogUtil.logError(requestType, inputParams, jsonBody, responseBody,
+                    'HTTP ' + statusCode);
                 return null;
             }
-        } catch (Exception e) {
-            System.debug('WhatsAppService: Response parse info: ' + e.getMessage());
-        }
 
-        return responseBody;
+            // Parse response for API-level error codes
+            try {
+                Map<String, Object> responseMap = (Map<String, Object>) JSON.deserializeUntyped(responseBody);
+                String code = String.valueOf(responseMap.get('code'));
+                if (code != '200') {
+                    String errorMsg = (String) responseMap.get('message');
+                    System.debug('WhatsAppService Error: ' + code + ' - ' + errorMsg);
+                    ApexLogUtil.logError(requestType, inputParams, jsonBody, responseBody,
+                        code + ' - ' + errorMsg + ' (' + getErrorDescription(code) + ')');
+                    return null;
+                }
+            } catch (Exception e) {
+                System.debug('WhatsAppService: Response parse info: ' + e.getMessage());
+            }
+
+            ApexLogUtil.logSuccess(requestType, inputParams, jsonBody, responseBody);
+            return responseBody;
+
+        } catch (Exception e) {
+            System.debug('WhatsAppService Callout Exception: ' + e.getMessage());
+            ApexLogUtil.logError(requestType, inputParams, e);
+            return null;
+        }
     }
 
     // Format phone number with country code (91XXXXXXXXXX)

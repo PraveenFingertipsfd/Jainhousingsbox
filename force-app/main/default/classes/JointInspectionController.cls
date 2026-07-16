@@ -122,7 +122,7 @@ public with sharing class JointInspectionController {
             }
             
             // Get inspection details with related booking and plot info
-            Joint_Inspection__c inspection = [SELECT Id, Name, Booking__r.Plot__r.Name, Booking__r.First_Applicant_Name__c,Booking__r.Project1__r.Name, Booking__r.Email1__c,Booking__r.Alternate_Email1__c
+            Joint_Inspection__c inspection = [SELECT Id, Name, Booking__c, Booking__r.Plot__r.Name, Booking__r.First_Applicant_Name__c,Booking__r.Project1__r.Name, Booking__r.Email1__c,Booking__r.Alternate_Email1__c
                                               FROM Joint_Inspection__c WHERE Id = :inspectionId LIMIT 1];
             
             if (inspection == null) {
@@ -193,8 +193,12 @@ public with sharing class JointInspectionController {
             // Update inspection with sent timestamp
             inspection.Invite_Sent_Date_Time__c = DateTime.now();
             update inspection;
-        
-            
+
+            // Send Joint Inspection WhatsApp (parallel to email)
+            if (inspection.Booking__c != null) {
+                WhatsAppTemplates.sendTemplateForBookings('Joint_Inspection_WhatsApp', new List<Id>{ inspection.Booking__c });
+            }
+
         } catch(Exception e) {
             throw new AuraHandledException('Error sending invitation: ' + e.getMessage());
         }

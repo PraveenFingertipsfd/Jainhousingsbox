@@ -27,9 +27,14 @@ public class WhatsAppServiceTest {
         String result = WhatsAppService.sendTemplateMessage(
             '9876543210', 'all_project', null
         );
+        ApexLogUtil.flush();
         Test.stopTest();
 
         System.assertNotEquals(null, result);
+
+        Apex_Log__c log = [SELECT Request_Type__c, Status__c, Response__c FROM Apex_Log__c LIMIT 1];
+        System.assertEquals('WhatsApp Template', log.Request_Type__c);
+        System.assertEquals(ApexLogUtil.STATUS_SUCCESS, log.Status__c);
     }
 
     @isTest
@@ -65,9 +70,14 @@ public class WhatsAppServiceTest {
         String result = WhatsAppService.sendTemplateMessage(
             '9876543210', 'all_project', null
         );
+        ApexLogUtil.flush();
         Test.stopTest();
 
         System.assertEquals(null, result);
+
+        Apex_Log__c log = [SELECT Status__c, Error_Message__c FROM Apex_Log__c LIMIT 1];
+        System.assertEquals(ApexLogUtil.STATUS_ERROR, log.Status__c);
+        System.assert(log.Error_Message__c.contains('WA002'), 'Auth error code should be logged');
     }
 
     @isTest

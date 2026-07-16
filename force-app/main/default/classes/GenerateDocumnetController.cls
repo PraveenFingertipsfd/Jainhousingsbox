@@ -112,7 +112,10 @@ public without sharing class GenerateDocumnetController {
                 
                 // Send the email
                 Messaging.sendEmail(new Messaging.SingleEmailMessage[] { email });
-                
+
+                // Send Payment Receipt WhatsApp (parallel to email)
+                WhatsAppTemplates.sendTemplateForBookings('Payment_Receipt_WhatsApp', new List<Id>{ booking.Id });
+
                 returnMessage = 'Email sent successfully';
             } else {
                 returnMessage = 'Email address not specified in the Booking record.';
@@ -122,7 +125,7 @@ public without sharing class GenerateDocumnetController {
         }
         return returnMessage;
     }
-     
+
     @AuraEnabled
     public static String sendEmailGenerateAdvancePaymentReceipt(Id receiptId) {
         String returnMessage;
@@ -383,7 +386,10 @@ email.setOrgWideEmailAddressId(owea[0].Id);
                 email.setWhatId(booking.Id);
                 // Send the email
                 Messaging.sendEmail(new Messaging.SingleEmailMessage[] { email });
-                
+
+                // Send NDC WhatsApp (parallel to email)
+                WhatsAppTemplates.sendTemplateForBookings('NDC_WhatsApp', new List<Id>{ booking.Id });
+
                 returnMessage = 'Email sent successfully';
             } else {
                 returnMessage = 'Email address not specified in the Booking record.';
@@ -393,7 +399,7 @@ email.setOrgWideEmailAddressId(owea[0].Id);
         }
         return returnMessage;
     }
-    
+
     @AuraEnabled
     public static String sendEmailGeneratePossessionLetter(Id recId){
         String returnMessage;
@@ -1482,13 +1488,16 @@ email.setOrgWideEmailAddressId(owea[0].Id);
             
             mail.setFileAttachments(new Messaging.EmailFileAttachment[] {attach1, attach2});
             Messaging.sendEmail(new Messaging.SingleEmailMessage[]{mail});
-            
+
+            // Send NDC WhatsApp (parallel to email)
+            WhatsAppTemplates.sendTemplateForBookings('NDC_WhatsApp', new List<Id>{ booking.Id });
+
             return 'SUCCESS';
         } catch(Exception e) {
             return e.getMessage();
         }
     }
-    
+
     //cancellation agreement mail added by karthik 30-07
     @future(callout=true)
     public static void sendCancellationEmailsFuture(Set<Id> bookingIds) {
@@ -1540,6 +1549,9 @@ email.setOrgWideEmailAddressId(owea[0].Id);
 
             // Send email
             Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+
+            // Send Cancellation WhatsApp (parallel to email)
+            WhatsAppTemplates.sendTemplateForBookings('Cancellation_WhatsApp', new List<Id>{ booking.Id });
 
         } catch (Exception ex) {
             System.debug('Error sending cancellation email: ' + ex.getMessage());

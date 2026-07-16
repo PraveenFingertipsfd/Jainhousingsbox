@@ -18,22 +18,27 @@ public class SendWelcomeWhatsAppQueueable implements Queueable, Database.AllowsC
             FROM Booking__c WHERE Id IN :bookingIds
         ];
 
-        for (Booking__c booking : bookings) {
-            if (String.isBlank(booking.Mobile_Primary1__c)) continue;
+        try {
+            for (Booking__c booking : bookings) {
+                if (String.isBlank(booking.Mobile_Primary1__c)) continue;
 
-            List<String> params = WhatsAppTemplates.buildWelcomeParams(booking);
+                List<String> params = WhatsAppTemplates.buildWelcomeParams(booking);
 
-            String result = WhatsAppService.sendTemplateMessage(
-                booking.Mobile_Primary1__c,
-                templateName,
-                params
-            );
+                String result = WhatsAppService.sendTemplateMessage(
+                    booking.Mobile_Primary1__c,
+                    templateName,
+                    params
+                );
 
-            if (result != null) {
-                System.debug('WhatsApp sent for booking ' + booking.Id);
-            } else {
-                System.debug('WhatsApp failed for booking ' + booking.Id);
+                if (result != null) {
+                    System.debug('WhatsApp sent for booking ' + booking.Id);
+                } else {
+                    System.debug('WhatsApp failed for booking ' + booking.Id);
+                }
             }
+        } finally {
+            // Persist all buffered logs once, after every callout is done
+            ApexLogUtil.flush();
         }
     }
 }

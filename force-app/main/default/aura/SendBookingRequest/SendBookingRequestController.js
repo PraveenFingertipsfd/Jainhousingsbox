@@ -18,29 +18,42 @@
     
     dosave : function(component, event, helper) {
         var email = component.get('v.Email');
+        var mobile = component.get('v.Mobile');
         var bkPrice = component.get('v.BlockedPrice');
-        
+
         if(email == '' || email == undefined){
             helper.showToast('Error!', 'Please enter a valid Email Address' ,'error');
             return;
         }
-        
+
         var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             helper.showToast('Error!', 'Please enter a valid Email Address', 'error');
             return;
         }
-        
+
+        if(mobile == '' || mobile == undefined){
+            helper.showToast('Error!', 'Please enter a valid Mobile Number' ,'error');
+            return;
+        }
+
+        var mobileDigits = ('' + mobile).replace(/\D/g, '');
+        if (mobileDigits.length < 10) {
+            helper.showToast('Error!', 'Please enter a valid Mobile Number', 'error');
+            return;
+        }
+
         if(component.get('v.IsPSAUnit') && (bkPrice == '' || bkPrice == undefined)){
             helper.showToast('Error!', 'Please enter Blocked Price' ,'error');
             return;
         }
-        
+
         var action = component.get("c.send_Booking_Request");
         action.setParams({
             recordId : component.get('v.recordId'),
             EmailId : component.get('v.Email'),
             BlockedPrice : component.get('v.BlockedPrice'),
+            MobileNo : component.get('v.Mobile'),
         });
         action.setCallback(this, function(response) {
             var state = response.getState();

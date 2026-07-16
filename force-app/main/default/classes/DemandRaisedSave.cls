@@ -105,8 +105,10 @@ public class DemandRaisedSave {
     public static void sendDemandEmail(list<string> bookingIds, Map<Id, String> emailContents, Map<Id, List<String>> contentIds) {
         try {
             // Query related Booking and Buyer Email Info
-            List<Booking__c> bookings = [SELECT Id, Name,Alternate_Email1__c,Email1__c FROM Booking__c WHERE Id IN :bookingIds];
+            List<Booking__c> bookings = [SELECT Id, Name,Alternate_Email1__c,Email1__c,IsCancelled__c,Cancellation_Status__c FROM Booking__c WHERE Id IN :bookingIds];
             List<Messaging.SingleEmailMessage> emailsToSend = new List<Messaging.SingleEmailMessage>();
+            // Bookings eligible for Demand Letter WhatsApp (any stage except cancellation)
+            List<Id> whatsAppBookingIds = new List<Id>();
             
             // Step 2: Collect all unique ContentDocumentIds from the contentIds map
             Set<Id> allContentDocIds = new Set<Id>();
@@ -176,20 +178,28 @@ public class DemandRaisedSave {
                 attachment.setBody(pdfBlob);
                 attachment.setContentType('application/pdf');
                 mail.setFileAttachments(new Messaging.EmailFileAttachment[] { attachment });
-                
+
                 emailsToSend.add(mail);
+
+                // Demand Letter WhatsApp goes out for any stage except cancellation
+                if (booking.IsCancelled__c != true && booking.Cancellation_Status__c != 'Approved') {
+                    whatsAppBookingIds.add(booking.Id);
+                }
             }
-            
+
             // Bulk Send
             if (!emailsToSend.isEmpty()) {
                 Messaging.SendEmailResult[] results = Messaging.sendEmail(emailsToSend, false);
-                
+
                 for (Messaging.SendEmailResult result : results) {
                     if (!result.isSuccess()) {
                         system.debug('❌ Some emails failed: ' + result.getErrors()[0].getMessage());
                     }
                 }
             }
+
+            // Send Demand Letter WhatsApp (parallel to email)
+            WhatsAppTemplates.sendTemplateForBookings('Demand_Letter_WhatsApp', whatsAppBookingIds);
             
             //return new DemandEmailResult(true, '✅ Demand emails sent successfully.');
             

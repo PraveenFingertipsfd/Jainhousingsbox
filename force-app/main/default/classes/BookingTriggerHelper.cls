@@ -41,6 +41,7 @@ public class BookingTriggerHelper {
     
     public static void sendRegReminderEmails(List<Booking__c> bookings) {
         List<Messaging.SingleEmailMessage> emails = new List<Messaging.SingleEmailMessage>();
+        List<Id> bookingIds = new List<Id>();
 
         for (Booking__c b : bookings) {
             Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
@@ -48,10 +49,14 @@ public class BookingTriggerHelper {
             mail.setSubject('Registration Preparation');
             mail.setPlainTextBody('Dear Customer,\n\nPlease be ready for the Registration process.\n\nThank you,\nTeam');
             emails.add(mail);
+            bookingIds.add(b.Id);
         }
 
         if (!emails.isEmpty()) {
             Messaging.sendEmail(emails, false);
         }
+
+        // Send Ready-for-Registration WhatsApp (parallel to email)
+        WhatsAppTemplates.sendTemplateForBookings('Registration_Ready_WhatsApp', bookingIds);
     }
 }
